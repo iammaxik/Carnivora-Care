@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useId, useCallback } from 'react';
+import { M3ShapeLoader } from './M3ShapeLoader';
 import {
   collection,
   query,
@@ -22,7 +23,6 @@ import {
   X,
   Sparkles,
   Leaf,
-  Loader2,
   Layers,
   ThermometerSnowflake,
   SunMedium,
@@ -219,7 +219,7 @@ async function fetchWithTimeout(url: string, timeoutMs = 3000): Promise<Response
 }
 
 /**
- * Botanische Dormanz- & Pflegelogik
+ * Botanische Dormanz- & Pflegelogik (M3 Expressive Botanical Color Roles - Sub-Step 8.1.3)
  */
 export function getDormancyStatus(
   species: string,
@@ -227,13 +227,13 @@ export function getDormancyStatus(
 ): DormancyEvaluation {
   const lower = (species || '').toLowerCase();
 
-  // Drosera capensis (Sonnentau) - Immer subtropischer Status
+  // Drosera capensis (Sonnentau) - Immer subtropischer Status (ganzjährig aktiv)
   if (lower.includes('drosera') || lower.includes('sonnentau') || lower.includes('capensis')) {
     return {
-      statusType: 'SUBTROPICAL',
-      badgeLabel: 'Subtropisch',
-      badgeClass: 'bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface-variant)] border border-[var(--md-sys-color-outline-variant)]',
-      dotClass: 'bg-[var(--md-sys-color-primary)] w-2 h-2 rounded-full',
+      statusType: 'GROWTH_ACTIVE',
+      badgeLabel: '🌿 Aktiv am Wachsen',
+      badgeClass: 'm3-status-badge m3-status-badge-growth',
+      dotClass: 'bg-[var(--md-sys-color-primary)] w-1.5 h-1.5 rounded-full',
       bannerText: '🌿 Subtropisch: Keine Winterruhe. Ganzjährig hell & warm halten.',
       bannerClass: 'bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface)]',
     };
@@ -253,18 +253,18 @@ export function getDormancyStatus(
     if (effectiveTemp < 10) {
       return {
         statusType: 'DORMANZ_ACTIVE',
-        badgeLabel: 'Winterruhe aktiv',
-        badgeClass: 'bg-[var(--md-sys-color-tertiary-container)] text-[var(--md-sys-color-on-tertiary-container)] border border-[#855300]/25',
-        dotClass: 'bg-[var(--md-sys-color-tertiary)] w-2 h-2 rounded-full',
+        badgeLabel: '❄️ Winterruhe aktiv',
+        badgeClass: 'm3-status-badge m3-status-badge-dormancy',
+        dotClass: 'bg-[var(--md-sys-color-on-tertiary-container)] w-1.5 h-1.5 rounded-full',
         bannerText: '❄️ Winterruhe aktiv (<10°C): Anstau stoppen & leicht feucht halten.',
         bannerClass: 'bg-[var(--md-sys-color-tertiary-container)] border border-[#855300]/25 text-[var(--md-sys-color-on-tertiary-container)]',
       };
     } else {
       return {
         statusType: 'GROWTH_ACTIVE',
-        badgeLabel: 'Wachstumsphase',
-        badgeClass: 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] border border-[#02432E]/20',
-        dotClass: 'bg-[var(--md-sys-color-primary)] animate-pulse w-2 h-2 rounded-full',
+        badgeLabel: '🌿 Aktiv am Wachsen',
+        badgeClass: 'm3-status-badge m3-status-badge-growth',
+        dotClass: 'bg-[var(--md-sys-color-primary)] animate-pulse w-1.5 h-1.5 rounded-full',
         bannerText: '☀️ Wachstumsphase: Volle Sonne & hohes Anstauwasser.',
         bannerClass: 'bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 text-[var(--md-sys-color-on-primary-container)]',
       };
@@ -274,9 +274,9 @@ export function getDormancyStatus(
   if (effectiveTemp < 10) {
     return {
       statusType: 'DORMANZ_ACTIVE',
-      badgeLabel: 'Kühlphase (<10°C)',
-      badgeClass: 'bg-[var(--md-sys-color-tertiary-container)] text-[var(--md-sys-color-on-tertiary-container)] border border-[#855300]/25',
-      dotClass: 'bg-[var(--md-sys-color-tertiary)] w-2 h-2 rounded-full',
+      badgeLabel: '❄️ Winterruhe aktiv',
+      badgeClass: 'm3-status-badge m3-status-badge-dormancy',
+      dotClass: 'bg-[var(--md-sys-color-on-tertiary-container)] w-1.5 h-1.5 rounded-full',
       bannerText: '❄️ Kühle Umgebung: Anstau reduzieren & Schimmelbildung vorbeugen.',
       bannerClass: 'bg-[var(--md-sys-color-tertiary-container)] border border-[#855300]/25 text-[var(--md-sys-color-on-tertiary-container)]',
     };
@@ -284,9 +284,9 @@ export function getDormancyStatus(
 
   return {
     statusType: 'GROWTH_ACTIVE',
-    badgeLabel: 'Aktiv',
-    badgeClass: 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] border border-[#02432E]/20',
-    dotClass: 'bg-[var(--md-sys-color-primary)] animate-pulse w-2 h-2 rounded-full',
+    badgeLabel: '🌿 Aktiv am Wachsen',
+    badgeClass: 'm3-status-badge m3-status-badge-growth',
+    dotClass: 'bg-[var(--md-sys-color-primary)] animate-pulse w-1.5 h-1.5 rounded-full',
     bannerText: '☀️ Wachstumsphase: Volle Sonne & ausreichend kalkfreies Wasser.',
     bannerClass: 'bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 text-[var(--md-sys-color-on-primary-container)]',
   };
@@ -407,8 +407,8 @@ export function PlantCardSkeleton() {
     >
       {/* Upper Section */}
       <div className="flex items-start justify-between gap-3">
-        {/* Avatar Box Placeholder (Sub-Tile lowest surface #FFFFFF) */}
-        <div className="w-12 h-12 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] shrink-0" />
+        {/* Avatar Box Placeholder (Sub-Tile lowest surface #FFFFFF) - Sub-Step 8.3.2: 28px - 16px = 12px */}
+        <div className="w-12 h-12 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] shrink-0" />
 
         {/* Text & Badge Columns */}
         <div className="flex-1 min-w-0">
@@ -483,10 +483,10 @@ export const SPECIES_OPTIONS = [
 ];
 
 /**
- * Gieß-Tracker Status & relative Datums-Berechnung
- * - 0 bis 3 Tage: "💧 Anstau optimal (Vor X Tagen gegossen)"
- * - 4 bis 7 Tage: "⚠️ Wasserstand prüfen"
- * - Über 7 Tage: "🚨 Anstau auffüllen (Destilliert-/Regenwasser)"
+ * Gieß-Tracker Status & relative Datums-Berechnung (Sub-Step 8.1.3 - M3 Botanical Color Roles)
+ * - 0 bis 3 Tage: "💧 Anstau optimal"
+ * - 4 bis 7 Tage: "💧 Wasserstand prüfen"
+ * - Über 7 Tage: "💧 Wasser auffüllen" (#FEE2E2 / #991B1B)
  */
 export function getWateringStatus(lastWateredAt?: Timestamp | null): {
   days: number;
@@ -497,9 +497,9 @@ export function getWateringStatus(lastWateredAt?: Timestamp | null): {
   if (!lastWateredAt) {
     return {
       days: 99,
-      label: '🚨 Anstau auffüllen (Destilliert-/Regenwasser)',
-      badgeClass: 'bg-[#FFDAD6] text-[#410002] border border-[#BA1A1A]/30',
-      dotClass: 'bg-[#BA1A1A]',
+      label: '💧 Wasser auffüllen',
+      badgeClass: 'm3-status-badge m3-status-badge-alert',
+      dotClass: 'bg-[#991B1B]',
     };
   }
 
@@ -512,8 +512,8 @@ export function getWateringStatus(lastWateredAt?: Timestamp | null): {
   if (days <= 3) {
     return {
       days,
-      label: `💧 Anstau optimal (Vor ${days} ${days === 1 ? 'Tag' : 'Tagen'} gegossen)`,
-      badgeClass: 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] border border-[#02432E]/20',
+      label: `💧 Anstau optimal (${days === 0 ? 'Heute' : `Vor ${days} T.`})`,
+      badgeClass: 'm3-status-badge m3-status-badge-growth',
       dotClass: 'bg-[var(--md-sys-color-primary)]',
     };
   }
@@ -521,17 +521,17 @@ export function getWateringStatus(lastWateredAt?: Timestamp | null): {
   if (days <= 7) {
     return {
       days,
-      label: '⚠️ Wasserstand prüfen',
-      badgeClass: 'bg-[var(--md-sys-color-tertiary-container)] text-[var(--md-sys-color-on-tertiary-container)] border border-[#855300]/25',
+      label: '💧 Wasserstand prüfen',
+      badgeClass: 'm3-status-badge m3-status-badge-dormancy',
       dotClass: 'bg-[var(--md-sys-color-tertiary)]',
     };
   }
 
   return {
     days,
-    label: '🚨 Anstau auffüllen (Destilliert-/Regenwasser)',
-    badgeClass: 'bg-[#FFDAD6] text-[#410002] border border-[#BA1A1A]/30',
-    dotClass: 'bg-[#BA1A1A]',
+    label: '💧 Wasser auffüllen',
+    badgeClass: 'm3-status-badge m3-status-badge-alert',
+    dotClass: 'bg-[#991B1B]',
   };
 }
 
@@ -769,6 +769,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [isAuthModalClosing, setIsAuthModalClosing] = useState<boolean>(false);
 
   // Sub-Step 7.3.1: Auth Modal Form States
   const [authMode, setAuthMode] = useState<'login' | 'register'>('login');
@@ -783,10 +784,12 @@ export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalClosing, setIsModalClosing] = useState(false);
   const [isSpeciesDropdownOpen, setIsSpeciesDropdownOpen] = useState(false);
   
   // Detail Bottom-Sheet ("Pflanzen-Akte") State
   const [selectedPlant, setSelectedPlant] = useState<PlantDoc | null>(null);
+  const [isDetailClosing, setIsDetailClosing] = useState(false);
   const activeDetailPlant = selectedPlant
     ? plants.find((p) => p.id === selectedPlant.id) || selectedPlant
     : null;
@@ -827,8 +830,9 @@ export default function App() {
   // Delete-Safety: Store ID of plant pending confirmation
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
-  // Gieß-Tracker: ID der Pflanze, die gerade als gegossen gespeichert wird
+  // Gieß-Tracker: ID der Pflanze, die gerade als gegossen gespeichert wird & Checkmark-Pop State
   const [isWateringId, setIsWateringId] = useState<string | null>(null);
+  const [recentlyWateredId, setRecentlyWateredId] = useState<string | null>(null);
 
   // Weather State Map: zipCode -> WeatherData
   const [weatherMap, setWeatherMap] = useState<Record<string, WeatherData>>({});
@@ -875,6 +879,64 @@ export default function App() {
   const nameInputId = useId();
   const speciesSelectId = useId();
   const zipCodeInputId = useId();
+
+  // Smooth M3 Exit-Animation Handlers (Sub-Step 8.5.2 Exit Transitions - 200ms Delayed Unmount)
+  const handleCloseModal = useCallback(() => {
+    triggerHaptic('subtle');
+    if (isModalClosing) return;
+    setIsModalClosing(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsModalClosing(false);
+      setIsSpeciesDropdownOpen(false);
+      setZipValidation({ status: 'idle' });
+      setFormError(null);
+      setIncompatibilityWarning(null);
+      setIsSavedWithWarning(false);
+    }, 200);
+  }, [isModalClosing]);
+
+  const handleCloseDetailPlant = useCallback(() => {
+    triggerHaptic('subtle');
+    if (isDetailClosing) return;
+    setIsDetailClosing(true);
+    setTimeout(() => {
+      setSelectedPlant(null);
+      setIsDetailClosing(false);
+    }, 200);
+  }, [isDetailClosing]);
+
+  const handleCloseAuthModal = useCallback(() => {
+    triggerHaptic('subtle');
+    if (isAuthModalClosing) return;
+    setIsAuthModalClosing(true);
+    setTimeout(() => {
+      setIsAuthModalOpen(false);
+      setIsAuthModalClosing(false);
+      setAuthError(null);
+      setAuthEmail('');
+      setAuthPassword('');
+      setShowSwitchAccount(false);
+    }, 200);
+  }, [isAuthModalClosing]);
+
+  // Sub-Step 8.6.2: Global Keyboard Navigation & Focus Management (Escape key closes open dialogs/sheets)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isModalOpen && !isModalClosing) {
+          handleCloseModal();
+        } else if (isAuthModalOpen && !isAuthModalClosing) {
+          handleCloseAuthModal();
+        } else if (selectedPlant && !isDetailClosing) {
+          handleCloseDetailPlant();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen, isModalClosing, isAuthModalOpen, isAuthModalClosing, selectedPlant, isDetailClosing, handleCloseModal, handleCloseAuthModal, handleCloseDetailPlant]);
 
   // Register auth state listener & automatic anonymous guest login (Sub-Step 7.1.2)
   useEffect(() => {
@@ -1049,27 +1111,32 @@ export default function App() {
     }
   }, [plants, selectedPlantForScanId]);
 
-  // Modal & Detail Bottom-Sheet ("Pflanzen-Akte") ESC Key listener
+  // Modal & Detail Bottom-Sheet ("Pflanzen-Akte") ESC Key listener with smooth exit animation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (isAuthModalOpen) {
-          triggerHaptic('subtle');
-          setIsAuthModalOpen(false);
-        } else if (selectedPlant) {
-          triggerHaptic('subtle');
-          setSelectedPlant(null);
-        } else if (isModalOpen) {
-          triggerHaptic('subtle');
-          setIsModalOpen(false);
-          setIsSpeciesDropdownOpen(false);
-          setFormError(null);
+        if (isAuthModalOpen && !isAuthModalClosing) {
+          handleCloseAuthModal();
+        } else if (selectedPlant && !isDetailClosing) {
+          handleCloseDetailPlant();
+        } else if (isModalOpen && !isModalClosing) {
+          handleCloseModal();
         }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isAuthModalOpen, isModalOpen, selectedPlant]);
+  }, [
+    isAuthModalOpen,
+    isAuthModalClosing,
+    isModalOpen,
+    isModalClosing,
+    selectedPlant,
+    isDetailClosing,
+    handleCloseAuthModal,
+    handleCloseDetailPlant,
+    handleCloseModal,
+  ]);
 
   // Sub-Step 7.2.3: EINSTELLUNGEN BEIM APP-START / USER-WECHSEL LADEN
   useEffect(() => {
@@ -1515,20 +1582,14 @@ export default function App() {
 
         // 4. TOAST-FEEDBACK & MODAL SCHLIESSEN:
         showToast('🎉 Konto erfolgreich dauerhaft gesichert! Seine Pflanzen sind geschützt.');
-        setIsAuthModalOpen(false);
-        setAuthEmail('');
-        setAuthPassword('');
-        setShowSwitchAccount(false);
+        handleCloseAuthModal();
       } else {
         // 2. STANDARD-LOGIN (Bereits bestehendes Konto oder kein Gast):
         const res = await signInWithPopup(auth, googleProvider);
         await updateUserProfileAfterAuth(res.user);
 
         showToast('👋 Willkommen zurück!');
-        setIsAuthModalOpen(false);
-        setAuthEmail('');
-        setAuthPassword('');
-        setShowSwitchAccount(false);
+        handleCloseAuthModal();
       }
     } catch (error: any) {
       const isExpected = [
@@ -1555,10 +1616,7 @@ export default function App() {
           const res = await signInWithPopup(auth, googleProvider);
           await updateUserProfileAfterAuth(res.user);
           showToast('👋 Willkommen zurück!');
-          setIsAuthModalOpen(false);
-          setAuthEmail('');
-          setAuthPassword('');
-          setShowSwitchAccount(false);
+          handleCloseAuthModal();
           return;
         } catch (fallbackErr: any) {
           console.error('Google fallback login error:', fallbackErr);
@@ -1614,10 +1672,7 @@ export default function App() {
         await updateUserProfileAfterAuth(res.user);
 
         showToast('👋 Willkommen zurück!');
-        setIsAuthModalOpen(false);
-        setAuthEmail('');
-        setAuthPassword('');
-        setShowSwitchAccount(false);
+        handleCloseAuthModal();
       } else {
         // 1. ACCOUNT-LINKING FÜR ANONYME GÄSTE (Tab "Konto erstellen"):
         if (currentUser && currentUser.isAnonymous) {
@@ -1639,10 +1694,7 @@ export default function App() {
 
             // 4. TOAST-FEEDBACK & MODAL SCHLIESSEN:
             showToast('🎉 Konto erfolgreich dauerhaft gesichert! Seine Pflanzen sind geschützt.');
-            setIsAuthModalOpen(false);
-            setAuthEmail('');
-            setAuthPassword('');
-            setShowSwitchAccount(false);
+            handleCloseAuthModal();
           } catch (linkError: any) {
             // 2. ABFANGEN VON 'auth/credential-already-in-use':
             if (
@@ -1655,10 +1707,7 @@ export default function App() {
                 await updateUserProfileAfterAuth(signInRes.user);
 
                 showToast('👋 Willkommen zurück!');
-                setIsAuthModalOpen(false);
-                setAuthEmail('');
-                setAuthPassword('');
-                setShowSwitchAccount(false);
+                handleCloseAuthModal();
                 return;
               } catch (signInErr: any) {
                 setAuthError('Diese E-Mail ist bereits registriert. Bitte melde dich im Tab "Anmelden" mit deinem Passwort an.');
@@ -1685,10 +1734,7 @@ export default function App() {
           await updateUserProfileAfterAuth(res.user);
 
           showToast('🎉 Konto erfolgreich dauerhaft gesichert! Seine Pflanzen sind geschützt.');
-          setIsAuthModalOpen(false);
-          setAuthEmail('');
-          setAuthPassword('');
-          setShowSwitchAccount(false);
+          handleCloseAuthModal();
         }
       }
     } catch (error: any) {
@@ -1753,12 +1799,8 @@ export default function App() {
       await signOut(auth);
       // Toast-Feedback: ("👋 Erfolgreich abgemeldet. Neue Gast-Sitzung gestartet.")
       showToast('👋 Erfolgreich abgemeldet. Neue Gast-Sitzung gestartet.');
-      // Schließe das Profil-Modal automatisch
-      setIsAuthModalOpen(false);
-      setShowSwitchAccount(false);
-      setAuthEmail('');
-      setAuthPassword('');
-      setAuthError(null);
+      // Schließe das Profil-Modal mit sanftem Exit
+      handleCloseAuthModal();
     } catch (error) {
       console.error('Sign out error:', error);
       showToast('Fehler beim Abmelden');
@@ -1778,20 +1820,11 @@ export default function App() {
     setFormError(null);
     setIncompatibilityWarning(null);
     setIsSavedWithWarning(false);
+    setIsModalClosing(false);
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    triggerHaptic('subtle');
-    setIsModalOpen(false);
-    setIsSpeciesDropdownOpen(false);
-    setZipValidation({ status: 'idle' });
-    setFormError(null);
-    setIncompatibilityWarning(null);
-    setIsSavedWithWarning(false);
-  };
-
-  // Gieß-Tracker: Schnell-Aktion "💧 Gegossen" (Mikro-Haptik: subtle)
+  // Gieß-Tracker: Schnell-Aktion "💧 Gegossen" (Mikro-Haptik & Checkmark-Pop)
   const handleWaterPlant = async (plantId: string) => {
     if (!currentUser || !currentUser.uid) {
       showToast('⚠️ Authentifizierung erforderlich');
@@ -1805,6 +1838,11 @@ export default function App() {
         lastWateredAt: serverTimestamp(),
         wateringHistory: arrayUnion(nowTs),
       });
+      triggerHaptic('success');
+      setRecentlyWateredId(plantId);
+      setTimeout(() => {
+        setRecentlyWateredId((current) => (current === plantId ? null : current));
+      }, 2000);
       showToast('Wasserstand aktualisiert');
     } catch (error) {
       console.error('Error watering plant:', error);
@@ -2193,51 +2231,591 @@ export default function App() {
     }
   };
 
-  // Helper for Vitality Score Badge
+  // Helper for Vitality Score Badge (M3 Expressive Botanical Color Roles - Sub-Step 8.1.3)
   const getVitalityBadgeClass = (score: number) => {
-    if (score >= 80) return 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
-    if (score >= 50) return 'bg-amber-500/20 text-amber-300 border border-amber-500/40';
-    return 'bg-red-500/20 text-red-400 border border-red-500/40';
+    if (score >= 80) return 'm3-status-badge m3-status-badge-vital';
+    if (score >= 50) return 'm3-status-badge m3-status-badge-suspicious';
+    return 'm3-status-badge m3-status-badge-alert';
   };
 
-  // Helper for Issue Severity Badge
+  // Helper for Issue Severity Badge (Sub-Step 8.1.3)
   const getSeverityBadge = (severity: string) => {
     const s = severity.toLowerCase();
-    if (s.includes('hoch')) {
+    if (s.includes('hoch') || s.includes('kritisch')) {
       return (
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-red-950/70 text-red-300 border border-red-800/60">
-          <AlertCircle className="w-3 h-3 text-red-400" />
+        <span className="m3-status-badge m3-status-badge-alert">
+          <AlertCircle className="w-3.5 h-3.5 text-[#991B1B]" />
           Kritisch
         </span>
       );
     }
-    if (s.includes('mittel')) {
+    if (s.includes('mittel') || s.includes('verdächtig') || s.includes('schädling')) {
       return (
-        <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-950/70 text-amber-300 border border-amber-800/60">
-          <AlertTriangle className="w-3 h-3 text-amber-400" />
-          Mittel
+        <span className="m3-status-badge m3-status-badge-suspicious">
+          <AlertTriangle className="w-3.5 h-3.5 text-[#9A3412]" />
+          Verdächtig
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 border border-emerald-800/60">
-        <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-        Kein Befall
+      <span className="m3-status-badge m3-status-badge-vital">
+        <CheckCircle2 className="w-3.5 h-3.5 text-[#065F46]" />
+        Vital / Befallsfrei
       </span>
     );
   };
 
-  // Render-Schutz während des Auth-Ladens (Sub-Step 7.1.1):
-  // Elegantes M3-Loading-Screen
+  // Sub-Step 8.6.1: Reusable Plant Detail Dossier for Canonical Dual-Pane (Desktop) & Bottom-Sheet (Mobile)
+  const renderPlantDetailDossier = (plant: PlantDoc, isDualPane: boolean = false) => {
+    const cleanZip = plant.zipCode.trim();
+    const weather = weatherMap[cleanZip];
+    const temp = weather?.temperature ?? 12;
+    const dormancy = getDormancyStatus(plant.species, temp);
+    const guarantee = getCareGuarantee(plant.species);
+    const specs = getSpeciesDetails(plant.species);
+    const companion = getCompanionPlantGuide(plant.species);
+    const watering = getWateringStatus(plant.lastWateredAt);
+
+    const rawWaterHistory = Array.isArray(plant.wateringHistory)
+      ? plant.wateringHistory
+      : plant.lastWateredAt
+      ? [plant.lastWateredAt]
+      : [];
+
+    const combinedScans: PlantScanRecord[] = [
+      ...(Array.isArray(plant.scans) ? plant.scans : []),
+      ...(Array.isArray(plant.diagnosisHistory)
+        ? plant.diagnosisHistory.map((d) => ({
+            timestamp: d.diagnosedAt,
+            vitalityScore: d.score,
+            diagnosisSummary: d.summary,
+            immediateAction: '',
+          }))
+        : []),
+    ];
+
+    const sortedScans = [...combinedScans].sort((a, b) => {
+      const getMs = (t: any) =>
+        typeof t?.toMillis === 'function'
+          ? t.toMillis()
+          : typeof t?.seconds === 'number'
+          ? t.seconds * 1000
+          : typeof t === 'string'
+          ? new Date(t).getTime()
+          : 0;
+      return getMs(b.timestamp) - getMs(a.timestamp);
+    });
+
+    const hasHistory = rawWaterHistory.length > 0 || sortedScans.length > 0;
+
+    return (
+      <div className="space-y-4 text-[var(--md-sys-color-on-surface)]">
+        {/* Header: Pflanzenname, Botanischer Name, PLZ und aktuelles Wetter */}
+        <div className="pb-3.5 border-b border-[var(--md-sys-color-outline-variant)]">
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-12 h-12 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0 shadow-sm">
+                <SpeciesIcon species={plant.species} className="w-7 h-7 stroke-[1.8]" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold text-lg text-[var(--md-sys-color-on-surface)] truncate leading-tight">
+                    {plant.name}
+                  </h3>
+                  <span className="text-[10px] font-mono uppercase bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface-variant)] border border-[var(--md-sys-color-outline-variant)] px-2 py-0.5 rounded-full shrink-0">
+                    Akte
+                  </span>
+                </div>
+                <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] italic truncate mt-0.5">
+                  {plant.species}
+                </p>
+              </div>
+            </div>
+
+            {/* If not in Dual-Pane (e.g. mobile modal), provide close button */}
+            {!isDualPane && (
+              <button
+                type="button"
+                onClick={handleCloseDetailPlant}
+                className="text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] p-2 rounded-xl hover:bg-[var(--md-sys-color-surface-container-high)] transition-colors cursor-pointer shrink-0"
+                aria-label="Pflanzen-Akte schließen (ESC)"
+                title="Schließen (ESC)"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            )}
+          </div>
+
+          {/* Standort & Aktuelles Wetter Badge Bar */}
+          <div className="mt-3 flex flex-wrap items-center gap-1.5">
+            <span className="inline-flex items-center gap-1.5 text-xs text-[var(--md-sys-color-on-surface)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-3 py-1 rounded-full font-mono">
+              <MapPin className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)] shrink-0" />
+              <span>{weather?.cityName ? `${cleanZip} ${weather.cityName}` : `PLZ ${cleanZip}`}</span>
+            </span>
+
+            {!weather || weather.loading ? (
+              <span className="w-20 h-6 bg-[var(--md-sys-color-surface-container-highest)] animate-pulse rounded-full inline-block" />
+            ) : (
+              <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-3 py-1 rounded-full">
+                <CloudSun className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)] shrink-0" />
+                <span>{temp.toFixed(1)}°C</span>
+              </span>
+            )}
+
+            <span className={dormancy.badgeClass}>
+              <span>{dormancy.badgeLabel}</span>
+            </span>
+
+            {substrateRinseReminder && (
+              <span
+                className={`m3-status-badge ${
+                  getSubstrateRinseDays(plant.createdAt, plant.id) <= 3
+                    ? 'm3-status-badge-alert'
+                    : 'bg-[var(--md-sys-color-surface-container-lowest)] text-[var(--md-sys-color-on-surface-variant)] border border-[var(--md-sys-color-outline-variant)]'
+                }`}
+              >
+                {getSubstrateRinseDays(plant.createdAt, plant.id) <= 3
+                  ? '💧 Spülen erforderlich'
+                  : `🚿 Substratspülung in ${getSubstrateRinseDays(plant.createdAt, plant.id)} ${getSubstrateRinseDays(plant.createdAt, plant.id) === 1 ? 'Tag' : 'Tagen'}`}
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Botanische Pflegesteckbrief-Garantie */}
+        <div className="bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-lg bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0">
+              <ShieldCheck className="w-4 h-4" />
+            </div>
+            <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] tracking-wide uppercase">
+              Botanische Pflegesteckbrief-Garantie
+            </h4>
+          </div>
+
+          <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-xl p-3">
+            <p className="text-xs text-[var(--md-sys-color-primary)] font-mono leading-relaxed select-all">
+              {guarantee.guaranteeText}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+            <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-xl p-2.5">
+              <p className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-medium uppercase mb-0.5">Sonne</p>
+              <p className="text-[var(--md-sys-color-on-surface)] font-medium">{guarantee.sun}</p>
+            </div>
+            <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-xl p-2.5">
+              <p className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-medium uppercase mb-0.5">Wasser</p>
+              <p className="text-[var(--md-sys-color-on-surface)] font-medium">{guarantee.water}</p>
+            </div>
+            <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-xl p-2.5">
+              <p className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-medium uppercase mb-0.5">Substrat</p>
+              <p className="text-[var(--md-sys-color-on-surface)] font-medium">{guarantee.substrate}</p>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-relaxed border-t border-[var(--md-sys-color-outline-variant)] pt-2.5">
+            <strong className="text-[var(--md-sys-color-on-surface)]">{specs.trapName}:</strong> {specs.trapDetail}
+          </p>
+        </div>
+
+        {/* Verträgliche Nachbarn */}
+        <div className="bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0">
+                <Users className="w-3.5 h-3.5" />
+              </div>
+              <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] tracking-wide uppercase">
+                Verträgliche Nachbarn
+              </h4>
+            </div>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface-variant)]">
+              {companion.headline}
+            </span>
+          </div>
+
+          <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-xl p-3 space-y-2">
+            <p className="text-xs font-medium text-[var(--md-sys-color-primary)] leading-relaxed">
+              {companion.recommendation}
+            </p>
+            {companion.warningNote && (
+              <p className="text-[11px] text-[var(--md-sys-color-tertiary)] border-t border-[var(--md-sys-color-outline-variant)] pt-2 leading-snug flex items-start gap-1.5">
+                <span className="shrink-0 text-xs">⚠️</span>
+                <span>{companion.warningNote}</span>
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Gieß-Aktion & Anstau-Status */}
+        <div className="bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3">
+          <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-[var(--md-sys-color-secondary-container)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0">
+                <Droplets className="w-3.5 h-3.5" />
+              </div>
+              <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] tracking-wide uppercase">
+                Wasserstand & Anstau
+              </h4>
+            </div>
+            <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border ${watering.badgeClass}`}>
+              <span className={`w-1.5 h-1.5 rounded-full ${watering.dotClass}`} />
+              <span>{watering.label}</span>
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => handleWaterPlant(plant.id)}
+            disabled={isWateringId === plant.id}
+            className="w-full py-2.5 m3-btn-tonal m3-btn-morph m3-state-layer bg-[var(--md-sys-color-surface-container)] hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-primary)] border border-[var(--md-sys-color-outline-variant)] font-semibold rounded-full text-xs transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+          >
+            {isWateringId === plant.id ? (
+              <>
+                <M3ShapeLoader size={14} color="var(--md-sys-color-primary)" />
+                <span>Wird in Historie gespeichert...</span>
+              </>
+            ) : recentlyWateredId === plant.id ? (
+              <>
+                <Check className="w-4 h-4 text-[var(--md-sys-color-primary)] m3-checkmark-pop" />
+                <span>Heute gegossen erfasst ✓</span>
+              </>
+            ) : (
+              <>
+                <Droplets className="w-3.5 h-3.5" />
+                <span>Als heute gegossen erfassen (+ Historien-Eintrag)</span>
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Historie */}
+        <div className="bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3.5">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0">
+                <History className="w-3.5 h-3.5" />
+              </div>
+              <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] tracking-wide uppercase">
+                Historie
+              </h4>
+            </div>
+            <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] font-mono">
+              {rawWaterHistory.length} Gieß-Einträge • {sortedScans.length} Diagnosen
+            </span>
+          </div>
+
+          {!hasHistory ? (
+            <div className="text-center py-5 bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-xl px-4">
+              <Clock className="w-6 h-6 text-[var(--md-sys-color-outline)] mx-auto mb-2" />
+              <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] font-medium">
+                Noch keine Einträge in dieser Akte.
+              </p>
+              <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]/80 mt-1">
+                Erfasse oben den ersten Gießvorgang oder starte einen Scan mit Gemini Vision.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {/* Gieß-Zeitpunkte */}
+              {rawWaterHistory.length > 0 && (
+                <div>
+                  <p className="text-[11px] font-semibold text-[var(--md-sys-color-primary)] mb-2 flex items-center gap-1.5">
+                    <Droplets className="w-3 h-3" />
+                    <span>Bisherige Gieß-Zeitpunkte ({rawWaterHistory.length})</span>
+                  </p>
+                  <div className="space-y-1.5 max-h-36 overflow-y-auto pr-1">
+                    {rawWaterHistory.map((ts, idx) => (
+                      <div
+                        key={`water-${idx}`}
+                        className="flex items-center justify-between text-xs bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] px-3 py-2 rounded-xl"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--md-sys-color-primary)] shrink-0" />
+                          <span className="text-[var(--md-sys-color-on-surface)] font-medium">
+                            {formatHistoryTimestamp(ts)}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-mono">
+                          Anstau aufgefüllt
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* KI-Diagnosen & Scans */}
+              {sortedScans.length > 0 && (
+                <div className={rawWaterHistory.length > 0 ? 'pt-3 border-t border-[var(--md-sys-color-outline-variant)]' : ''}>
+                  <p className="text-[11px] font-semibold text-[var(--md-sys-color-primary)] mb-2 flex items-center gap-1.5">
+                    <Sparkles className="w-3 h-3" />
+                    <span>Zugewiesene KI-Diagnosen ({sortedScans.length})</span>
+                  </p>
+                  <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                    {sortedScans.map((diag, idx) => (
+                      <div
+                        key={`diag-${idx}`}
+                        className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] p-3 rounded-xl space-y-1.5"
+                      >
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs text-[var(--md-sys-color-on-surface)] font-medium">
+                            {formatHistoryTimestamp(diag.timestamp)}
+                          </span>
+                          <span className={getVitalityBadgeClass(diag.vitalityScore)}>
+                            {diag.vitalityScore}% Vitalität
+                          </span>
+                        </div>
+                        <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] leading-relaxed">
+                          {diag.diagnosisSummary}
+                        </p>
+                        {diag.immediateAction && (
+                          <div className="pt-1.5 border-t border-[var(--md-sys-color-outline-variant)] flex items-start gap-1.5 text-[11px] text-[var(--md-sys-color-primary)]">
+                            <CheckCircle2 className="w-3 h-3 text-[var(--md-sys-color-primary)] mt-0.5 shrink-0" />
+                            <span>{diag.immediateAction}</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Actions Footer */}
+        <div className="flex items-center justify-between pt-3 border-t border-[var(--md-sys-color-outline-variant)] mt-2">
+          <button
+            type="button"
+            onClick={() => {
+              triggerHaptic('warning');
+              const id = plant.id;
+              const name = plant.name;
+              handleCloseDetailPlant();
+              handleDeletePlant(id, name);
+            }}
+            className="px-3.5 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Pflanze entfernen</span>
+          </button>
+
+          {!isDualPane && (
+            <button
+              type="button"
+              onClick={handleCloseDetailPlant}
+              className="px-5 py-2.5 text-xs m3-btn-primary m3-btn-morph bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-full transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+            >
+              <span>Akte schließen</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Sub-Step 8.6.1: Helper to render an individual plant card
+  const renderPlantCard = (plant: PlantDoc, isDualPaneList: boolean = false) => {
+    const cleanZip = plant.zipCode.trim();
+    const weather = weatherMap[cleanZip];
+    const temp = weather?.temperature ?? 12;
+    const dormancy = getDormancyStatus(plant.species, temp);
+    const watering = getWateringStatus(plant.lastWateredAt);
+    const isConfirmingDelete = confirmDeleteId === plant.id;
+    const isSelected = selectedPlant?.id === plant.id;
+
+    return (
+      <article
+        key={plant.id}
+        tabIndex={0}
+        role="button"
+        aria-label={`Pflanzen-Akte öffnen für ${plant.name}`}
+        aria-selected={isSelected}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            triggerHaptic('subtle');
+            setIsDetailClosing(false);
+            setSelectedPlant(plant);
+          }
+        }}
+        onClick={() => {
+          triggerHaptic('subtle');
+          setIsDetailClosing(false);
+          setSelectedPlant(plant);
+        }}
+        className={`group relative m3-plant-card rounded-[28px] p-4 transition-all duration-200 ease-out border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:border-[var(--md-sys-color-primary)] hover:shadow-[0_4px_20px_-2px_rgba(2,67,46,0.08)] flex flex-col gap-3 cursor-pointer active:scale-[0.99] select-none ${
+          isSelected ? 'is-active border-[var(--md-sys-color-primary)] ring-2 ring-[var(--md-sys-color-primary)]/30 shadow-md bg-[var(--md-sys-color-surface-container-high)]' : ''
+        }`}
+      >
+        {/* Upper Section */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="w-12 h-12 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0 group-hover:scale-105 transition-all select-none shadow-none">
+            <SpeciesIcon species={plant.species} className="w-6 h-6 stroke-[1.8]" />
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="font-bold text-base text-[var(--md-sys-color-on-surface)] truncate tracking-tight group-hover:text-[var(--md-sys-color-primary)] transition-colors">
+                {plant.name}
+              </h3>
+
+              <div className="shrink-0 flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                <span className={dormancy.badgeClass} aria-label={`Zustand: ${dormancy.badgeLabel}`}>
+                  <span>{dormancy.badgeLabel}</span>
+                </span>
+
+                {isConfirmingDelete ? (
+                  <div className="flex items-center gap-1 animate-in fade-in duration-150 p-1 rounded-xl bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)]">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        triggerHaptic('subtle');
+                        setConfirmDeleteId(null);
+                        handleDeletePlant(plant.id, plant.name);
+                      }}
+                      className="px-2 py-1 text-[10px] font-semibold text-[#991B1B] bg-[#FEE2E2] border border-[#991B1B]/30 rounded-lg hover:bg-red-200 transition-colors cursor-pointer"
+                      title="Endgültig löschen"
+                    >
+                      Löschen?
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        triggerHaptic('subtle');
+                        setConfirmDeleteId(null);
+                      }}
+                      className="p-1 text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] rounded-lg cursor-pointer"
+                      title="Abbrechen"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      triggerHaptic('warning');
+                      setConfirmDeleteId(plant.id);
+                    }}
+                    aria-label={`Pflanze ${plant.name} entfernen`}
+                    className="text-[var(--md-sys-color-outline)] hover:text-red-600 transition-colors p-1.5 rounded-xl cursor-pointer active:scale-90"
+                    title="Pflanze entfernen"
+                  >
+                    <Trash2 className="w-4 h-4 stroke-[1.8]" />
+                  </button>
+                )}
+              </div>
+            </div>
+            
+            <p className="text-xs italic text-[var(--md-sys-color-on-surface-variant)] tracking-wide truncate mt-0.5">
+              {plant.species}
+            </p>
+
+            <div className="flex flex-wrap items-center gap-1.5 mt-2">
+              {watering.days > 7 && (
+                <span className="m3-status-badge m3-status-badge-alert" title="Anstauwasser ist aufgebraucht">
+                  💧 Wasser auffüllen
+                </span>
+              )}
+
+              {substrateRinseReminder && (
+                <span
+                  className={`m3-status-badge ${
+                    getSubstrateRinseDays(plant.createdAt, plant.id) <= 3
+                      ? 'm3-status-badge-alert'
+                      : 'bg-[var(--md-sys-color-surface-container-lowest)] text-[var(--md-sys-color-on-surface-variant)] border border-[var(--md-sys-color-outline-variant)]'
+                  }`}
+                  title="Substrat-Spülung zur Vermeidung von Kalk- & Mineralanreicherung"
+                >
+                  {getSubstrateRinseDays(plant.createdAt, plant.id) <= 3
+                    ? '💧 Spülen erforderlich'
+                    : `🚿 Spülung in ${getSubstrateRinseDays(plant.createdAt, plant.id)} ${getSubstrateRinseDays(plant.createdAt, plant.id) === 1 ? 'Tag' : 'Tagen'}`}
+                </span>
+              )}
+
+              {!weather || weather.loading ? (
+                <span
+                  className="w-16 h-5 bg-[var(--md-sys-color-surface-container-highest)] animate-pulse rounded-full inline-block"
+                  title="Lade Temperatur..."
+                />
+              ) : typeof weather.temperature === 'number' ? (
+                <span
+                  className="inline-flex items-center gap-1 text-[11px] text-[var(--md-sys-color-on-surface)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-2.5 py-0.5 rounded-full font-mono font-medium"
+                  title={`${weather.cityName ? weather.cityName + ', ' : ''}PLZ ${cleanZip}`}
+                >
+                  <MapPin className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />
+                  <span>
+                    {weather.cityName ? `${weather.cityName} • ` : ''}
+                    {weather.temperature.toFixed(1)}°C
+                  </span>
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 text-[11px] text-[var(--md-sys-color-on-surface-variant)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-2.5 py-0.5 rounded-full font-mono">
+                  <MapPin className="w-3.5 h-3.5 text-[var(--md-sys-color-outline)]" />
+                  <span>{cleanZip}</span>
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Bar: Status-Vorschau & Klick-Aufforderung mit Gieß-Button */}
+        <div className="pt-2.5 border-t border-[var(--md-sys-color-outline-variant)] flex items-center justify-between text-[11px] text-[var(--md-sys-color-on-surface-variant)] transition-colors">
+          <span className="flex items-center gap-1.5">
+            <span className={`w-1.5 h-1.5 rounded-full ${watering.dotClass}`} />
+            <span className="truncate">
+              {watering.days <= 3 ? 'Anstau optimal' : watering.days <= 7 ? 'Wasserstand prüfen' : 'Anstau auffüllen'}
+            </span>
+          </span>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleWaterPlant(plant.id);
+              }}
+              disabled={isWateringId === plant.id}
+              className="m3-btn-morph m3-state-layer inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--md-sys-color-surface-container-lowest)] hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-primary)] border border-[var(--md-sys-color-outline-variant)] text-[10px] font-medium transition-all disabled:opacity-50 cursor-pointer"
+              title="Schnell als heute gegossen markieren"
+            >
+              {isWateringId === plant.id ? (
+                <M3ShapeLoader size={12} color="var(--md-sys-color-primary)" />
+              ) : recentlyWateredId === plant.id ? (
+                <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)] m3-checkmark-pop" />
+              ) : (
+                <Droplets className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />
+              )}
+              <span>
+                {isWateringId === plant.id
+                  ? 'Speichert...'
+                  : recentlyWateredId === plant.id
+                  ? 'Gegossen ✓'
+                  : 'Gegossen'}
+              </span>
+            </button>
+
+            <span className="flex items-center gap-0.5 text-[var(--md-sys-color-primary)] font-semibold group-hover:translate-x-0.5 transition-transform">
+              <span>Akte</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </span>
+          </div>
+        </div>
+      </article>
+    );
+  };
+
+  // Render-Schutz während des Auth-Ladens (Sub-Step 8.4.1):
+  // Elegantes M3-Loading-Screen mit Contained Shape Loader
   if (isAuthLoading) {
     return (
       <div className="min-h-screen bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-primary)] flex flex-col items-center justify-center p-6 selection:bg-[var(--md-sys-color-primary)] selection:text-white font-sans">
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="relative flex items-center justify-center">
-            <div className="absolute w-20 h-20 rounded-full bg-[var(--md-sys-color-primary-container)] animate-ping" />
-            <div className="w-16 h-16 rounded-[28px] bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-3xl relative z-10 animate-pulse">
-              🪴
-            </div>
+            <M3ShapeLoader size={48} contained={true} color="var(--md-sys-color-primary)" />
           </div>
           <div className="space-y-1">
             <h1 className="text-base font-bold tracking-tight text-[var(--md-sys-color-on-surface)] flex items-center justify-center gap-2">
@@ -2254,14 +2832,126 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-on-surface)] selection:bg-[var(--md-sys-color-primary)] selection:text-white pb-28 font-sans">
-      {/* Centered Mobile-First Frame in M3 Light Surface */}
-      <div className="max-w-md mx-auto min-h-screen flex flex-col bg-[var(--md-sys-color-surface)] border-x border-[var(--md-sys-color-outline-variant)] relative">
+    <div className="m3-app-scaffold min-h-screen bg-[var(--md-sys-color-surface)] text-[var(--md-sys-color-on-surface)] selection:bg-[var(--md-sys-color-primary)] selection:text-white font-sans flex flex-col">
+      
+      {/* ========================================================
+          SUB-STEP 8.6.1: M3 NAVIGATION RAIL (>= 600px Screens)
+         ======================================================== */}
+      <aside
+        aria-label="Hauptnavigation"
+        className="m3-navigation-rail fixed left-0 top-0 bottom-0 h-screen w-20 z-40 bg-[var(--md-sys-color-surface-container-high)] border-r border-[var(--md-sys-color-outline-variant)] flex flex-col items-center justify-between py-5 select-none"
+      >
+        {/* Top: Logo & FAB */}
+        <div className="flex flex-col items-center gap-5 w-full">
+          <div
+            className="w-11 h-11 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-xl shadow-xs cursor-pointer hover:scale-105 transition-transform"
+            title="Carnivora Care"
+            onClick={() => {
+              triggerHaptic('subtle');
+              setActiveTab('plants');
+            }}
+          >
+            🪴
+          </div>
+
+          <button
+            type="button"
+            onClick={handleOpenModal}
+            aria-label="Neue Pflanze hinzufügen"
+            title="Neue Pflanze hinzufügen"
+            className="w-12 h-12 rounded-2xl m3-btn-primary m3-btn-morph flex items-center justify-center bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold cursor-pointer shadow-sm active:scale-95 transition-transform"
+          >
+            <Plus className="w-5 h-5 stroke-[2.25]" />
+          </button>
+        </div>
+
+        {/* Center: Navigation Destinations */}
+        <nav className="flex flex-col items-center gap-2 w-full">
+          <button
+            type="button"
+            onClick={() => {
+              triggerHaptic('subtle');
+              setActiveTab('plants');
+            }}
+            title="Meine Pflanzen"
+            aria-label="Meine Pflanzen"
+            aria-current={activeTab === 'plants' ? 'page' : undefined}
+            className={`m3-nav-rail-item ${activeTab === 'plants' ? 'is-active' : ''}`}
+          >
+            <div className="m3-nav-rail-indicator">
+              <Layers className={`w-5 h-5 ${activeTab === 'plants' ? 'stroke-[2.25] text-[var(--md-sys-color-on-primary-container)]' : 'stroke-[1.75]'}`} />
+            </div>
+            <span className="text-[11px] font-medium leading-none">Pflanzen</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              triggerHaptic('subtle');
+              setActiveTab('scanner');
+            }}
+            title="KI-Scanner"
+            aria-label="KI-Scanner"
+            aria-current={activeTab === 'scanner' ? 'page' : undefined}
+            className={`m3-nav-rail-item ${activeTab === 'scanner' ? 'is-active' : ''}`}
+          >
+            <div className="m3-nav-rail-indicator">
+              <Camera className={`w-5 h-5 ${activeTab === 'scanner' ? 'stroke-[2.25] text-[var(--md-sys-color-on-primary-container)]' : 'stroke-[1.75]'}`} />
+            </div>
+            <span className="text-[11px] font-medium leading-none">Scanner</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              triggerHaptic('subtle');
+              setActiveTab('settings');
+            }}
+            title="Rechner & Tools"
+            aria-label="Rechner & Tools"
+            aria-current={activeTab === 'settings' ? 'page' : undefined}
+            className={`m3-nav-rail-item ${activeTab === 'settings' ? 'is-active' : ''}`}
+          >
+            <div className="m3-nav-rail-indicator">
+              <Settings className={`w-5 h-5 ${activeTab === 'settings' ? 'stroke-[2.25] text-[var(--md-sys-color-on-primary-container)]' : 'stroke-[1.75]'}`} />
+            </div>
+            <span className="text-[11px] font-medium leading-none">Tools</span>
+          </button>
+        </nav>
+
+        {/* Bottom: Auth / User Profile */}
+        <div className="flex flex-col items-center gap-2">
+          {currentUser && (
+            <button
+              type="button"
+              onClick={() => {
+                triggerHaptic('subtle');
+                if (!currentUser.isAnonymous) setShowSwitchAccount(false);
+                setIsAuthModalOpen(true);
+              }}
+              title={currentUser.isAnonymous ? 'Gast-Sitzung' : (currentUser.email || 'Stamm-User')}
+              aria-label="Benutzerkonto"
+              className="w-10 h-10 rounded-full flex items-center justify-center bg-[var(--md-sys-color-surface-container-highest)] hover:bg-[var(--md-sys-color-surface-container-high)] border border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface-variant)] transition-all cursor-pointer"
+            >
+              {currentUser.isAnonymous ? (
+                <UserIcon className="w-4 h-4" />
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] font-bold text-xs flex items-center justify-center">
+                  {(currentUser.displayName || currentUser.email || 'U')[0].toUpperCase()}
+                </div>
+              )}
+            </button>
+          )}
+        </div>
+      </aside>
+
+      {/* Adaptive Application Frame (Centered on Mobile, Full-Width Max-7xl on Tablet/Desktop) */}
+      <div className="w-full max-w-7xl mx-auto min-h-screen flex flex-col relative">
         
         {/* ========================================================
             HEADER (Fixed at top - Ebene 2: M3 Surface-Container-High & Ambient Shadow)
            ======================================================== */}
-        <header className="sticky top-0 z-30 bg-[var(--md-sys-color-surface-container-high)]/95 backdrop-blur-md border-b border-[var(--md-sys-color-outline-variant)] shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)] px-4 py-3.5 flex items-center justify-between">
+        <header className="sticky top-0 z-30 bg-[var(--md-sys-color-surface-container-high)]/95 backdrop-blur-md border-b border-[var(--md-sys-color-outline-variant)] shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)] px-4 sm:px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center space-x-3 min-w-0">
             <div className="w-9 h-9 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-lg select-none shrink-0 shadow-none">
               🪴
@@ -2319,7 +3009,7 @@ export default function App() {
             type="button"
             onClick={handleOpenModal}
             aria-label="Neue Pflanze hinzufügen"
-            className="w-9 h-9 rounded-xl flex items-center justify-center bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold transition-all cursor-pointer active:scale-95 focus:outline-none shrink-0 ml-2"
+            className="w-9 h-9 rounded-full m3-btn-primary m3-btn-morph flex items-center justify-center bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold cursor-pointer shrink-0 ml-2 shadow-sm"
           >
             <Plus className="w-4 h-4 stroke-[2.25]" />
           </button>
@@ -2335,8 +3025,8 @@ export default function App() {
           </div>
         )}
 
-        {/* Main Content Area mit sicherem Scroll-Abstand nach unten */}
-        <main className="flex-1 p-4 pb-28">
+        {/* Main Content Area mit adaptivem Padding (Mobil: 96px Bottom Space, Desktop: 24px) */}
+        <main className="m3-app-scaffold-main flex-1 p-4 sm:p-6 max-w-7xl w-full mx-auto">
           {/* ========================================================
               TAB 1: DASHBOARD ("Meine Pflanzen")
              ======================================================== */}
@@ -2380,15 +3070,15 @@ export default function App() {
               {/* Header Meta Bar */}
               <div className="flex items-center justify-between px-1">
                 <div>
-                  <h2 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
+                  <h2 className="text-sm font-bold text-[var(--md-sys-color-on-surface)] tracking-tight flex items-center gap-2">
                     <span>Meine Pflanzen</span>
                     {!isLoading && (
-                      <span className="text-[11px] bg-zinc-900 text-zinc-300 border border-zinc-800 px-2 py-0.5 rounded-full font-mono">
+                      <span className="text-[11px] bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)] px-2 py-0.5 rounded-full font-mono">
                         {plants.length}
                       </span>
                     )}
                   </h2>
-                  <p className="text-[11px] text-zinc-500">
+                  <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
                     Live-Klimadaten & automatische Dormanz-Auswertung
                   </p>
                 </div>
@@ -2402,7 +3092,8 @@ export default function App() {
                       showToast('Wetterdaten werden aktualisiert...');
                     }}
                     title="Wetterdaten neu abrufen"
-                    className="p-1.5 rounded-lg text-zinc-500 hover:text-emerald-400 bg-zinc-950 border border-zinc-900 hover:border-zinc-800 transition-colors cursor-pointer"
+                    aria-label="Wetterdaten neu abrufen"
+                    className="p-1.5 rounded-xl text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] hover:border-[var(--md-sys-color-primary)] transition-colors cursor-pointer"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                   </button>
@@ -2411,184 +3102,63 @@ export default function App() {
 
               {/* Strukturelle Skeleton-Platzhalter beim initialen Firestore Laden */}
               {isLoading ? (
-                <div className="space-y-3" role="status" aria-label="Lade Pflanzen...">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 w-full min-h-[200px]" role="status" aria-label="Lade Pflanzen...">
                   <PlantCardSkeleton />
                   <PlantCardSkeleton />
                   <PlantCardSkeleton />
                   <span className="sr-only">Lade Pflanzen...</span>
                 </div>
               ) : plants.length > 0 ? (
-                /* Pflanzenkarten im M3 Expressive Light Mode (Ebene 1: Radius 28px, Tonal Elevation & 200ms ease-out Lift) */
-                <div className="space-y-3">
-                  {plants.map((plant) => {
-                    const cleanZip = plant.zipCode.trim();
-                    const weather = weatherMap[cleanZip];
-                    const temp = weather?.temperature ?? 12;
-                    const dormancy = getDormancyStatus(plant.species, temp);
-                    const watering = getWateringStatus(plant.lastWateredAt);
-                    const isConfirmingDelete = confirmDeleteId === plant.id;
+                <div className="w-full flex-1 min-h-[200px]" role="region" aria-label="Pflanzenübersicht">
+                  {/* COMPACT & MEDIUM (< 840px): 1-Spalte Mobile / 2-Spalten Tablet Grid */}
+                  <div className="block min-[840px]:hidden">
+                    <div className="grid grid-cols-1 min-[600px]:grid-cols-2 gap-3.5">
+                      {plants.map((plant) => renderPlantCard(plant))}
+                    </div>
+                  </div>
 
-                    return (
-                      <article
-                        key={plant.id}
-                        onClick={() => {
-                          triggerHaptic('subtle');
-                          setSelectedPlant(plant);
-                        }}
-                        className="group relative m3-plant-card rounded-[28px] p-4 transition-all duration-200 ease-out border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:border-[var(--md-sys-color-primary)]/40 hover:shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)] flex flex-col gap-3 cursor-pointer active:scale-[0.99]"
-                      >
-                        {/* Upper Section */}
-                        <div className="flex items-start justify-between gap-3">
-                          {/* Eingebettete Sub-Kachel: Reinweiß (surface-container-lowest #FFFFFF) */}
-                          <div className="w-12 h-12 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0 group-hover:scale-105 transition-all select-none shadow-none">
-                            <SpeciesIcon species={plant.species} className="w-6 h-6 stroke-[1.8]" />
+                  {/* EXPANDED (>= 840px): Canonical List-Detail Dual-Pane */}
+                  <div className="hidden min-[840px]:grid min-[840px]:grid-cols-[380px_1fr] gap-6 items-start">
+                    {/* Linke Spalte: Interaktive Pflanzenliste */}
+                    <div className="flex flex-col gap-3 max-h-[calc(100vh-140px)] overflow-y-auto pr-1">
+                      <div className="flex items-center justify-between px-1 mb-1">
+                        <span className="text-xs font-semibold text-[var(--md-sys-color-on-surface-variant)] uppercase tracking-wider">
+                          Pflanzenbestand ({plants.length})
+                        </span>
+                        <span className="text-[10px] text-[var(--md-sys-color-primary)] font-mono">
+                          M3 Canonical Pane
+                        </span>
+                      </div>
+                      {plants.map((plant) => renderPlantCard(plant))}
+                    </div>
+
+                    {/* Rechte Spalte: Vollständiges Pflanzen-Detail Dossier oder Empty Placeholder */}
+                    <div className="sticky top-20 bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 shadow-sm min-h-[480px] max-h-[calc(100vh-140px)] overflow-y-auto">
+                      {activeDetailPlant ? (
+                        renderPlantDetailDossier(activeDetailPlant, true)
+                      ) : (
+                        <div className="h-full min-h-[400px] flex flex-col items-center justify-center text-center p-8">
+                          <div className="w-16 h-16 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] mb-4">
+                            <Leaf className="w-8 h-8 stroke-[1.5]" />
                           </div>
-
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between gap-2">
-                              <h3 className="font-bold text-base text-[var(--md-sys-color-on-surface)] truncate tracking-tight group-hover:text-[var(--md-sys-color-primary)] transition-colors">
-                                {plant.name}
-                              </h3>
-
-                              {/* Lösch-Bestätigung (Ebene 3: Dialog-Popup mit StopPropagation) */}
-                              <div className="shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
-                                {isConfirmingDelete ? (
-                                  <div className="flex items-center gap-1 animate-in fade-in duration-150 p-1 rounded-xl bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)]">
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        triggerHaptic('subtle');
-                                        setConfirmDeleteId(null);
-                                        handleDeletePlant(plant.id, plant.name);
-                                      }}
-                                      className="px-2 py-1 text-[10px] font-semibold text-red-700 bg-red-100 border border-red-300 rounded-lg hover:bg-red-200 transition-colors cursor-pointer"
-                                      title="Endgültig löschen"
-                                    >
-                                      Löschen?
-                                    </button>
-                                    <button
-                                      type="button"
-                                      onClick={() => {
-                                        triggerHaptic('subtle');
-                                        setConfirmDeleteId(null);
-                                      }}
-                                      className="p-1 text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] rounded-lg cursor-pointer"
-                                      title="Abbrechen"
-                                    >
-                                      <X className="w-3.5 h-3.5" />
-                                    </button>
-                                  </div>
-                                ) : (
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      triggerHaptic('warning');
-                                      setConfirmDeleteId(plant.id);
-                                    }}
-                                    aria-label={`Pflanze ${plant.name} entfernen`}
-                                    className="text-[var(--md-sys-color-outline)] hover:text-red-600 transition-colors p-1.5 rounded-xl cursor-pointer active:scale-90"
-                                    title="Pflanze entfernen"
-                                  >
-                                    <Trash2 className="w-4 h-4 stroke-[1.8]" />
-                                  </button>
-                                )}
-                              </div>
-                            </div>
-                            
-                            <p className="text-xs italic text-[var(--md-sys-color-on-surface-variant)] tracking-wide truncate mt-0.5">
-                              {plant.species}
-                            </p>
-
-                            {/* Status-Badges in aufgeräumter Zeile */}
-                            <div className="flex flex-wrap items-center gap-2 mt-2">
-                              <span
-                                className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full font-medium ${dormancy.badgeClass}`}
-                              >
-                                <span className={`shrink-0 ${dormancy.dotClass}`} />
-                                <span>{dormancy.badgeLabel}</span>
-                              </span>
-
-                              {/* Skeleton-Balken bei Ladevorgang der Wetterdaten */}
-                              {!weather || weather.loading ? (
-                                <span
-                                  className="w-16 h-4 bg-[var(--md-sys-color-surface-container-highest)] animate-pulse rounded inline-block"
-                                  title="Lade Temperatur..."
-                                />
-                              ) : typeof weather.temperature === 'number' ? (
-                                /* Eingebettete Sub-Kachel: Reinweiß (surface-container-lowest #FFFFFF) */
-                                <span
-                                  className="inline-flex items-center gap-1 text-[11px] text-[var(--md-sys-color-on-surface)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-2.5 py-0.5 rounded-full font-mono"
-                                  title={`${weather.cityName ? weather.cityName + ', ' : ''}PLZ ${cleanZip}`}
-                                >
-                                  <MapPin className="w-3 h-3 text-[var(--md-sys-color-primary)]" />
-                                  <span>
-                                    {weather.cityName ? `${weather.cityName} • ` : ''}
-                                    {weather.temperature.toFixed(1)}°C
-                                  </span>
-                                </span>
-                              ) : (
-                                <span className="inline-flex items-center gap-1 text-[11px] text-[var(--md-sys-color-on-surface-variant)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-2.5 py-0.5 rounded-full font-mono">
-                                  <MapPin className="w-3 h-3 text-[var(--md-sys-color-outline)]" />
-                                  <span>{cleanZip}</span>
-                                </span>
-                              )}
-
-                              {/* Substrat-Spül-Erinnerung */}
-                              {substrateRinseReminder && (
-                                <span
-                                  className="inline-flex items-center gap-1 text-[11px] text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 px-2.5 py-0.5 rounded-full font-medium"
-                                  title="Substrat-Spülung zur Vermeidung von Salz- & Mineralablagerungen"
-                                >
-                                  <span>🚿 Substratspülung in {getSubstrateRinseDays(plant.createdAt, plant.id)} {getSubstrateRinseDays(plant.createdAt, plant.id) === 1 ? 'Tag' : 'Tagen'}</span>
-                                </span>
-                              )}
-                            </div>
+                          <h3 className="text-base font-bold text-[var(--md-sys-color-on-surface)] tracking-tight mb-1">
+                            Wähle eine Pflanze aus
+                          </h3>
+                          <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] max-w-xs leading-relaxed mb-4">
+                            Klicke auf eine Pflanzenkarte in der linken Liste, um das vollständige botanische Dossier, Live-Klimadaten, Verträglichkeits-Prüfung und Pflegehistorie anzuzeigen.
+                          </p>
+                          <div className="inline-flex items-center gap-1.5 text-[11px] font-mono font-medium text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-surface-container-lowest)] px-3 py-1.5 rounded-full border border-[var(--md-sys-color-outline-variant)]">
+                            <span>👈 Wähle links eine Akte aus</span>
                           </div>
                         </div>
-
-                        {/* Bottom Bar: Status-Vorschau & Klick-Aufforderung mit Gieß-Button */}
-                        <div className="pt-2.5 border-t border-[var(--md-sys-color-outline-variant)] flex items-center justify-between text-[11px] text-[var(--md-sys-color-on-surface-variant)] transition-colors">
-                          <span className="flex items-center gap-1.5">
-                            <span className={`w-1.5 h-1.5 rounded-full ${watering.dotClass}`} />
-                            <span className="truncate">
-                              {watering.days <= 3 ? 'Anstau optimal' : watering.days <= 7 ? 'Wasserstand prüfen' : 'Anstau auffüllen'}
-                            </span>
-                          </span>
-
-                          <div className="flex items-center gap-2">
-                            {/* Eingebettete Sub-Kachel: Gegossen-Button */}
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleWaterPlant(plant.id);
-                              }}
-                              disabled={isWateringId === plant.id}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-primary)] border border-[var(--md-sys-color-outline-variant)] text-[10px] font-medium transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
-                              title="Schnell als heute gegossen markieren"
-                            >
-                              {isWateringId === plant.id ? (
-                                <Loader2 className="w-3 h-3 animate-spin text-[var(--md-sys-color-primary)]" />
-                              ) : (
-                                <Droplets className="w-3 h-3 text-[var(--md-sys-color-primary)]" />
-                              )}
-                              <span>{isWateringId === plant.id ? 'Speichert...' : 'Gegossen'}</span>
-                            </button>
-
-                            <span className="flex items-center gap-0.5 text-[var(--md-sys-color-primary)] font-semibold group-hover:translate-x-0.5 transition-transform">
-                              <span>Akte</span>
-                              <ChevronRight className="w-3.5 h-3.5" />
-                            </span>
-                          </div>
-                        </div>
-                      </article>
-                    );
-                  })}
+                      )}
+                    </div>
+                  </div>
                 </div>
               ) : (
                 /* Edler Empty State im M3 Light Design */
                 <div className="text-center py-12 px-6 bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px]">
-                  <div className="w-12 h-12 mx-auto mb-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)]">
+                  <div className="w-12 h-12 mx-auto mb-3.5 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)]">
                     <Leaf className="w-6 h-6 stroke-[1.75]" />
                   </div>
                   <h3 className="font-bold text-[var(--md-sys-color-on-surface)] text-sm mb-1">
@@ -2603,7 +3173,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={handleOpenModal}
-                      className="inline-flex items-center justify-center gap-1.5 bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-xl transition-all text-xs px-4 py-2.5 cursor-pointer active:scale-95"
+                      className="m3-btn-primary m3-btn-morph inline-flex items-center justify-center gap-1.5 bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-full text-xs px-5 py-2.5 cursor-pointer shadow-sm"
                     >
                       <Plus className="w-4 h-4 stroke-[2.25]" />
                       <span>Pflanze anlegen</span>
@@ -2612,7 +3182,7 @@ export default function App() {
                       type="button"
                       onClick={handleSeedDefaults}
                       disabled={isSubmitting}
-                      className="inline-flex items-center justify-center gap-1 text-xs text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] bg-[var(--md-sys-color-surface-container-lowest)] hover:bg-[var(--md-sys-color-surface-container-high)] border border-[var(--md-sys-color-outline-variant)] px-3.5 py-2.5 rounded-xl transition-colors cursor-pointer"
+                      className="m3-btn-morph inline-flex items-center justify-center gap-1 text-xs text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] bg-[var(--md-sys-color-surface-container-lowest)] hover:bg-[var(--md-sys-color-surface-container-high)] border border-[var(--md-sys-color-outline-variant)] px-4 py-2.5 rounded-full transition-colors cursor-pointer"
                     >
                       <span>Demo-Daten laden</span>
                     </button>
@@ -2643,7 +3213,7 @@ export default function App() {
                     onClick={handleOpenModal}
                     aria-label="Neue Pflanze hinzufügen"
                     title="Neue Pflanze hinzufügen"
-                    className="flex items-center gap-2 px-4 py-3 rounded-2xl bg-[var(--md-sys-color-surface-container-highest)] hover:bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-primary)] font-semibold text-xs border border-[var(--md-sys-color-outline-variant)] shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)] hover:shadow-[0_6px_24px_-2px_rgba(2,67,46,0.10)] transition-all duration-200 ease-out cursor-pointer active:scale-95 group"
+                    className="m3-btn-primary m3-btn-morph m3-fab flex items-center gap-2 px-5 py-3.5 rounded-full bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold text-xs border border-[#02432E]/30 shadow-[0_4px_20px_-2px_rgba(2,67,46,0.12)] hover:shadow-[0_6px_24px_-2px_rgba(2,67,46,0.18)] cursor-pointer group"
                   >
                     <Plus className="w-4 h-4 stroke-[2.5] group-hover:rotate-90 transition-transform duration-200" />
                     <span>Pflanze hinzufügen</span>
@@ -2789,30 +3359,25 @@ export default function App() {
                 </div>
               )}
 
-              {/* Lade-Zustand (Loading State) */}
+              {/* Lade-Zustand (Loading State mit M3 Contained Shape Loader) */}
               {isAnalyzing && (
-                <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-6 space-y-4 shadow-none text-center">
+                <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-6 space-y-4 shadow-none text-center animate-in fade-in duration-200">
                   <div className="flex items-center justify-center">
-                    <div className="relative">
-                      <div className="w-12 h-12 rounded-full border-2 border-zinc-800 border-t-emerald-400 animate-spin" />
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
-                      </div>
-                    </div>
+                    <M3ShapeLoader size={48} contained={true} color="var(--md-sys-color-primary)" />
                   </div>
 
                   <div className="space-y-1">
-                    <p className="text-xs font-medium text-emerald-300">
-                      🪴 Gemini Vision analysiert Gewebe & Ausfärbung...
+                    <p className="text-xs font-semibold text-[var(--md-sys-color-primary)]">
+                      🪴 Gemini Vision analysiert Gewebe &amp; Ausfärbung...
                     </p>
-                    <p className="text-[11px] text-zinc-500">
+                    <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
                       Prüfe auf Mineralienverbrennung, Etiolement und Botrytis-Fäulnis
                     </p>
                   </div>
 
                   {/* Modern Skeleton Pulse Bar */}
-                  <div className="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden">
-                    <div className="bg-emerald-500 h-full w-2/3 rounded-full animate-pulse" />
+                  <div className="w-full bg-[var(--md-sys-color-surface-container-highest)] h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-[var(--md-sys-color-primary)] h-full w-2/3 rounded-full animate-pulse" />
                   </div>
                 </div>
               )}
@@ -2823,31 +3388,31 @@ export default function App() {
                   type="button"
                   disabled={!scannerImage}
                   onClick={handleStartDiagnosis}
-                  className="w-full py-3.5 px-6 bg-zinc-900 hover:bg-zinc-800 text-emerald-400 border border-zinc-800 hover:border-emerald-800/60 font-semibold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-none active:scale-[0.99] disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="w-full py-3.5 px-6 m3-btn-primary m3-btn-morph bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-sm disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  <Zap className="w-4 h-4 text-emerald-400" />
+                  <Zap className="w-4 h-4 text-[var(--md-sys-color-on-primary)]" />
                   <span>Diagnose starten</span>
                 </button>
               )}
 
-              {/* ERGEBNIS-DARSTELLUNG (Obsidian-Kacheln) */}
+              {/* ERGEBNIS-DARSTELLUNG (M3 Light Mode - Sub-Step 8.1.3) */}
               {diagnosisResult && (
-                <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-5 space-y-4 shadow-none animate-in fade-in duration-300">
+                <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 space-y-4 shadow-none animate-in fade-in duration-300">
                   {/* Header-Kachel: Identifizierte Pflanze & Vitalitäts-Score */}
-                  <div className="flex items-start justify-between gap-3 pb-3 border-b border-zinc-900">
+                  <div className="flex items-start justify-between gap-3 pb-3 border-b border-[var(--md-sys-color-outline-variant)]">
                     <div>
-                      <span className="text-[11px] text-zinc-500 uppercase tracking-wider block font-mono">
+                      <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] uppercase tracking-wider block font-mono">
                         Erkannte Spezies
                       </span>
                       <div className="flex items-center gap-2 mt-1">
-                        <div className="w-7 h-7 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 shrink-0 shadow-none">
+                        <div className="w-8 h-8 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0 shadow-none">
                           <SpeciesIcon species={diagnosisResult.plantIdentified} className="w-4 h-4 stroke-[1.8]" />
                         </div>
-                        <h3 className="text-white font-bold text-lg tracking-tight">
+                        <h3 className="text-[var(--md-sys-color-on-surface)] font-bold text-lg tracking-tight">
                           {diagnosisResult.plantIdentified || 'Karnivore Pflanze'}
                         </h3>
                         {diagnosisResult.isDemo && (
-                          <span className="text-[10px] font-mono uppercase bg-amber-950/60 text-amber-300 border border-amber-800/60 px-2 py-0.5 rounded-full font-medium">
+                          <span className="m3-status-badge m3-status-badge-dormancy text-[10px]">
                             Demo-Modus
                           </span>
                         )}
@@ -2855,11 +3420,11 @@ export default function App() {
                     </div>
 
                     <div className="shrink-0 text-right">
-                      <span className="text-[11px] text-zinc-500 uppercase tracking-wider block font-mono">
+                      <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] uppercase tracking-wider block font-mono">
                         Vitalität
                       </span>
                       <span
-                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold mt-1 shadow-none ${getVitalityBadgeClass(
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold mt-1 shadow-none ${getVitalityBadgeClass(
                           diagnosisResult.vitalityScore
                         )}`}
                       >
@@ -2871,10 +3436,10 @@ export default function App() {
 
                   {/* Diagnose-Summary */}
                   <div className="space-y-1">
-                    <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+                    <h4 className="text-xs font-semibold text-[var(--md-sys-color-on-surface-variant)] uppercase tracking-wider">
                       Befund-Zusammenfassung
                     </h4>
-                    <p className="text-zinc-200 text-sm leading-relaxed">
+                    <p className="text-[var(--md-sys-color-on-surface)] text-sm leading-relaxed">
                       {diagnosisResult.diagnosisSummary}
                     </p>
                   </div>
@@ -2882,22 +3447,22 @@ export default function App() {
                   {/* Issues-Liste */}
                   {diagnosisResult.issues && diagnosisResult.issues.length > 0 && (
                     <div className="space-y-2 pt-1">
-                      <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider">
-                        Spezifische Symptome & Krankheitsbilder
+                      <h4 className="text-xs font-semibold text-[var(--md-sys-color-on-surface-variant)] uppercase tracking-wider">
+                        Spezifische Symptome &amp; Krankheitsbilder
                       </h4>
                       <div className="space-y-2">
                         {diagnosisResult.issues.map((issue, idx) => (
                           <div
                             key={idx}
-                            className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-850 flex flex-col gap-1.5"
+                            className="p-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex flex-col gap-1.5"
                           >
                             <div className="flex items-center justify-between gap-2">
-                              <span className="text-xs font-bold text-white">
+                              <span className="text-xs font-bold text-[var(--md-sys-color-on-surface)]">
                                 {issue.title}
                               </span>
                               {getSeverityBadge(issue.severity)}
                             </div>
-                            <p className="text-[11px] text-zinc-400 leading-relaxed">
+                            <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] leading-relaxed">
                               {issue.description}
                             </p>
                           </div>
@@ -2906,36 +3471,36 @@ export default function App() {
                     </div>
                   )}
 
-                  {/* Sofort-Handlungsempfehlung: Muted-Smaragd Box */}
+                  {/* Sofort-Handlungsempfehlung: M3 Primary-Container Box */}
                   {diagnosisResult.immediateAction && (
-                    <div className="bg-emerald-950/40 border border-emerald-800/50 p-4 rounded-xl text-emerald-200 text-sm space-y-1 shadow-none">
-                      <div className="flex items-center gap-1.5 font-bold text-emerald-300 text-xs uppercase tracking-wider">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                    <div className="bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 p-4 rounded-2xl text-[var(--md-sys-color-on-primary-container)] text-sm space-y-1 shadow-none">
+                      <div className="flex items-center gap-1.5 font-bold text-[var(--md-sys-color-on-primary-container)] text-xs uppercase tracking-wider">
+                        <CheckCircle2 className="w-4 h-4 text-[var(--md-sys-color-primary)] shrink-0" />
                         <span>Sofortmaßnahme</span>
                       </div>
-                      <p className="text-xs text-emerald-200 leading-relaxed pt-0.5">
+                      <p className="text-xs text-[var(--md-sys-color-on-primary-container)] leading-relaxed pt-0.5">
                         {diagnosisResult.immediateAction}
                       </p>
                     </div>
                   )}
 
                   {/* Zuordnungs-Bereich: Diagnose einer Pflanze zuweisen */}
-                  <div className="bg-zinc-900/80 border border-zinc-850 rounded-xl p-4 space-y-3 shadow-none">
+                  <div className="bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3 shadow-none">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-emerald-950/80 border border-emerald-800/60 flex items-center justify-center text-emerald-400 shrink-0">
+                      <div className="w-6 h-6 rounded-lg bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0">
                         <BookOpen className="w-3.5 h-3.5" />
                       </div>
-                      <h4 className="text-xs font-bold text-white tracking-wide uppercase">
+                      <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] tracking-wide uppercase">
                         Diagnose einer Pflanze zuweisen
                       </h4>
                     </div>
 
-                    <p className="text-xs text-zinc-400 leading-relaxed">
+                    <p className="text-xs text-[var(--md-sys-color-on-surface-variant)] leading-relaxed">
                       Wähle eine Pflanze aus deiner Sammlung, um das Ergebnis dauerhaft in ihrer Pflanzen-Akte zu sichern:
                     </p>
 
                     {plants.length === 0 ? (
-                      <div className="p-3 bg-zinc-950 border border-zinc-850 rounded-xl text-xs text-zinc-400">
+                      <div className="p-3 bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-xl text-xs text-[var(--md-sys-color-on-surface-variant)]">
                         Keine Pflanzen in der Sammlung vorhanden. Bitte lege zuerst im Dashboard eine Pflanze an.
                       </div>
                     ) : (
@@ -2948,7 +3513,7 @@ export default function App() {
                               setIsScanSaved(false);
                             }}
                             disabled={isSavingScanToPlant}
-                            className="w-full bg-zinc-950 border border-zinc-800 text-zinc-200 text-xs rounded-xl px-3.5 py-2.5 appearance-none focus:outline-none focus:border-emerald-500/80 transition-colors cursor-pointer pr-10"
+                            className="m3-select appearance-none cursor-pointer pr-10 text-xs"
                           >
                             <option value="" disabled>
                               Pflanze auswählen...
@@ -2959,32 +3524,32 @@ export default function App() {
                               </option>
                             ))}
                           </select>
-                          <ChevronDown className="w-4 h-4 text-zinc-500 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <ChevronDown className="w-4 h-4 text-[var(--md-sys-color-on-surface-variant)] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
 
                         <button
                           type="button"
                           onClick={handleSaveScanToPlant}
                           disabled={!selectedPlantForScanId || isSavingScanToPlant || isScanSaved}
-                          className={`w-full py-3 px-4 text-xs font-semibold rounded-xl transition-all flex items-center justify-center gap-2 shadow-none ${
+                          className={`w-full py-3 px-4 text-xs font-semibold rounded-full m3-btn-morph transition-all flex items-center justify-center gap-2 shadow-sm ${
                             isScanSaved
-                              ? 'bg-emerald-950/50 text-emerald-300 border border-emerald-800/60 cursor-default'
-                              : 'bg-zinc-900 hover:bg-zinc-850 text-emerald-400 border border-zinc-800 hover:border-emerald-800/60 cursor-pointer active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed'
+                              ? 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] border border-[#02432E]/30 cursor-default'
+                              : 'm3-btn-primary bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed'
                           }`}
                         >
                           {isSavingScanToPlant ? (
                             <>
-                              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                              <M3ShapeLoader size={14} color="var(--md-sys-color-on-primary)" />
                               <span>Wird in Akte gespeichert...</span>
                             </>
                           ) : isScanSaved ? (
                             <>
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />
                               <span>✓ In Pflanzen-Akte gespeichert</span>
                             </>
                           ) : (
                             <>
-                              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+                              <Sparkles className="w-3.5 h-3.5 text-[var(--md-sys-color-on-primary)]" />
                               <span>Diagnose in Pflanzen-Akte speichern</span>
                             </>
                           )}
@@ -2998,7 +3563,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={handleResetScanner}
-                      className="w-full py-3 px-4 text-xs bg-zinc-900 hover:bg-zinc-800 text-emerald-400 border border-zinc-800 hover:border-emerald-800/60 font-semibold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] shadow-none"
+                      className="w-full py-3 px-4 text-xs m3-btn-tonal m3-btn-morph bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] font-semibold rounded-full transition-all flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>Neue Analyse durchführen</span>
@@ -3077,55 +3642,49 @@ export default function App() {
                   {/* BEREICH A: App-Optionen */}
                   <div className="space-y-2.5">
                     <div className="flex items-center gap-2 px-1">
-                      <Sliders className="w-3.5 h-3.5 text-emerald-400" />
-                      <h3 className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                      <Sliders className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />
+                      <h3 className="text-xs font-bold text-[var(--md-sys-color-on-surface-variant)] uppercase tracking-wider">
                         App-Optionen
                       </h3>
                     </div>
 
-                    <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-4 shadow-none space-y-3">
+                    <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 shadow-none space-y-3">
                       <div className="flex items-center justify-between gap-4">
                         <div className="space-y-1 min-w-0">
                           <label
-                            className="text-xs font-semibold text-zinc-100 cursor-pointer block"
+                            className="text-xs font-semibold text-[var(--md-sys-color-on-surface)] cursor-pointer block"
                             onClick={handleToggleSubstrateReminder}
                           >
                             Substrat-Spül-Erinnerungen aktivieren
                           </label>
-                          <p className="text-[11px] text-zinc-400 leading-relaxed">
+                          <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-relaxed">
                             Erinnert an periodisches Durchspülen mit Reinwasser zur Vermeidung von Salz- &amp; Mineralienablagerungen.
                           </p>
                         </div>
 
-                        {/* Eleganter OLED-Toggle-Switch (bg-zinc-900 border border-zinc-800, bei aktiv emerald-500) */}
+                        {/* M3 Expressive Toggle-Switch (52x32px, 16px -> 24px elastischer Daumen, Waldgrün mit Checkmark-Pop) */}
                         <button
                           type="button"
                           role="switch"
                           aria-checked={substrateRinseReminder}
                           onClick={handleToggleSubstrateReminder}
                           aria-label="Substrat-Spül-Erinnerungen aktivieren"
-                          className={`w-12 h-6.5 rounded-full p-0.5 transition-colors duration-200 ease-in-out cursor-pointer flex items-center shrink-0 border ${
-                            substrateRinseReminder
-                              ? 'bg-emerald-500 border-emerald-400'
-                              : 'bg-zinc-900 border-zinc-800'
-                          }`}
+                          className="m3-switch shrink-0 m3-touch-ripple"
                         >
-                          <span
-                            className={`w-5 h-5 rounded-full shadow-none transform transition-transform duration-200 ease-in-out ${
-                              substrateRinseReminder
-                                ? 'translate-x-5.5 bg-black'
-                                : 'translate-x-0.5 bg-zinc-400'
-                            }`}
-                          />
+                          <span className="m3-switch-thumb">
+                            {substrateRinseReminder && (
+                              <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)] m3-checkmark-pop" />
+                            )}
+                          </span>
                         </button>
                       </div>
 
-                      <div className="pt-2.5 border-t border-zinc-900 flex items-center justify-between text-[11px] text-zinc-500">
+                      <div className="pt-2.5 border-t border-[var(--md-sys-color-outline-variant)] flex items-center justify-between text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
                         <span className="flex items-center gap-1.5">
-                          <span className={`w-1.5 h-1.5 rounded-full ${substrateRinseReminder ? 'bg-emerald-400' : 'bg-zinc-600'}`} />
+                          <span className={`w-1.5 h-1.5 rounded-full ${substrateRinseReminder ? 'bg-[var(--md-sys-color-primary)]' : 'bg-[var(--md-sys-color-outline)]'}`} />
                           <span>Status: {substrateRinseReminder ? 'Erinnerungs-Intervall (4 Wochen) aktiv' : 'Deaktiviert'}</span>
                         </span>
-                        <span className="text-[10px] font-mono text-zinc-600">Präferenz gesichert</span>
+                        <span className="text-[10px] font-mono text-[var(--md-sys-color-on-surface-variant)]">Präferenz gesichert</span>
                       </div>
                     </div>
                   </div>
@@ -3144,96 +3703,102 @@ export default function App() {
                       <div
                         role="button"
                         tabIndex={0}
+                        aria-label="Wasser- & TDS-Rechner öffnen"
                         onClick={() => {
                           triggerHaptic('subtle');
                           setSettingsSubView('water_calc');
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
                             triggerHaptic('subtle');
                             setSettingsSubView('water_calc');
                           }
                         }}
-                        className="group bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-4 transition-all duration-200 shadow-none cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3"
+                        className="group bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] hover:border-[var(--md-sys-color-primary)] rounded-2xl p-4 transition-all duration-200 shadow-none cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3 m3-state-layer"
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-cyan-400 text-lg shrink-0 shadow-none group-hover:border-cyan-800/60 transition-colors">
+                          <div className="w-10 h-10 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-cyan-600 text-lg shrink-0 group-hover:scale-105 transition-transform">
                             💧
                           </div>
                           <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
+                            <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] group-hover:text-[var(--md-sys-color-primary)] transition-colors">
                               💧 Wasser- &amp; TDS-Rechner
                             </h4>
-                            <p className="text-[11px] text-zinc-400 leading-snug mt-0.5">
+                            <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-snug mt-0.5">
                               Gießwasser-Härtegrad &amp; TDS-Grenzwerte (&lt; 50 ppm) prüfen oder Verschnitt berechnen.
                             </p>
                           </div>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all shrink-0" />
+                        <ChevronRight className="w-4 h-4 text-[var(--md-sys-color-outline)] group-hover:text-[var(--md-sys-color-primary)] group-hover:translate-x-0.5 transition-all shrink-0" />
                       </div>
 
                       {/* Kachel 2: 🪴 Substrat-Rechner */}
                       <div
                         role="button"
                         tabIndex={0}
+                        aria-label="Substrat-Rechner öffnen"
                         onClick={() => {
                           triggerHaptic('subtle');
                           setSettingsSubView('substrate_calc');
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
                             triggerHaptic('subtle');
                             setSettingsSubView('substrate_calc');
                           }
                         }}
-                        className="group bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-4 transition-all duration-200 shadow-none cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3"
+                        className="group bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] hover:border-[var(--md-sys-color-primary)] rounded-2xl p-4 transition-all duration-200 shadow-none cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3 m3-state-layer"
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 text-lg shrink-0 shadow-none group-hover:border-emerald-800/60 transition-colors">
+                          <div className="w-10 h-10 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] text-lg shrink-0 group-hover:scale-105 transition-transform">
                             🪴
                           </div>
                           <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
+                            <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] group-hover:text-[var(--md-sys-color-primary)] transition-colors">
                               🪴 Substrat-Rechner
                             </h4>
-                            <p className="text-[11px] text-zinc-400 leading-snug mt-0.5">
+                            <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-snug mt-0.5">
                               Exakte Mischungsverhältnisse für Weißtorf, Quarzsand und Perlite pro Topfvolumen.
                             </p>
                           </div>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all shrink-0" />
+                        <ChevronRight className="w-4 h-4 text-[var(--md-sys-color-outline)] group-hover:text-[var(--md-sys-color-primary)] group-hover:translate-x-0.5 transition-all shrink-0" />
                       </div>
 
                       {/* Kachel 3: 🪲 Fütterungs- & Schädlings-Guide */}
                       <div
                         role="button"
                         tabIndex={0}
+                        aria-label="Fütterungs- & Schädlings-Guide öffnen"
                         onClick={() => {
                           triggerHaptic('subtle');
                           setSettingsSubView('pest_guide');
                         }}
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
                             triggerHaptic('subtle');
                             setSettingsSubView('pest_guide');
                           }
                         }}
-                        className="group bg-zinc-950 border border-zinc-900 hover:border-zinc-800 rounded-2xl p-4 transition-all duration-200 shadow-md cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3"
+                        className="group bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] hover:border-[var(--md-sys-color-primary)] rounded-2xl p-4 transition-all duration-200 shadow-none cursor-pointer active:scale-[0.99] flex items-center justify-between gap-3 m3-state-layer"
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
-                          <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-amber-400 text-lg shrink-0 shadow-inner group-hover:border-amber-800/60 transition-colors">
+                          <div className="w-10 h-10 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-amber-600 text-lg shrink-0 group-hover:scale-105 transition-transform">
                             🪲
                           </div>
                           <div className="min-w-0">
-                            <h4 className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
+                            <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] group-hover:text-[var(--md-sys-color-primary)] transition-colors">
                               🪲 Fütterungs- &amp; Schädlings-Guide
                             </h4>
-                            <p className="text-[11px] text-zinc-400 leading-snug mt-0.5">
+                            <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-snug mt-0.5">
                               Sichere Fütterungsmethoden, Beutetypen und biologische Hilfe gegen Trauermücken &amp; Läuse.
                             </p>
                           </div>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all shrink-0" />
+                        <ChevronRight className="w-4 h-4 text-[var(--md-sys-color-outline)] group-hover:text-[var(--md-sys-color-primary)] group-hover:translate-x-0.5 transition-all shrink-0" />
                       </div>
                     </div>
                   </div>
@@ -3249,34 +3814,34 @@ export default function App() {
                       triggerHaptic('subtle');
                       setSettingsSubView('main');
                     }}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 hover:text-emerald-300 bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 px-3 py-1.5 rounded-xl transition-all cursor-pointer active:scale-95 shadow-sm"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--md-sys-color-primary)] hover:text-[#03593e] bg-[var(--md-sys-color-surface-container-high)] hover:bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 rounded-full transition-all cursor-pointer active:scale-95 shadow-sm"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
                     <span>← Zurück zu Einstellungen</span>
                   </button>
 
-                  <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-4 space-y-4 shadow-md">
+                  <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 space-y-4 shadow-none">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-cyan-400 text-lg shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-cyan-600 text-lg shrink-0">
                         💧
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-white">
+                        <h3 className="text-sm font-bold text-[var(--md-sys-color-on-surface)]">
                           💧 Wasser- &amp; TDS-Rechner
                         </h3>
-                        <p className="text-[11px] text-zinc-400">
+                        <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
                           Prüfung des Leitwerts (ppm) &amp; Verschnitt-Berechnung
                         </p>
                       </div>
                     </div>
 
                     {/* Teil 1: Eingabe-Möglichkeiten (Option A & Option B) & Dynamische Auswertung */}
-                    <div className="bg-zinc-900/80 border border-zinc-850 rounded-xl p-3.5 space-y-4">
+                    <div className="bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-4">
                       {/* Option A: Direkte Zahlen-Eingabe des Leitwerts/TDS-Werts in PPM */}
                       <div className="space-y-1.5">
-                        <label htmlFor="direct-tds-input" className="text-xs font-semibold text-zinc-200 flex items-center justify-between">
+                        <label htmlFor="direct-tds-input" className="text-xs font-semibold text-[var(--md-sys-color-on-surface)] flex items-center justify-between">
                           <span>Direkte Zahlen-Eingabe (PPM)</span>
-                          <span className="text-[11px] font-mono text-emerald-400">
+                          <span className="text-[11px] font-mono text-[var(--md-sys-color-primary)] font-bold">
                             Aktuell: {tdsInput} PPM
                           </span>
                         </label>
@@ -3292,35 +3857,38 @@ export default function App() {
                               setTdsInput(val);
                             }}
                             placeholder="z. B. 35"
-                            className="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500 focus:outline-none rounded-xl p-3 text-sm text-white font-mono placeholder:text-zinc-600 transition-colors pr-14"
+                            className="m3-input font-mono pr-14"
                           />
-                          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500 pointer-events-none">
+                          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-[var(--md-sys-color-on-surface-variant)] pointer-events-none">
                             PPM
                           </span>
                         </div>
 
-                        {/* Schieberegler zur stufenlosen Justierung */}
-                        <div className="pt-1.5 space-y-1">
+                        {/* M3 Straight Slider zur stufenlosen Justierung */}
+                        <div className="pt-2 space-y-1.5">
                           <input
                             type="range"
                             min="0"
                             max="300"
                             value={Math.min(300, tdsInput)}
                             onChange={(e) => setTdsInput(Number(e.target.value))}
-                            className="w-full accent-emerald-500 cursor-pointer"
+                            className="m3-slider cursor-pointer"
+                            style={{
+                              background: `linear-gradient(to right, var(--md-sys-color-primary) ${(Math.min(300, Math.max(0, tdsInput)) / 300) * 100}%, var(--md-sys-color-surface-container-highest) ${(Math.min(300, Math.max(0, tdsInput)) / 300) * 100}%)`,
+                            }}
                           />
-                          <div className="flex items-center justify-between text-[10px] text-zinc-500 font-mono">
+                          <div className="flex items-center justify-between text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-mono">
                             <span>0 PPM (Destilliert)</span>
-                            <span>50 PPM (Ideal-Grenze)</span>
-                            <span>100 PPM (Amber)</span>
+                            <span>50 PPM (Ideal)</span>
+                            <span>100 PPM (Warnung)</span>
                             <span>&gt;100 PPM (Kritisch)</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Option B: Quick-Buttons für Wasserquellen */}
-                      <div className="space-y-2 pt-2 border-t border-zinc-800/80">
-                        <label className="text-xs font-semibold text-zinc-300 block">
+                      <div className="space-y-2 pt-2 border-t border-[var(--md-sys-color-outline-variant)]">
+                        <label className="text-xs font-semibold text-[var(--md-sys-color-on-surface)] block">
                           Quick-Buttons für Wasserquellen:
                         </label>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -3332,12 +3900,12 @@ export default function App() {
                             }}
                             className={`p-2.5 rounded-xl border text-left text-xs font-medium transition-all cursor-pointer flex items-center justify-between ${
                               tdsInput === 15
-                                ? 'bg-emerald-950/70 border-emerald-600 text-emerald-300 shadow-sm'
-                                : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:bg-zinc-850 hover:border-zinc-700'
+                                ? 'bg-[var(--md-sys-color-primary-container)] border-[#02432E]/30 text-[var(--md-sys-color-on-primary-container)] font-semibold shadow-none'
+                                : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-high)]'
                             }`}
                           >
                             <span>Regenwasser (~15 PPM)</span>
-                            {tdsInput === 15 && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                            {tdsInput === 15 && <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />}
                           </button>
 
                           <button
@@ -3348,12 +3916,12 @@ export default function App() {
                             }}
                             className={`p-2.5 rounded-xl border text-left text-xs font-medium transition-all cursor-pointer flex items-center justify-between ${
                               tdsInput === 0
-                                ? 'bg-emerald-950/70 border-emerald-600 text-emerald-300 shadow-sm'
-                                : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:bg-zinc-850 hover:border-zinc-700'
+                                ? 'bg-[var(--md-sys-color-primary-container)] border-[#02432E]/30 text-[var(--md-sys-color-on-primary-container)] font-semibold shadow-none'
+                                : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-high)]'
                             }`}
                           >
                             <span>Destilliertes Wasser (0 PPM)</span>
-                            {tdsInput === 0 && <Check className="w-3.5 h-3.5 text-emerald-400" />}
+                            {tdsInput === 0 && <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />}
                           </button>
 
                           <button
@@ -3364,12 +3932,12 @@ export default function App() {
                             }}
                             className={`p-2.5 rounded-xl border text-left text-xs font-medium transition-all cursor-pointer flex items-center justify-between ${
                               tdsInput === 80
-                                ? 'bg-amber-950/70 border-amber-600 text-amber-300 shadow-sm'
-                                : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:bg-zinc-850 hover:border-zinc-700'
+                                ? 'bg-[var(--md-sys-color-tertiary-container)] border-[#855300]/30 text-[var(--md-sys-color-on-tertiary-container)] font-semibold shadow-none'
+                                : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-high)]'
                             }`}
                           >
                             <span>Leitungswasser Weich (~80 PPM)</span>
-                            {tdsInput === 80 && <Check className="w-3.5 h-3.5 text-amber-400" />}
+                            {tdsInput === 80 && <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-tertiary)]" />}
                           </button>
 
                           <button
@@ -3380,34 +3948,34 @@ export default function App() {
                             }}
                             className={`p-2.5 rounded-xl border text-left text-xs font-medium transition-all cursor-pointer flex items-center justify-between ${
                               tdsInput === 280 || tdsInput > 250
-                                ? 'bg-red-950/70 border-red-600 text-red-300 shadow-sm'
-                                : 'bg-zinc-950 border-zinc-800 text-zinc-300 hover:bg-zinc-850 hover:border-zinc-700'
+                                ? 'bg-[#FEE2E2] border-[#991B1B]/40 text-[#991B1B] font-semibold shadow-none'
+                                : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-high)]'
                             }`}
                           >
                             <span>Leitungswasser Hart (&gt;250 PPM)</span>
-                            {(tdsInput === 280 || tdsInput > 250) && <Check className="w-3.5 h-3.5 text-red-400" />}
+                            {(tdsInput === 280 || tdsInput > 250) && <Check className="w-3.5 h-3.5 text-[#991B1B]" />}
                           </button>
                         </div>
                       </div>
 
-                      {/* Dynamische Auswertung (Bewertungs-Kachel) */}
+                      {/* Dynamische Auswertung (Bewertungs-Kachel M3) */}
                       {(() => {
                         if (tdsInput < 50) {
                           return (
-                            <div className="p-3.5 rounded-xl bg-emerald-950/70 border border-emerald-800/60 text-emerald-300 space-y-1.5 shadow-md animate-in fade-in duration-150">
+                            <div className="p-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] space-y-1.5 shadow-none animate-in fade-in duration-150">
                               <div className="flex items-center justify-between">
-                                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-emerald-900/60 border border-emerald-700 px-2.5 py-0.5 rounded-full text-emerald-200">
-                                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                <span className="m3-status-badge m3-status-badge-growth">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--md-sys-color-primary)] animate-pulse" />
                                   &lt; 50 PPM
                                 </span>
-                                <span className="text-[11px] font-mono font-bold text-emerald-400">
+                                <span className="text-xs font-mono font-bold text-[var(--md-sys-color-primary)]">
                                   {tdsInput} PPM
                                 </span>
                               </div>
-                              <p className="text-xs font-bold text-emerald-100 leading-snug">
+                              <p className="text-xs font-bold text-[var(--md-sys-color-on-surface)] leading-snug">
                                 Ideal: Keine Mineralienansammlung. Gefahrlos zum Anstauen.
                               </p>
-                              <p className="text-[11px] text-emerald-300/90 leading-relaxed border-t border-emerald-800/60 pt-1.5">
+                              <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-relaxed border-t border-[var(--md-sys-color-outline-variant)] pt-1.5">
                                 Dieses Wasser schützt die empfindlichen Wurzeln vor Versalzung und osmotischem Schock. Optimal für alle fleischfressenden Pflanzen.
                               </p>
                             </div>
@@ -3416,20 +3984,20 @@ export default function App() {
 
                         if (tdsInput <= 100) {
                           return (
-                            <div className="p-3.5 rounded-xl bg-amber-950/70 border border-amber-800/60 text-amber-300 space-y-1.5 shadow-md animate-in fade-in duration-150">
+                            <div className="p-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] space-y-1.5 shadow-none animate-in fade-in duration-150">
                               <div className="flex items-center justify-between">
-                                <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-amber-900/60 border border-amber-700 px-2.5 py-0.5 rounded-full text-amber-200">
-                                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                                <span className="m3-status-badge m3-status-badge-dormancy">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--md-sys-color-tertiary)]" />
                                   50 - 100 PPM
                                 </span>
-                                <span className="text-[11px] font-mono font-bold text-amber-400">
+                                <span className="text-xs font-mono font-bold text-[var(--md-sys-color-tertiary)]">
                                   {tdsInput} PPM
                                 </span>
                               </div>
-                              <p className="text-xs font-bold text-amber-100 leading-snug">
+                              <p className="text-xs font-bold text-[var(--md-sys-color-on-surface)] leading-snug">
                                 Akzeptabel: Regelmäßiges Substratspülen empfohlen.
                               </p>
-                              <p className="text-[11px] text-amber-300/90 leading-relaxed border-t border-amber-800/60 pt-1.5">
+                              <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-relaxed border-t border-[var(--md-sys-color-outline-variant)] pt-1.5">
                                 Mineralien reichern sich allmählich im Torf an. Spüle das Substrat regelmäßig alle 2–4 Wochen mit reinem Regen- oder Destilliertwasser durch.
                               </p>
                             </div>
@@ -3437,20 +4005,20 @@ export default function App() {
                         }
 
                         return (
-                          <div className="p-3.5 rounded-xl bg-red-950/70 border border-red-800/60 text-red-300 space-y-1.5 shadow-md animate-in fade-in duration-150">
+                          <div className="p-3.5 rounded-2xl bg-[#FEE2E2]/30 border border-[#991B1B]/30 text-[#991B1B] space-y-1.5 shadow-none animate-in fade-in duration-150">
                             <div className="flex items-center justify-between">
-                              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider bg-red-900/60 border border-red-700 px-2.5 py-0.5 rounded-full text-red-200">
-                                <span className="w-2 h-2 rounded-full bg-red-400 animate-ping" />
+                              <span className="m3-status-badge m3-status-badge-alert">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#991B1B] animate-ping" />
                                 &gt; 100 PPM
                               </span>
-                              <span className="text-[11px] font-mono font-bold text-red-400">
+                              <span className="text-xs font-mono font-bold text-[#991B1B]">
                                 {tdsInput} PPM
                               </span>
                             </div>
-                            <p className="text-xs font-bold text-red-100 leading-snug">
+                            <p className="text-xs font-bold text-[#991B1B] leading-snug">
                               Kritisch: Gefahr von Wurzelbrand! Substrat sofort spülen &amp; auf Destilliertes/Regenwasser umstellen.
                             </p>
-                            <p className="text-[11px] text-red-300/90 leading-relaxed border-t border-red-800/60 pt-1.5">
+                            <p className="text-[11px] text-[#991B1B]/80 leading-relaxed border-t border-[#991B1B]/20 pt-1.5">
                               Gelöste Härtebildner und Salze vergiften das saure Moormilieu. Die Wurzeln verbrennen und Fangblätter sterben schwarz ab.
                             </p>
                           </div>
@@ -3459,29 +4027,29 @@ export default function App() {
                     </div>
 
                     {/* Teil 2: Verschnitt-Rechner */}
-                    <div className="bg-zinc-900/80 border border-zinc-850 rounded-xl p-3.5 space-y-3">
-                      <h4 className="text-xs font-bold text-zinc-200 uppercase tracking-wider flex items-center gap-1.5">
-                        <Activity className="w-3.5 h-3.5 text-emerald-400" />
+                    <div className="bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3">
+                      <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] uppercase tracking-wider flex items-center gap-1.5">
+                        <Activity className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />
                         Verschnitt-Rechner (Leitung + Reinstwasser)
                       </h4>
 
                       <div className="grid grid-cols-2 gap-2 text-xs">
                         <div>
-                          <label className="text-[11px] text-zinc-400 block mb-1">Ziel-TDS (ppm)</label>
+                          <label className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] block mb-1">Ziel-TDS (ppm)</label>
                           <input
                             type="number"
                             value={targetTds}
                             onChange={(e) => setTargetTds(Math.max(1, Number(e.target.value)))}
-                            className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-white font-mono"
+                            className="m3-input font-mono"
                           />
                         </div>
                         <div>
-                          <label className="text-[11px] text-zinc-400 block mb-1">Gesamtmenge (Liter)</label>
+                          <label className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] block mb-1">Gesamtmenge (Liter)</label>
                           <input
                             type="number"
                             value={totalWaterLiters}
                             onChange={(e) => setTotalWaterLiters(Math.max(0.5, Number(e.target.value)))}
-                            className="w-full bg-zinc-950 border border-zinc-800 rounded-lg p-2 text-white font-mono"
+                            className="m3-input font-mono"
                           />
                         </div>
                       </div>
@@ -3493,18 +4061,18 @@ export default function App() {
                         const tapLiters = (totalWaterLiters - pureLiters);
 
                         return (
-                          <div className="p-3 bg-zinc-950 border border-zinc-800 rounded-xl space-y-2">
-                            <div className="text-xs text-zinc-300 font-medium">
+                          <div className="p-3 bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] rounded-xl space-y-2">
+                            <div className="text-xs text-[var(--md-sys-color-on-surface)] font-medium">
                               Benötigte Mischung für {totalWaterLiters} L Wasser ({targetTds} ppm):
                             </div>
                             <div className="grid grid-cols-2 gap-2 text-center">
-                              <div className="p-2 rounded-lg bg-cyan-950/40 border border-cyan-800/40">
-                                <span className="text-[10px] text-cyan-400 block uppercase font-mono">Osmose / Regen</span>
-                                <span className="text-sm font-bold text-cyan-200">{pureLiters.toFixed(2)} L</span>
+                              <div className="p-2 rounded-lg bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20">
+                                <span className="text-[10px] text-[var(--md-sys-color-primary)] block uppercase font-mono font-bold">Osmose / Regen</span>
+                                <span className="text-sm font-bold text-[var(--md-sys-color-on-primary-container)]">{pureLiters.toFixed(2)} L</span>
                               </div>
-                              <div className="p-2 rounded-lg bg-zinc-900 border border-zinc-800">
-                                <span className="text-[10px] text-zinc-400 block uppercase font-mono">Leitungswasser</span>
-                                <span className="text-sm font-bold text-zinc-200">{tapLiters.toFixed(2)} L</span>
+                              <div className="p-2 rounded-lg bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)]">
+                                <span className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] block uppercase font-mono font-medium">Leitungswasser</span>
+                                <span className="text-sm font-bold text-[var(--md-sys-color-on-surface)]">{tapLiters.toFixed(2)} L</span>
                               </div>
                             </div>
                           </div>
@@ -3513,9 +4081,9 @@ export default function App() {
                     </div>
 
                     {/* Wichtige Wasser-Garantie */}
-                    <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-850 text-[11px] text-zinc-400 space-y-1.5 leading-relaxed">
-                      <p className="font-semibold text-zinc-200 flex items-center gap-1.5">
-                        <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <div className="p-3 rounded-xl bg-[var(--md-sys-color-surface-container-highest)]/60 border border-[var(--md-sys-color-outline-variant)] text-[11px] text-[var(--md-sys-color-on-surface-variant)] space-y-1.5 leading-relaxed">
+                      <p className="font-semibold text-[var(--md-sys-color-on-surface)] flex items-center gap-1.5">
+                        <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                         Wichtige Regel für Britta-Filter:
                       </p>
                       <p>
@@ -3535,22 +4103,22 @@ export default function App() {
                       triggerHaptic('subtle');
                       setSettingsSubView('main');
                     }}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 hover:text-emerald-300 bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 px-3 py-1.5 rounded-xl transition-all cursor-pointer active:scale-95 shadow-sm"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--md-sys-color-primary)] hover:text-[#03593e] bg-[var(--md-sys-color-surface-container-high)] hover:bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 rounded-full transition-all cursor-pointer active:scale-95 shadow-sm"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
                     <span>← Zurück zu Einstellungen</span>
                   </button>
 
-                  <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-4 space-y-4 shadow-md">
+                  <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 space-y-4 shadow-none">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 text-lg shrink-0">
+                      <div className="w-10 h-10 rounded-xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] text-lg shrink-0">
                         🪴
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-white">
+                        <h3 className="text-sm font-bold text-[var(--md-sys-color-on-surface)]">
                           🪴 Substrat-Mengenrechner
                         </h3>
-                        <p className="text-[11px] text-zinc-400">
+                        <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
                           Exakte Mischungsverhältnisse &amp; Rezeptur pro Topfvolumen
                         </p>
                       </div>
@@ -3558,7 +4126,7 @@ export default function App() {
 
                     {/* 1. Dropdown Pflanzenart */}
                     <div className="space-y-1.5">
-                      <label htmlFor="substrate-plant-dropdown" className="text-xs font-semibold text-zinc-200 block">
+                      <label htmlFor="substrate-plant-dropdown" className="text-xs font-semibold text-[var(--md-sys-color-on-surface)] block">
                         Pflanzenart &amp; Substrat-Rezeptur:
                       </label>
                       <div className="relative">
@@ -3569,13 +4137,13 @@ export default function App() {
                             triggerHaptic('subtle');
                             setSubstrateProfile(e.target.value as 'classic' | 'nepenthes' | 'drosera');
                           }}
-                          className="w-full bg-zinc-900 border border-zinc-800 focus:border-emerald-500 focus:outline-none rounded-xl p-3 text-xs text-zinc-100 font-medium transition-colors appearance-none cursor-pointer pr-10"
+                          className="m3-select font-medium appearance-none cursor-pointer pr-10"
                         >
                           <option value="classic">Standard Karnivoren-Mix (Dionaea/Sarracenia)</option>
                           <option value="drosera">Sonnentau-Spezial (Drosera)</option>
                           <option value="nepenthes">Epiphytisch (Nepenthes)</option>
                         </select>
-                        <ChevronDown className="w-4 h-4 text-zinc-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <ChevronDown className="w-4 h-4 text-[var(--md-sys-color-on-surface-variant)] absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
 
                       {/* Quick-Auswahl-Buttons */}
@@ -3586,17 +4154,17 @@ export default function App() {
                             triggerHaptic('subtle');
                             setSubstrateProfile('classic');
                           }}
-                          className={`p-2 rounded-xl border text-left text-[11px] transition-all cursor-pointer ${
+                          className={`p-2.5 rounded-xl border text-left text-[11px] transition-all cursor-pointer ${
                             substrateProfile === 'classic'
-                              ? 'bg-emerald-950/70 border-emerald-600 text-emerald-200 font-semibold shadow-sm'
-                              : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-850 hover:text-zinc-300'
+                              ? 'bg-[var(--md-sys-color-primary-container)] border-[#02432E]/30 text-[var(--md-sys-color-on-primary-container)] font-semibold shadow-none'
+                              : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--md-sys-color-on-surface)]'
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <span>Standard Mix</span>
-                            {substrateProfile === 'classic' && <Check className="w-3 h-3 text-emerald-400" />}
+                            {substrateProfile === 'classic' && <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />}
                           </div>
-                          <span className="text-[10px] text-zinc-500 block">Dionaea &amp; Sarracenia</span>
+                          <span className="text-[10px] text-[var(--md-sys-color-on-surface-variant)]/80 block mt-0.5">Dionaea &amp; Sarracenia</span>
                         </button>
 
                         <button
@@ -3605,17 +4173,17 @@ export default function App() {
                             triggerHaptic('subtle');
                             setSubstrateProfile('drosera');
                           }}
-                          className={`p-2 rounded-xl border text-left text-[11px] transition-all cursor-pointer ${
+                          className={`p-2.5 rounded-xl border text-left text-[11px] transition-all cursor-pointer ${
                             substrateProfile === 'drosera'
-                              ? 'bg-emerald-950/70 border-emerald-600 text-emerald-200 font-semibold shadow-sm'
-                              : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-850 hover:text-zinc-300'
+                              ? 'bg-[var(--md-sys-color-primary-container)] border-[#02432E]/30 text-[var(--md-sys-color-on-primary-container)] font-semibold shadow-none'
+                              : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--md-sys-color-on-surface)]'
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <span>Sonnentau-Spezial</span>
-                            {substrateProfile === 'drosera' && <Check className="w-3 h-3 text-emerald-400" />}
+                            {substrateProfile === 'drosera' && <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />}
                           </div>
-                          <span className="text-[10px] text-zinc-500 block">Drosera &amp; Pinguicula</span>
+                          <span className="text-[10px] text-[var(--md-sys-color-on-surface-variant)]/80 block mt-0.5">Drosera &amp; Pinguicula</span>
                         </button>
 
                         <button
@@ -3624,29 +4192,29 @@ export default function App() {
                             triggerHaptic('subtle');
                             setSubstrateProfile('nepenthes');
                           }}
-                          className={`p-2 rounded-xl border text-left text-[11px] transition-all cursor-pointer ${
+                          className={`p-2.5 rounded-xl border text-left text-[11px] transition-all cursor-pointer ${
                             substrateProfile === 'nepenthes'
-                              ? 'bg-emerald-950/70 border-emerald-600 text-emerald-200 font-semibold shadow-sm'
-                              : 'bg-zinc-900/60 border-zinc-800 text-zinc-400 hover:bg-zinc-850 hover:text-zinc-300'
+                              ? 'bg-[var(--md-sys-color-primary-container)] border-[#02432E]/30 text-[var(--md-sys-color-on-primary-container)] font-semibold shadow-none'
+                              : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface-variant)] hover:bg-[var(--md-sys-color-surface-container-high)] hover:text-[var(--md-sys-color-on-surface)]'
                           }`}
                         >
                           <div className="flex items-center justify-between">
                             <span>Epiphytisch</span>
-                            {substrateProfile === 'nepenthes' && <Check className="w-3 h-3 text-emerald-400" />}
+                            {substrateProfile === 'nepenthes' && <Check className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)]" />}
                           </div>
-                          <span className="text-[10px] text-zinc-500 block">Nepenthes / Kannen</span>
+                          <span className="text-[10px] text-[var(--md-sys-color-on-surface-variant)]/80 block mt-0.5">Nepenthes / Kannen</span>
                         </button>
                       </div>
                     </div>
 
                     {/* 2. Topfvolumen in Liter (Slider & Number-Input) */}
-                    <div className="bg-zinc-900/80 border border-zinc-850 rounded-xl p-3.5 space-y-3">
+                    <div className="bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3">
                       <div className="flex items-center justify-between">
-                        <label htmlFor="substrate-volume-input" className="text-xs font-semibold text-zinc-200">
+                        <label htmlFor="substrate-volume-input" className="text-xs font-semibold text-[var(--md-sys-color-on-surface)]">
                           Topfvolumen in Liter:
                         </label>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-zinc-950 border border-zinc-800 text-emerald-400">
+                          <span className="text-xs font-mono font-bold px-2 py-0.5 rounded-lg bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] border border-[#02432E]/20">
                             {substrateVolume} Liter
                           </span>
                         </div>
@@ -3666,16 +4234,16 @@ export default function App() {
                               const val = Math.max(0.5, parseFloat(e.target.value) || 0.5);
                               setSubstrateVolume(val);
                             }}
-                            className="w-full bg-zinc-950 border border-zinc-800 focus:border-emerald-500 focus:outline-none rounded-xl p-2.5 text-xs text-white font-mono placeholder:text-zinc-600 transition-colors pr-14"
+                            className="m3-input font-mono pr-14"
                             placeholder="z. B. 3"
                           />
-                          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-zinc-500 pointer-events-none">
+                          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-xs font-mono text-[var(--md-sys-color-on-surface-variant)] pointer-events-none">
                             Liter
                           </span>
                         </div>
 
-                        {/* Slider für stufenlose Haptik */}
-                        <div className="pt-1 space-y-1">
+                        {/* M3 Straight Slider für stufenlose Haptik */}
+                        <div className="pt-2 space-y-1.5">
                           <input
                             type="range"
                             min="0.5"
@@ -3683,9 +4251,12 @@ export default function App() {
                             step="0.5"
                             value={Math.min(30, substrateVolume)}
                             onChange={(e) => setSubstrateVolume(Number(e.target.value))}
-                            className="w-full accent-emerald-500 cursor-pointer"
+                            className="m3-slider cursor-pointer"
+                            style={{
+                              background: `linear-gradient(to right, var(--md-sys-color-primary) ${((Math.min(30, Math.max(0.5, substrateVolume)) - 0.5) / 29.5) * 100}%, var(--md-sys-color-surface-container-highest) ${((Math.min(30, Math.max(0.5, substrateVolume)) - 0.5) / 29.5) * 100}%)`,
+                            }}
                           />
-                          <div className="flex items-center justify-between text-[10px] text-zinc-500 font-mono">
+                          <div className="flex items-center justify-between text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-mono">
                             <span>0.5 L (Kompakt)</span>
                             <span>3.0 L (Standardtopf)</span>
                             <span>10 L (Ampel)</span>
@@ -3703,10 +4274,10 @@ export default function App() {
                                 triggerHaptic('subtle');
                                 setSubstrateVolume(liters);
                               }}
-                              className={`px-2.5 py-1 rounded-lg text-xs font-mono cursor-pointer border transition-all ${
+                              className={`px-3 py-1 rounded-full text-xs font-mono cursor-pointer border transition-all ${
                                 substrateVolume === liters
-                                  ? 'bg-emerald-500 text-black border-emerald-400 font-bold shadow-sm'
-                                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700'
+                                  ? 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] border-[var(--md-sys-color-primary)] font-bold shadow-xs'
+                                  : 'bg-[var(--md-sys-color-surface-container-lowest)] text-[var(--md-sys-color-on-surface)] border-[var(--md-sys-color-outline-variant)] hover:bg-[var(--md-sys-color-surface-container-high)]'
                               }`}
                             >
                               {liters} L
@@ -3845,20 +4416,20 @@ export default function App() {
                       }
 
                       return (
-                        <div className="bg-zinc-900 border border-zinc-850 rounded-xl p-3.5 space-y-3">
+                        <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3.5 shadow-sm">
                           <div className="flex items-center justify-between">
                             <div>
-                              <h4 className="text-xs font-bold text-zinc-100 uppercase tracking-wider">
+                              <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] uppercase tracking-wider">
                                 Rezeptur für {substrateVolume} Liter Topfvolumen:
                               </h4>
-                              <p className="text-[11px] text-zinc-400 mt-0.5">
+                              <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] mt-0.5">
                                 {recipeDescription}
                               </p>
                             </div>
                           </div>
 
                           {/* Visueller Mischungs-Balken */}
-                          <div className="h-2.5 w-full rounded-full overflow-hidden flex bg-zinc-950 border border-zinc-800">
+                          <div className="h-3 w-full rounded-full overflow-hidden flex bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)]">
                             {ingredients.map((ing) => (
                               <div
                                 key={ing.name}
@@ -3868,7 +4439,7 @@ export default function App() {
                                     ? 'bg-amber-600'
                                     : ing.name.includes('Rinde')
                                     ? 'bg-emerald-600'
-                                    : 'bg-cyan-500'
+                                    : 'bg-cyan-600'
                                 }`}
                                 title={`${ing.name}: ${ing.percentageLabel}`}
                               />
@@ -3876,32 +4447,32 @@ export default function App() {
                           </div>
 
                           {/* Dosierungs-Kacheln */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                             {ingredients.map((ing) => (
                               <div
                                 key={ing.name}
-                                className={`rounded-xl border p-3 flex flex-col justify-between space-y-2 shadow-sm ${ing.borderClass}`}
+                                className="rounded-2xl border border-[var(--md-sys-color-outline-variant)] bg-[var(--md-sys-color-surface-container-lowest)] p-3.5 flex flex-col justify-between space-y-2 shadow-sm hover:border-[var(--md-sys-color-primary)] transition-colors"
                               >
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center gap-2">
                                     <span className="text-base">{ing.icon}</span>
-                                    <span className="text-xs font-semibold text-zinc-200">
+                                    <span className="text-xs font-semibold text-[var(--md-sys-color-on-surface)]">
                                       {ing.name}
                                     </span>
                                   </div>
-                                  <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${ing.badgeClass}`}>
+                                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)]">
                                     {ing.percentageLabel}
                                   </span>
                                 </div>
 
-                                <div className="flex items-baseline justify-between pt-1 border-t border-zinc-800/60">
-                                  <span className="text-[11px] text-zinc-400">Dosierung:</span>
-                                  <span className={`text-base font-mono font-extrabold ${ing.colorClass}`}>
+                                <div className="flex items-baseline justify-between pt-1 border-t border-[var(--md-sys-color-outline-variant)]/60">
+                                  <span className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">Dosierung:</span>
+                                  <span className="text-base font-mono font-extrabold text-[var(--md-sys-color-primary)]">
                                     {ing.liters.toFixed(1)} Liter
                                   </span>
                                 </div>
 
-                                <p className="text-[10px] text-zinc-400 leading-tight">
+                                <p className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] leading-tight">
                                   {ing.hint}
                                 </p>
                               </div>
@@ -3912,9 +4483,9 @@ export default function App() {
                     })()}
 
                     {/* Substrat-Regeln */}
-                    <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-850 text-[11px] text-zinc-400 space-y-1.5 leading-relaxed">
-                      <p className="font-semibold text-zinc-200 flex items-center gap-1.5">
-                        <AlertCircle className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                    <div className="p-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] text-[11px] text-[var(--md-sys-color-on-surface-variant)] space-y-1.5 leading-relaxed">
+                      <p className="font-semibold text-[var(--md-sys-color-on-surface)] flex items-center gap-1.5">
+                        <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                         Goldene Substrat-Regel:
                       </p>
                       <p>
@@ -3934,39 +4505,39 @@ export default function App() {
                       triggerHaptic('subtle');
                       setSettingsSubView('main');
                     }}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 hover:text-emerald-300 bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 px-3 py-1.5 rounded-xl transition-all cursor-pointer active:scale-95 shadow-sm"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--md-sys-color-primary)] hover:text-[#03593e] bg-[var(--md-sys-color-surface-container-high)] hover:bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] px-3 py-1.5 rounded-full transition-all cursor-pointer active:scale-95 shadow-sm"
                   >
                     <ArrowLeft className="w-3.5 h-3.5" />
                     <span>← Zurück zu Einstellungen</span>
                   </button>
 
-                  <div className="bg-zinc-950 border border-zinc-900 rounded-2xl p-4 space-y-4 shadow-md">
+                  <div className="bg-[var(--md-sys-color-surface-container)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 space-y-4 shadow-sm">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-850 flex items-center justify-center text-amber-400 text-lg shrink-0">
+                      <div className="w-10 h-10 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-amber-600 text-lg shrink-0">
                         🪲
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-white">
+                        <h3 className="text-sm font-bold text-[var(--md-sys-color-on-surface)]">
                           🪲 Fütterungs- &amp; Schädlings-Guide
                         </h3>
-                        <p className="text-[11px] text-zinc-400">
+                        <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)]">
                           Kompakte Wissens-Kacheln für artgerechte Ernährung &amp; sicheren Pflanzenschutz
                         </p>
                       </div>
                     </div>
 
                     {/* Guide Filter-Tabs */}
-                    <div className="flex rounded-xl bg-zinc-900 p-1 border border-zinc-850">
+                    <div className="flex rounded-full bg-[var(--md-sys-color-surface-container-highest)] p-1 border border-[var(--md-sys-color-outline-variant)]">
                       <button
                         type="button"
                         onClick={() => {
                           triggerHaptic('subtle');
                           setGuideTab('feeding');
                         }}
-                        className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                        className={`flex-1 py-1.5 text-xs font-semibold rounded-full m3-filter-pill-interactive transition-all cursor-pointer ${
                           guideTab === 'feeding'
-                            ? 'bg-zinc-800 text-emerald-400 shadow-sm'
-                            : 'text-zinc-400 hover:text-zinc-200'
+                            ? 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] shadow-sm'
+                            : 'text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]'
                         }`}
                       >
                         🍽️ Fütterung &amp; Nährstoffe
@@ -3977,10 +4548,10 @@ export default function App() {
                           triggerHaptic('subtle');
                           setGuideTab('pests');
                         }}
-                        className={`flex-1 py-1.5 text-xs font-semibold rounded-lg transition-all cursor-pointer ${
+                        className={`flex-1 py-1.5 text-xs font-semibold rounded-full m3-filter-pill-interactive transition-all cursor-pointer ${
                           guideTab === 'pests'
-                            ? 'bg-zinc-800 text-amber-400 shadow-sm'
-                            : 'text-zinc-400 hover:text-zinc-200'
+                            ? 'bg-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-primary)] shadow-sm'
+                            : 'text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]'
                         }`}
                       >
                         🛡️ Schädlingsbekämpfung
@@ -3990,59 +4561,59 @@ export default function App() {
                     {/* Kachel 1: "Fütterung & Nährstoffe" */}
                     {(guideTab === 'feeding') && (
                       <div className="space-y-3.5 animate-in fade-in duration-150">
-                        <div className="bg-zinc-900/90 border border-zinc-850 rounded-xl p-4 space-y-3">
+                        <div className="bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <span className="text-base">🍽️</span>
-                              <h4 className="text-xs font-bold text-zinc-100 uppercase tracking-wider">
+                              <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] uppercase tracking-wider">
                                 Kachel: Fütterung &amp; Nährstoffe
                               </h4>
                             </div>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950/70 border border-emerald-800 text-emerald-300">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 text-[var(--md-sys-color-on-primary-container)]">
                               Artgerecht
                             </span>
                           </div>
 
                           {/* Wichtige Warnung */}
-                          <div className="p-3 rounded-xl bg-red-950/70 border border-red-800/70 text-red-200 space-y-1 shadow-sm">
-                            <div className="flex items-center gap-2 text-xs font-bold text-red-100">
-                              <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                          <div className="p-3.5 rounded-2xl bg-[#FEE2E2] border border-[#FCA5A5] text-[#7F1D1D] space-y-1 shadow-xs">
+                            <div className="flex items-center gap-2 text-xs font-bold text-[#991B1B]">
+                              <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
                               <span>Wichtige Warnung:</span>
                             </div>
-                            <p className="text-xs leading-relaxed font-semibold text-red-200 pl-6">
+                            <p className="text-xs leading-relaxed font-semibold text-[#991B1B] pl-6">
                               „Niemals rohes Fleisch, Käse oder Dünger verwenden (führt zu Fallen-Fäulnis!).“
                             </p>
-                            <p className="text-[11px] text-red-300/80 leading-relaxed pl-6 pt-0.5">
+                            <p className="text-[11px] text-[#7F1D1D] leading-relaxed pl-6 pt-0.5">
                               Fett und Proteine herkömmlicher Lebensmittel überfordern die Verdauungsenzyme der Pflanzen völlig. Die Falle verfault innerhalb weniger Tage und stirbt schwarz ab.
                             </p>
                           </div>
 
                           {/* Tipp */}
-                          <div className="p-3 rounded-xl bg-emerald-950/70 border border-emerald-800/70 text-emerald-200 space-y-1 shadow-sm">
-                            <div className="flex items-center gap-2 text-xs font-bold text-emerald-100">
-                              <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
+                          <div className="p-3.5 rounded-2xl bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 text-[var(--md-sys-color-on-primary-container)] space-y-1 shadow-xs">
+                            <div className="flex items-center gap-2 text-xs font-bold text-[var(--md-sys-color-on-primary-container)]">
+                              <Sparkles className="w-4 h-4 text-[var(--md-sys-color-primary)] shrink-0" />
                               <span>Praxistipp:</span>
                             </div>
-                            <p className="text-xs leading-relaxed font-semibold text-emerald-200 pl-6">
+                            <p className="text-xs leading-relaxed font-semibold text-[var(--md-sys-color-on-primary-container)] pl-6">
                               „Pflanzen im Freiland fangen selbstständig genug. Für Zimmerkultur: Fischfutter-Flocken auf Sonnentau-Minkeln vorsichtig anfeuchten.“
                             </p>
-                            <p className="text-[11px] text-emerald-300/80 leading-relaxed pl-6 pt-0.5">
+                            <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-relaxed pl-6 pt-0.5">
                               Ein winziger Krümel angefeuchtetes Fischfutter oder getrocknete Mückenlarven alle 3–4 Wochen stimuliert die Tentakel sanft, ohne das Blatt zu belasten.
                             </p>
                           </div>
 
                           {/* Vertiefende Regeln für Zimmerkultur */}
                           <div className="space-y-2 pt-1">
-                            <div className="p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-300 space-y-1">
-                              <span className="font-bold text-emerald-400">Venusfliegenfalle (Dionaea muscipula):</span>
-                              <p className="text-zinc-400 leading-relaxed">
+                            <div className="p-3 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] text-[11px] text-[var(--md-sys-color-on-surface)] space-y-1">
+                              <span className="font-bold text-[var(--md-sys-color-primary)]">Venusfliegenfalle (Dionaea muscipula):</span>
+                              <p className="text-[var(--md-sys-color-on-surface-variant)] leading-relaxed">
                                 Nur lebende Beute füttern oder leblose Insekten mit einem dünnen Borstenpinsel/Zahnstocher leicht bewegen, um die Triggerhaare mehrfach zu reizen. Max. 1 Falle pro Pflanze gleichzeitig!
                               </p>
                             </div>
 
-                            <div className="p-2.5 rounded-lg bg-zinc-950 border border-zinc-800 text-[11px] text-zinc-300 space-y-1">
-                              <span className="font-bold text-cyan-400">Kannenpflanzen (Nepenthes):</span>
-                              <p className="text-zinc-400 leading-relaxed">
+                            <div className="p-3 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] text-[11px] text-[var(--md-sys-color-on-surface)] space-y-1">
+                              <span className="font-bold text-cyan-700">Kannenpflanzen (Nepenthes):</span>
+                              <p className="text-[var(--md-sys-color-on-surface-variant)] leading-relaxed">
                                 Flüssigkeit in den Kannen niemals ausleeren. Falls eine Kanne austrocknet, nur wenige Tropfen Reinstwasser zugeben – niemals Mineraldünger hineingießen.
                               </p>
                             </div>
@@ -4054,73 +4625,73 @@ export default function App() {
                     {/* Kachel 2: "Schädlingsbekämpfung" */}
                     {(guideTab === 'pests') && (
                       <div className="space-y-3.5 animate-in fade-in duration-150">
-                        <div className="bg-zinc-900/90 border border-zinc-850 rounded-xl p-4 space-y-3">
+                        <div className="bg-[var(--md-sys-color-surface-container-low)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl p-4 space-y-3">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <span className="text-base">🛡️</span>
-                              <h4 className="text-xs font-bold text-zinc-100 uppercase tracking-wider">
+                              <h4 className="text-xs font-bold text-[var(--md-sys-color-on-surface)] uppercase tracking-wider">
                                 Kachel: Schädlingsbekämpfung
                               </h4>
                             </div>
-                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-950/70 border border-amber-800 text-amber-300">
+                            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 font-semibold">
                               Karnivoren-sicher
                             </span>
                           </div>
 
                           {/* Häufige Schädlinge Badge-Box */}
-                          <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 space-y-2">
+                          <div className="p-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] space-y-2">
                             <div className="flex items-center justify-between">
-                              <span className="text-xs font-semibold text-zinc-200">
+                              <span className="text-xs font-semibold text-[var(--md-sys-color-on-surface)]">
                                 Häufige Schädlinge:
                               </span>
                               <div className="flex items-center gap-1.5">
-                                <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-700 text-amber-300">
+                                <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-100 border border-amber-300 text-amber-900">
                                   Blattläuse
                                 </span>
-                                <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-950/80 border border-amber-700 text-amber-300">
+                                <span className="text-[11px] font-bold px-2 py-0.5 rounded-md bg-amber-100 border border-amber-300 text-amber-900">
                                   Trauermücken
                                 </span>
                               </div>
                             </div>
-                            <p className="text-[11px] text-zinc-400 leading-relaxed">
+                            <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] leading-relaxed">
                               Feuchtes Moormilieu lockt Trauermücken an; trocken-warme Zimmerluft begünstigt Blattläuse an zarten Neuaustrieben.
                             </p>
                           </div>
 
                           {/* Karnivoren-sichere Behandlung Warnung & Handlungsanweisung */}
-                          <div className="p-3.5 rounded-xl bg-amber-950/60 border border-amber-800/80 text-amber-200 space-y-2 shadow-sm">
-                            <div className="flex items-center gap-2 text-xs font-bold text-amber-100">
-                              <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                          <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 space-y-2 shadow-xs">
+                            <div className="flex items-center gap-2 text-xs font-bold text-amber-900">
+                              <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
                               <span>Karnivoren-sichere Behandlung:</span>
                             </div>
-                            <p className="text-xs leading-relaxed font-semibold text-amber-100 pl-6">
+                            <p className="text-xs leading-relaxed font-semibold text-amber-900 pl-6">
                               „Keine ölhaltigen Spritzmittel (verkleben die Fallen!). Nutze Raubmilben, Lizetan-Stäbchen oder Nützlinge (Nematoden).“
                             </p>
-                            <p className="text-[11px] text-amber-300/80 leading-relaxed pl-6">
+                            <p className="text-[11px] text-amber-800 leading-relaxed pl-6">
                               Ölfilme (wie Rapsöl- oder Paraffinölpräparate) verstopfen die feinen Drüsen und Atmungsöffnungen der Fangblätter dauerhaft.
                             </p>
                           </div>
 
                           {/* Gezielte Maßnahmen nach Schädling */}
-                          <div className="space-y-2 pt-1 text-xs">
+                          <div className="space-y-2.5 pt-1 text-xs">
                             {/* Blattläuse */}
-                            <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/90 space-y-1.5">
+                            <div className="p-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] space-y-1.5">
                               <div className="flex items-center justify-between">
-                                <span className="font-bold text-amber-400">Blattläuse wirksam bekämpfen:</span>
-                                <span className="text-[10px] text-zinc-500 font-mono">Tauchbad-Methode</span>
+                                <span className="font-bold text-amber-800">Blattläuse wirksam bekämpfen:</span>
+                                <span className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-mono">Tauchbad-Methode</span>
                               </div>
-                              <p className="text-zinc-300 text-[11px] leading-relaxed">
+                              <p className="text-[var(--md-sys-color-on-surface)] text-[11px] leading-relaxed">
                                 <strong>Das 24h-Tauchbad:</strong> Die gesamte Pflanze samt Topf 24 Stunden vollständig in Regen- oder Destilliertwasser untertauchen. Die Läuse ersticken zuverlässig, während Moorpflanzen den Sauerstoffmangel problemlos überstehen. Alternativ Lizetan-Stäbchen im Substrat oder Raubmilben.
                               </p>
                             </div>
 
                             {/* Trauermücken */}
-                            <div className="p-3 rounded-xl bg-zinc-950 border border-zinc-800/90 space-y-1.5">
+                            <div className="p-3.5 rounded-2xl bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] space-y-1.5">
                               <div className="flex items-center justify-between">
-                                <span className="font-bold text-cyan-400">Trauermücken biologisch tilgen:</span>
-                                <span className="text-[10px] text-zinc-500 font-mono">Nützlinge</span>
+                                <span className="font-bold text-cyan-800">Trauermücken biologisch tilgen:</span>
+                                <span className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] font-mono">Nützlinge</span>
                               </div>
-                              <p className="text-zinc-300 text-[11px] leading-relaxed">
+                              <p className="text-[var(--md-sys-color-on-surface)] text-[11px] leading-relaxed">
                                 <strong>SF-Nematoden (Steinernema feltiae):</strong> Einfach mit kalkfreiem Gießwasser ausbringen. Die Nützlinge parasitieren die Larven im Moortorf. Zusätzlich Gelbtafeln aufstellen und Sonnentau-Pflanzen (Drosera) als natürliche Fangbarriere nutzen.
                               </p>
                             </div>
@@ -4136,102 +4707,154 @@ export default function App() {
         </main>
 
         {/* ========================================================
-            NAVIGATION (Bottom-Bar: Ebene 2: Surface-Container-High & Ambient Shadow)
+            SUB-STEP 8.4.2: COMPACT ICON-ONLY FLOATING TOOLBAR (M3 Expressive Light Mode)
            ======================================================== */}
-        <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[var(--md-sys-color-surface-container-high)]/95 border-t border-[var(--md-sys-color-outline-variant)] backdrop-blur-md z-30 px-6 py-2 shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)]">
-          <div className="flex items-center justify-around">
-            {/* Tab 1: Meine Pflanzen */}
-            <button
-              type="button"
-              onClick={() => {
-                triggerHaptic('subtle');
-                setActiveTab('plants');
-              }}
-              className={`flex flex-col items-center gap-1 text-xs font-medium transition-colors py-1 px-3 rounded-xl cursor-pointer ${
-                activeTab === 'plants'
-                  ? 'text-[var(--md-sys-color-primary)] font-semibold'
-                  : 'text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]'
-              }`}
-            >
-              <div className="relative">
-                <Layers className={`w-5 h-5 ${activeTab === 'plants' ? 'stroke-2 text-[var(--md-sys-color-primary)]' : 'stroke-[1.75]'}`} />
-                {plants.length > 0 && (
-                  <span className="absolute -top-1 -right-2 text-[9px] font-medium w-3.5 h-3.5 rounded-full flex items-center justify-center bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)]">
-                    {plants.length}
-                  </span>
-                )}
-              </div>
-              <span className={`tracking-tight text-[11px] ${activeTab === 'plants' ? 'text-[var(--md-sys-color-primary)] font-semibold' : 'text-[var(--md-sys-color-on-surface-variant)]'}`}>
-                Meine Pflanzen
-              </span>
-              {activeTab === 'plants' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--md-sys-color-primary)]" />
-              )}
-            </button>
-
-            {/* Tab 2: KI-Scanner */}
-            <button
-              type="button"
-              onClick={() => {
-                triggerHaptic('subtle');
-                setActiveTab('scanner');
-              }}
-              className={`flex flex-col items-center gap-1 text-xs font-medium transition-colors py-1 px-3 rounded-xl cursor-pointer ${
-                activeTab === 'scanner'
-                  ? 'text-[var(--md-sys-color-primary)] font-semibold'
-                  : 'text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]'
-              }`}
-            >
-              <div className="relative">
-                <Camera className={`w-5 h-5 ${activeTab === 'scanner' ? 'stroke-2 text-[var(--md-sys-color-primary)]' : 'stroke-[1.75]'}`} />
-                <span className="absolute -top-1 -right-2 bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)] text-[8px] font-mono px-1 rounded-full">
-                  AI
+        <nav
+          aria-label="Hauptnavigation"
+          className="m3-floating-toolbar fixed bottom-4 left-1/2 -translate-x-1/2 transition-all duration-300 flex items-center justify-center gap-2 max-w-[calc(100vw-32px)] px-3 py-1.5"
+        >
+          {/* Tab 1: Meine Pflanzen */}
+          <button
+            type="button"
+            onClick={() => {
+              triggerHaptic('subtle');
+              setActiveTab('plants');
+            }}
+            title="Meine Pflanzen"
+            aria-label="Meine Pflanzen (Pflanzenübersicht)"
+            aria-current={activeTab === 'plants' ? 'page' : undefined}
+            style={{
+              transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+            }}
+            className={`w-12 h-12 min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center relative cursor-pointer select-none m3-touch-ripple ${
+              activeTab === 'plants'
+                ? 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] shadow-sm scale-[1.08]'
+                : 'bg-transparent text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-highest)]/50'
+            }`}
+          >
+            <div className="relative flex items-center justify-center">
+              <Layers
+                style={{
+                  transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+                }}
+                className={`w-5.5 h-5.5 ${
+                  activeTab === 'plants'
+                    ? 'stroke-[2.25] text-[var(--md-sys-color-on-primary-container)] fill-[var(--md-sys-color-primary)]/20'
+                    : 'stroke-[1.75] text-[var(--md-sys-color-on-surface-variant)] fill-none'
+                }`}
+              />
+              {plants.length > 0 && (
+                <span
+                  style={{
+                    transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+                  }}
+                  className={`absolute -top-1.5 -right-2 text-[9px] font-bold min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center ${
+                    activeTab === 'plants'
+                      ? 'bg-[var(--md-sys-color-primary)] text-white shadow-xs'
+                      : 'bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)]'
+                  }`}
+                >
+                  {plants.length}
                 </span>
-              </div>
-              <span className={`tracking-tight text-[11px] ${activeTab === 'scanner' ? 'text-[var(--md-sys-color-primary)] font-semibold' : 'text-[var(--md-sys-color-on-surface-variant)]'}`}>
-                KI-Scanner
-              </span>
-              {activeTab === 'scanner' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--md-sys-color-primary)]" />
               )}
-            </button>
+            </div>
+          </button>
 
-            {/* Tab 3: Einstellungen */}
-            <button
-              type="button"
-              onClick={() => {
-                triggerHaptic('subtle');
-                setActiveTab('settings');
-              }}
-              className={`flex flex-col items-center gap-1 text-xs font-medium transition-colors py-1 px-3 rounded-xl cursor-pointer ${
-                activeTab === 'settings'
-                  ? 'text-[var(--md-sys-color-primary)] font-semibold'
-                  : 'text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]'
-              }`}
-            >
-              <div className="relative">
-                <Settings className={`w-5 h-5 ${activeTab === 'settings' ? 'stroke-2 text-[var(--md-sys-color-primary)]' : 'stroke-[1.75]'}`} />
-              </div>
-              <span className={`tracking-tight text-[11px] ${activeTab === 'settings' ? 'text-[var(--md-sys-color-primary)] font-semibold' : 'text-[var(--md-sys-color-on-surface-variant)]'}`}>
-                Einstellungen
+          {/* Tab 2: KI-Scanner */}
+          <button
+            type="button"
+            onClick={() => {
+              triggerHaptic('subtle');
+              setActiveTab('scanner');
+            }}
+            title="KI-Scanner"
+            aria-label="KI-Pflanzenscanner (Gemini Vision Diagnose)"
+            aria-current={activeTab === 'scanner' ? 'page' : undefined}
+            style={{
+              transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+            }}
+            className={`w-12 h-12 min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center relative cursor-pointer select-none m3-touch-ripple ${
+              activeTab === 'scanner'
+                ? 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] shadow-sm scale-[1.08]'
+                : 'bg-transparent text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-highest)]/50'
+            }`}
+          >
+            <div className="relative flex items-center justify-center">
+              <Camera
+                style={{
+                  transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+                }}
+                className={`w-5.5 h-5.5 ${
+                  activeTab === 'scanner'
+                    ? 'stroke-[2.25] text-[var(--md-sys-color-on-primary-container)] fill-[var(--md-sys-color-primary)]/20'
+                    : 'stroke-[1.75] text-[var(--md-sys-color-on-surface-variant)] fill-none'
+                }`}
+              />
+              <span
+                style={{
+                  transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+                }}
+                className={`absolute -top-1.5 -right-2.5 text-[8px] font-mono font-bold px-1 rounded-full ${
+                  activeTab === 'scanner'
+                    ? 'bg-[var(--md-sys-color-primary)] text-white shadow-xs'
+                    : 'bg-[var(--md-sys-color-surface-container-highest)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)]'
+                }`}
+              >
+                AI
               </span>
-              {activeTab === 'settings' && (
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--md-sys-color-primary)]" />
-              )}
-            </button>
-          </div>
+            </div>
+          </button>
+
+          {/* Tab 3: Einstellungen & Tools */}
+          <button
+            type="button"
+            onClick={() => {
+              triggerHaptic('subtle');
+              setActiveTab('settings');
+            }}
+            title="Einstellungen & Tools"
+            aria-label="Einstellungen und Rechner-Tools"
+            aria-current={activeTab === 'settings' ? 'page' : undefined}
+            style={{
+              transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+            }}
+            className={`w-12 h-12 min-w-[48px] min-h-[48px] rounded-full flex items-center justify-center relative cursor-pointer select-none m3-touch-ripple ${
+              activeTab === 'settings'
+                ? 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] shadow-sm scale-[1.08]'
+                : 'bg-transparent text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] hover:bg-[var(--md-sys-color-surface-container-highest)]/50'
+            }`}
+          >
+            <div className="relative flex items-center justify-center">
+              <Settings
+                style={{
+                  transition: 'all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial)',
+                }}
+                className={`w-5.5 h-5.5 ${
+                  activeTab === 'settings'
+                    ? 'stroke-[2.25] text-[var(--md-sys-color-on-primary-container)] fill-[var(--md-sys-color-primary)]/20'
+                    : 'stroke-[1.75] text-[var(--md-sys-color-on-surface-variant)] fill-none'
+                }`}
+              />
+            </div>
+          </button>
         </nav>
 
         {/* ========================================================
-            MODAL ("Pflanze hinzufügen" - Ebene 2: Surface-Container-High & Ambient Shadow)
+            MODAL ("Pflanze hinzufügen" - Sub-Step 8.5.2: M3 Modal Expansion & Backdrop)
            ======================================================== */}
         {isModalOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-150"
+            className={`fixed inset-0 z-50 flex items-center justify-center p-4 m3-modal-backdrop ${
+              isModalClosing ? 'm3-backdrop-closing' : ''
+            }`}
             onClick={handleCloseModal}
           >
             <div
-              className="w-full max-w-md bg-[var(--md-sys-color-surface-container-high)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 md:p-6 text-[var(--md-sys-color-on-surface)] relative backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)]"
+              role="dialog"
+              aria-modal="true"
+              className={`w-full max-w-md bg-[var(--md-sys-color-surface-container-high)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-5 md:p-6 text-[var(--md-sys-color-on-surface)] relative backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)] ${
+                isModalClosing ? 'm3-dialog-closing' : 'm3-dialog-animated'
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
@@ -4301,9 +4924,9 @@ export default function App() {
                 <div>
                   <label
                     htmlFor={nameInputId}
-                    className="block text-xs font-medium text-zinc-300 mb-1.5"
+                    className="block text-xs font-semibold text-[var(--md-sys-color-on-surface)] mb-1.5"
                   >
-                    Name der Pflanze <span className="text-emerald-400">*</span>
+                    Name der Pflanze <span className="text-[var(--md-sys-color-primary)] font-bold">*</span>
                   </label>
                   <input
                     id={nameInputId}
@@ -4314,7 +4937,7 @@ export default function App() {
                       setFormData({ ...formData, name: e.target.value })
                     }
                     placeholder="z.B. Venusfliegenfalle Fred"
-                    className="w-full bg-zinc-900 border border-zinc-800 text-white rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none transition-all placeholder:text-zinc-600"
+                    className="m3-input"
                   />
                 </div>
 
@@ -4322,28 +4945,28 @@ export default function App() {
                 <div>
                   <label
                     htmlFor={speciesSelectId}
-                    className="block text-xs font-medium text-zinc-300 mb-1.5"
+                    className="block text-xs font-semibold text-[var(--md-sys-color-on-surface)] mb-1.5"
                   >
-                    Pflanzenart <span className="text-emerald-400">*</span>
+                    Pflanzenart <span className="text-[var(--md-sys-color-primary)] font-bold">*</span>
                   </label>
                   <div className="relative">
                     <button
                       type="button"
                       id={speciesSelectId}
                       onClick={() => setIsSpeciesDropdownOpen((prev) => !prev)}
-                      className="w-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-white rounded-xl p-3 text-sm focus:border-emerald-500 focus:outline-none transition-all flex items-center justify-between cursor-pointer"
+                      className="w-full bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] hover:border-[var(--md-sys-color-primary)] text-[var(--md-sys-color-on-surface)] rounded-xl p-3 text-sm focus:border-[var(--md-sys-color-primary)] focus:outline-none transition-all flex items-center justify-between cursor-pointer"
                     >
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="w-6 h-6 rounded-lg bg-zinc-950 border border-zinc-800 flex items-center justify-center text-emerald-400 shrink-0 shadow-inner">
+                        <div className="w-6 h-6 rounded-lg bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] flex items-center justify-center text-[var(--md-sys-color-primary)] shrink-0 shadow-none">
                           <SpeciesIcon species={formData.species} className="w-3.5 h-3.5 stroke-[1.8]" />
                         </div>
-                        <span className="truncate text-xs font-medium text-zinc-100">
+                        <span className="truncate text-xs font-medium text-[var(--md-sys-color-on-surface)]">
                           {formData.species}
                         </span>
                       </div>
                       <ChevronDown
-                        className={`w-4 h-4 text-zinc-400 transition-transform ${
-                          isSpeciesDropdownOpen ? 'rotate-180 text-emerald-400' : ''
+                        className={`w-4 h-4 text-[var(--md-sys-color-on-surface-variant)] transition-transform ${
+                          isSpeciesDropdownOpen ? 'rotate-180 text-[var(--md-sys-color-primary)]' : ''
                         }`}
                       />
                     </button>
@@ -4362,31 +4985,31 @@ export default function App() {
                               }}
                               className={`w-full flex items-center justify-between p-2.5 rounded-lg text-left transition-all cursor-pointer ${
                                 isSelected
-                                  ? 'bg-zinc-900 text-white border border-emerald-800/40'
-                                  : 'hover:bg-zinc-900/60 text-zinc-300'
+                                  ? 'bg-[var(--md-sys-color-primary-container)] text-[var(--md-sys-color-on-primary-container)] border border-[#02432E]/30'
+                                  : 'hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-on-surface)]'
                               }`}
                             >
                               <div className="flex items-center gap-2.5">
                                 <div
                                   className={`w-7 h-7 rounded-lg border flex items-center justify-center shrink-0 ${
                                     isSelected
-                                      ? 'bg-emerald-950/60 border-emerald-800/60 text-emerald-400'
-                                      : 'bg-zinc-900 border-zinc-800 text-zinc-400'
+                                      ? 'bg-[var(--md-sys-color-primary-container)] border-[#02432E]/30 text-[var(--md-sys-color-primary)]'
+                                      : 'bg-[var(--md-sys-color-surface-container-lowest)] border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface-variant)]'
                                   }`}
                                 >
                                   <SpeciesIcon species={opt.value} className="w-4 h-4 stroke-[1.8]" />
                                 </div>
                                 <div>
-                                  <p className="text-xs font-semibold text-white leading-tight">
+                                  <p className="text-xs font-semibold text-[var(--md-sys-color-on-surface)] leading-tight">
                                     {opt.name}
                                   </p>
-                                  <p className="text-[10px] text-zinc-500 mt-0.5">
+                                  <p className="text-[10px] text-[var(--md-sys-color-on-surface-variant)] mt-0.5">
                                     {opt.trapType} • {opt.description}
                                   </p>
                                 </div>
                               </div>
                               {isSelected && (
-                                <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                                <Check className="w-4 h-4 text-[var(--md-sys-color-primary)] shrink-0" />
                               )}
                             </button>
                           );
@@ -4400,9 +5023,9 @@ export default function App() {
                 <div>
                   <label
                     htmlFor={zipCodeInputId}
-                    className="block text-xs font-medium text-zinc-300 mb-1.5"
+                    className="block text-xs font-semibold text-[var(--md-sys-color-on-surface)] mb-1.5"
                   >
-                    Postleitzahl <span className="text-emerald-400">*</span>
+                    Postleitzahl <span className="text-[var(--md-sys-color-primary)] font-bold">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -4418,26 +5041,26 @@ export default function App() {
                       }}
                       placeholder="z.B. 50354"
                       maxLength={5}
-                      className={`w-full bg-zinc-900 border text-white rounded-xl p-3 pl-9 pr-9 text-sm focus:outline-none transition-all placeholder:text-zinc-600 ${
+                      className={`m3-input pl-9 pr-9 ${
                         zipValidation.status === 'valid'
-                          ? 'border-emerald-500/80 focus:border-emerald-400'
+                          ? 'm3-input-success'
                           : zipValidation.status === 'invalid'
-                          ? 'border-red-500/80 focus:border-red-400'
-                          : 'border-zinc-800 focus:border-emerald-500'
+                          ? 'm3-input-error'
+                          : ''
                       }`}
                     />
-                    <MapPin className="w-4 h-4 text-zinc-500 absolute left-3 top-3.5" />
+                    <MapPin className="w-4 h-4 text-[var(--md-sys-color-on-surface-variant)] absolute left-3 top-3.5" />
 
                     {/* Status-Icon im Input */}
-                    <div className="absolute right-3 top-3.5">
+                    <div className="absolute right-3 top-3.5 flex items-center justify-center">
                       {zipValidation.status === 'loading' && (
-                        <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
+                        <M3ShapeLoader size={16} color="var(--md-sys-color-primary)" />
                       )}
                       {zipValidation.status === 'valid' && (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-400 animate-in zoom-in-50 duration-150" />
+                        <CheckCircle2 className="w-4 h-4 text-[var(--md-sys-color-primary)] animate-in zoom-in-50 duration-150" />
                       )}
                       {zipValidation.status === 'invalid' && (
-                        <AlertTriangle className="w-4 h-4 text-red-400 animate-in zoom-in-50 duration-150" />
+                        <AlertTriangle className="w-4 h-4 text-red-600 animate-in zoom-in-50 duration-150" />
                       )}
                     </div>
                   </div>
@@ -4445,8 +5068,8 @@ export default function App() {
                   {/* UI-Feedback direkt unter dem Input-Feld */}
                   <div className="mt-1.5 min-h-[18px]">
                     {zipValidation.status === 'loading' && (
-                      <p className="text-[11px] text-zinc-400 flex items-center gap-1.5 animate-in fade-in">
-                        <Loader2 className="w-3 h-3 text-emerald-400 animate-spin shrink-0" />
+                      <p className="text-[11px] text-[var(--md-sys-color-on-surface-variant)] flex items-center gap-1.5 animate-in fade-in">
+                        <M3ShapeLoader size={12} color="var(--md-sys-color-primary)" />
                         <span>Ort wird ermittelt...</span>
                       </p>
                     )}
@@ -4480,7 +5103,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={handleCloseModal}
-                    className="px-4 py-2 text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-900 rounded-xl transition-colors cursor-pointer"
+                    className="px-4 py-2 text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-900 rounded-full m3-btn-morph transition-colors cursor-pointer"
                   >
                     {isSavedWithWarning ? 'Schließen' : 'Abbrechen'}
                   </button>
@@ -4490,7 +5113,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={handleCloseModal}
-                      className="px-5 py-2.5 text-xs bg-emerald-950/70 hover:bg-emerald-900 text-emerald-300 border border-emerald-800 font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
+                      className="px-5 py-2.5 text-xs m3-btn-primary m3-btn-morph bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-full transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>Fertig</span>
@@ -4506,11 +5129,11 @@ export default function App() {
                           ? 'Bitte gib einen Namen ein'
                           : 'Pflanze speichern'
                       }
-                      className="px-5 py-2.5 text-xs bg-zinc-900 hover:bg-zinc-800 text-emerald-400 border border-zinc-800 hover:border-emerald-800/60 font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+                      className="px-5 py-2.5 text-xs m3-btn-primary m3-btn-morph bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-full transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
                     >
                       {isSubmitting ? (
                         <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <M3ShapeLoader size={14} color="var(--md-sys-color-on-primary)" />
                           <span>Wird gespeichert...</span>
                         </>
                       ) : (
@@ -4525,25 +5148,26 @@ export default function App() {
         )}
 
         {/* ========================================================
-            PLANT DETAIL BOTTOM-SHEET ("Pflanzen-Akte")
+            PLANT DETAIL BOTTOM-SHEET ("Pflanzen-Akte" - Sub-Step 8.5.2: Smooth Bottom-Sheet & Drag Handle)
            ======================================================== */}
         {activeDetailPlant && (
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="bottom-sheet-title"
-            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm animate-in fade-in duration-150 flex items-end justify-center"
-            onClick={() => {
-              triggerHaptic('subtle');
-              setSelectedPlant(null);
-            }}
+            className={`fixed inset-0 z-50 m3-sheet-backdrop flex items-end justify-center min-[840px]:hidden ${
+              isDetailClosing ? 'm3-backdrop-closing' : ''
+            }`}
+            onClick={handleCloseDetailPlant}
           >
             <div
-              className="fixed inset-x-0 bottom-0 z-50 bg-[var(--md-sys-color-surface-container-high)] border-t border-[var(--md-sys-color-outline-variant)] rounded-t-[28px] max-w-md mx-auto p-6 max-h-[85vh] overflow-y-auto animate-slide-up text-[var(--md-sys-color-on-surface)] space-y-4 backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)]"
+              className={`fixed inset-x-0 bottom-0 z-50 bg-[var(--md-sys-color-surface-container-high)] border-t border-[var(--md-sys-color-outline-variant)] rounded-t-[28px] max-w-md mx-auto p-6 max-h-[85vh] overflow-y-auto text-[var(--md-sys-color-on-surface)] space-y-4 backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)] ${
+                isDetailClosing ? 'm3-bottom-sheet-closing' : 'm3-bottom-sheet-animated'
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Drag Handle Bar */}
-              <div className="w-12 h-1.5 bg-[var(--md-sys-color-outline-variant)] rounded-full mx-auto -mt-2 mb-2 shrink-0 cursor-pointer" />
+              {/* Centered M3 Drag Handle (Sub-Step 8.5.2: 32px x 4px Pill) */}
+              <div className="m3-drag-handle" title="Schließen durch Tippen außerhalb" />
 
               {/* Header: Pflanzenname, Botanischer Name, PLZ und aktuelles Wetter */}
               {(() => {
@@ -4577,10 +5201,7 @@ export default function App() {
 
                       <button
                         type="button"
-                        onClick={() => {
-                          triggerHaptic('subtle');
-                          setSelectedPlant(null);
-                        }}
+                        onClick={handleCloseDetailPlant}
                         className="text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] p-2 rounded-xl hover:bg-[var(--md-sys-color-surface-container-high)] transition-colors cursor-pointer shrink-0"
                         aria-label="Pflanzen-Akte schließen (ESC)"
                         title="Schließen (ESC)"
@@ -4589,30 +5210,37 @@ export default function App() {
                       </button>
                     </div>
 
-                    {/* Standort & Aktuelles Wetter Badge Bar */}
-                    <div className="mt-3 flex flex-wrap items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-xs text-[var(--md-sys-color-on-surface)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-2.5 py-1 rounded-xl font-mono">
+                    {/* Standort & Aktuelles Wetter Badge Bar (Sub-Step 8.1.3) */}
+                    <div className="mt-3 flex flex-wrap items-center gap-1.5">
+                      <span className="inline-flex items-center gap-1.5 text-xs text-[var(--md-sys-color-on-surface)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-3 py-1 rounded-full font-mono">
                         <MapPin className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)] shrink-0" />
                         <span>{weather?.cityName ? `${cleanZip} ${weather.cityName}` : `PLZ ${cleanZip}`}</span>
                       </span>
 
                       {!weather || weather.loading ? (
-                        <span className="w-20 h-6 bg-[var(--md-sys-color-surface-container-highest)] animate-pulse rounded-xl inline-block" />
+                        <span className="w-20 h-6 bg-[var(--md-sys-color-surface-container-highest)] animate-pulse rounded-full inline-block" />
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-2.5 py-1 rounded-xl">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-surface-container-lowest)] border border-[var(--md-sys-color-outline-variant)] px-3 py-1 rounded-full">
                           <CloudSun className="w-3.5 h-3.5 text-[var(--md-sys-color-primary)] shrink-0" />
                           <span>{temp.toFixed(1)}°C</span>
                         </span>
                       )}
 
-                      <span className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-xl font-medium ${dormancy.badgeClass}`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${dormancy.dotClass}`} />
+                      <span className={dormancy.badgeClass}>
                         <span>{dormancy.badgeLabel}</span>
                       </span>
 
                       {substrateRinseReminder && (
-                        <span className="inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-xl font-medium text-[var(--md-sys-color-primary)] bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20">
-                          <span>🚿 Substratspülung in {getSubstrateRinseDays(activeDetailPlant.createdAt, activeDetailPlant.id)} {getSubstrateRinseDays(activeDetailPlant.createdAt, activeDetailPlant.id) === 1 ? 'Tag' : 'Tagen'}</span>
+                        <span
+                          className={`m3-status-badge ${
+                            getSubstrateRinseDays(activeDetailPlant.createdAt, activeDetailPlant.id) <= 3
+                              ? 'm3-status-badge-alert'
+                              : 'bg-[var(--md-sys-color-surface-container-lowest)] text-[var(--md-sys-color-on-surface-variant)] border border-[var(--md-sys-color-outline-variant)]'
+                          }`}
+                        >
+                          {getSubstrateRinseDays(activeDetailPlant.createdAt, activeDetailPlant.id) <= 3
+                            ? '💧 Spülen erforderlich'
+                            : `🚿 Substratspülung in ${getSubstrateRinseDays(activeDetailPlant.createdAt, activeDetailPlant.id)} ${getSubstrateRinseDays(activeDetailPlant.createdAt, activeDetailPlant.id) === 1 ? 'Tag' : 'Tagen'}`}
                         </span>
                       )}
                     </div>
@@ -4726,12 +5354,17 @@ export default function App() {
                       type="button"
                       onClick={() => handleWaterPlant(activeDetailPlant.id)}
                       disabled={isWateringId === activeDetailPlant.id}
-                      className="w-full py-2.5 bg-[var(--md-sys-color-surface-container)] hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-primary)] border border-[var(--md-sys-color-outline-variant)] font-semibold rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.98] disabled:opacity-50"
+                      className="w-full py-2.5 m3-btn-tonal m3-btn-morph m3-state-layer bg-[var(--md-sys-color-surface-container)] hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-primary)] border border-[var(--md-sys-color-outline-variant)] font-semibold rounded-full text-xs transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
                     >
                       {isWateringId === activeDetailPlant.id ? (
                         <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <M3ShapeLoader size={14} color="var(--md-sys-color-primary)" />
                           <span>Wird in Historie gespeichert...</span>
+                        </>
+                      ) : recentlyWateredId === activeDetailPlant.id ? (
+                        <>
+                          <Check className="w-4 h-4 text-[var(--md-sys-color-primary)] m3-checkmark-pop" />
+                          <span>Heute gegossen erfasst ✓</span>
                         </>
                       ) : (
                         <>
@@ -4851,7 +5484,7 @@ export default function App() {
                                     <span className="text-xs text-[var(--md-sys-color-on-surface)] font-medium">
                                       {formatHistoryTimestamp(diag.timestamp)}
                                     </span>
-                                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[var(--md-sys-color-primary-container)] border border-[#02432E]/20 text-[var(--md-sys-color-on-primary-container)]">
+                                    <span className={getVitalityBadgeClass(diag.vitalityScore)}>
                                       {diag.vitalityScore}% Vitalität
                                     </span>
                                   </div>
@@ -4883,7 +5516,7 @@ export default function App() {
                     triggerHaptic('warning');
                     const id = activeDetailPlant.id;
                     const name = activeDetailPlant.name;
-                    setSelectedPlant(null);
+                    handleCloseDetailPlant();
                     handleDeletePlant(id, name);
                   }}
                   className="px-3.5 py-2 text-xs font-medium text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
@@ -4894,11 +5527,8 @@ export default function App() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    triggerHaptic('subtle');
-                    setSelectedPlant(null);
-                  }}
-                  className="px-5 py-2.5 text-xs bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-xl transition-all cursor-pointer flex items-center gap-1.5"
+                  onClick={handleCloseDetailPlant}
+                  className="px-5 py-2.5 text-xs m3-btn-primary m3-btn-morph bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-full transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
                 >
                   <span>Akte schließen</span>
                 </button>
@@ -4908,32 +5538,28 @@ export default function App() {
         )}
 
         {/* ========================================================
-            AUTH MODAL (Sub-Step 7.3.1 - M3 Light Mode Login / Registrieren Modal)
+            AUTH MODAL (Sub-Step 8.5.2 - M3 Backdrop & Dialog Expansion Physics)
            ======================================================== */}
         {isAuthModalOpen && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-in fade-in duration-150"
-            onClick={() => {
-              triggerHaptic('subtle');
-              setIsAuthModalOpen(false);
-              setAuthError(null);
-            }}
+            className={`fixed inset-0 z-50 flex items-center justify-center p-4 m3-modal-backdrop ${
+              isAuthModalClosing ? 'm3-backdrop-closing' : ''
+            }`}
+            onClick={handleCloseAuthModal}
           >
             <div
               role="dialog"
               aria-modal="true"
               aria-labelledby="auth-modal-title"
-              className="bg-[var(--md-sys-color-surface-container-high)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-6 max-w-sm w-full mx-auto relative animate-in zoom-in-95 duration-150 text-[var(--md-sys-color-on-surface)] backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)]"
+              className={`bg-[var(--md-sys-color-surface-container-high)] border border-[var(--md-sys-color-outline-variant)] rounded-[28px] p-6 max-w-sm w-full mx-auto relative text-[var(--md-sys-color-on-surface)] backdrop-blur-md shadow-[0_4px_20px_-2px_rgba(2,67,46,0.06)] ${
+                isAuthModalClosing ? 'm3-dialog-closing' : 'm3-dialog-animated'
+              }`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close Button X oben rechts */}
               <button
                 type="button"
-                onClick={() => {
-                  triggerHaptic('subtle');
-                  setIsAuthModalOpen(false);
-                  setAuthError(null);
-                }}
+                onClick={handleCloseAuthModal}
                 className="absolute top-5 right-5 p-1.5 text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)] rounded-xl hover:bg-[var(--md-sys-color-surface-container-highest)] cursor-pointer transition-colors"
                 title="Schließen"
                 aria-label="Modal schließen"
@@ -5003,7 +5629,7 @@ export default function App() {
                     >
                       {isAuthSubmitting ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin text-red-700" />
+                          <M3ShapeLoader size={16} color="#b91c1c" />
                           <span>Abmeldung läuft...</span>
                         </>
                       ) : (
@@ -5040,7 +5666,7 @@ export default function App() {
                   </div>
 
                   {/* Umschalter (Tabs) oben im Modal: "Anmelden" vs. "Konto erstellen" */}
-                  <div className="grid grid-cols-2 p-1 bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] rounded-2xl">
+                  <div className="grid grid-cols-2 p-1 bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] rounded-full">
                     <button
                       type="button"
                       onClick={() => {
@@ -5048,7 +5674,7 @@ export default function App() {
                         setAuthMode('login');
                         setAuthError(null);
                       }}
-                      className={`py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+                      className={`py-2 text-xs font-semibold rounded-full m3-filter-pill-interactive transition-all cursor-pointer ${
                         authMode === 'login'
                           ? 'bg-[var(--md-sys-color-surface-container-lowest)] text-[var(--md-sys-color-primary)] border border-[var(--md-sys-color-outline-variant)]'
                           : 'text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]'
@@ -5063,7 +5689,7 @@ export default function App() {
                         setAuthMode('register');
                         setAuthError(null);
                       }}
-                      className={`py-2 text-xs font-semibold rounded-xl transition-all cursor-pointer ${
+                      className={`py-2 text-xs font-semibold rounded-full m3-filter-pill-interactive transition-all cursor-pointer ${
                         authMode === 'register'
                           ? 'bg-[var(--md-sys-color-surface-container-lowest)] text-[var(--md-sys-color-primary)] border border-[var(--md-sys-color-outline-variant)]'
                           : 'text-[var(--md-sys-color-on-surface-variant)] hover:text-[var(--md-sys-color-on-surface)]'
@@ -5095,7 +5721,7 @@ export default function App() {
                         }}
                         placeholder="name@beispiel.de"
                         required
-                        className="bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface)] focus:border-[var(--md-sys-color-primary)] rounded-xl p-3 w-full text-sm outline-none transition-colors"
+                        className="m3-input"
                       />
                     </div>
 
@@ -5112,7 +5738,7 @@ export default function App() {
                         }}
                         placeholder="••••••••"
                         required
-                        className="bg-[var(--md-sys-color-surface-container-highest)] border border-[var(--md-sys-color-outline-variant)] text-[var(--md-sys-color-on-surface)] focus:border-[var(--md-sys-color-primary)] rounded-xl p-3 w-full text-sm outline-none transition-colors"
+                        className="m3-input"
                       />
                     </div>
 
@@ -5120,11 +5746,11 @@ export default function App() {
                     <button
                       type="submit"
                       disabled={isAuthSubmitting}
-                      className="bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-xl w-full py-3 text-sm transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99] disabled:opacity-50"
+                      className="m3-btn-primary m3-btn-morph bg-[var(--md-sys-color-primary)] hover:bg-[#03593e] text-[var(--md-sys-color-on-primary)] font-semibold rounded-full w-full py-3 text-sm transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50 shadow-sm"
                     >
                       {isAuthSubmitting ? (
                         <>
-                          <Loader2 className="w-4 h-4 animate-spin text-[var(--md-sys-color-on-primary)]" />
+                          <M3ShapeLoader size={16} color="var(--md-sys-color-on-primary)" />
                           <span>Anmeldung läuft...</span>
                         </>
                       ) : (
@@ -5146,7 +5772,7 @@ export default function App() {
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={isAuthSubmitting}
-                    className="bg-[var(--md-sys-color-surface-container-lowest)] hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)] font-medium rounded-xl w-full py-3 flex items-center justify-center gap-2 text-sm transition-all cursor-pointer active:scale-[0.99] disabled:opacity-50"
+                    className="m3-btn-morph bg-[var(--md-sys-color-surface-container-lowest)] hover:bg-[var(--md-sys-color-surface-container-high)] text-[var(--md-sys-color-on-surface)] border border-[var(--md-sys-color-outline-variant)] font-medium rounded-full w-full py-3 flex items-center justify-center gap-2 text-sm transition-all cursor-pointer disabled:opacity-50 shadow-none"
                   >
                     <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                       <path

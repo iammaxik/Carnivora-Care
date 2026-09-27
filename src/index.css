@@ -123,14 +123,13 @@
   --md-sys-color-inverse-on-surface: #F5F9F6;
   --md-sys-color-inverse-primary: #82D6AD;
 
-  /* M3 Shape Tokens (md.sys.shape.*) */
+  /* M3 Shape Tokens (md.sys.shape.*) (Sub-Step 8.3.1) */
   --md-sys-shape-corner-none: 0px;
-  --md-sys-shape-corner-extra-small: 4px;
   --md-sys-shape-corner-small: 8px;
   --md-sys-shape-corner-medium: 12px;
   --md-sys-shape-corner-large: 16px;
-  --md-sys-shape-corner-extra-large: 28px;          /* Radius 28px für Pflanzenkarten & Haupt-Container */
-  --md-sys-shape-corner-full: 9999px;
+  --md-sys-shape-corner-extra-large: 28px;          /* Radius 28px für Pflanzenkarten, Haupt-Container & Modals */
+  --md-sys-shape-corner-full: 9999px;               /* Pillenform für Badges & Filter-Pills */
 
   /* M3 Tonal Elevation Levels & Soft Ambient Shadows (Sub-Step 8.1.2) */
   --md-sys-elevation-level-0: 0;                    /* Ebene 0: App-Hintergrund (#F5F9F6) */
@@ -141,6 +140,15 @@
   /* Soft Ambient Elevation Shadow (sehr weich, diffus, 6% Deckkraft, waldgrün-getönt #02432E) */
   --md-sys-elevation-shadow-ambient: 0 4px 20px -2px rgba(2, 67, 46, 0.06);
   --md-sys-elevation-shadow-dialog: 0 8px 30px -4px rgba(2, 67, 46, 0.10);
+
+  /* M3 Expressive Motion Tokens & Spring Physics (Sub-Step 8.5.1) */
+  --md-sys-motion-easing-fast-spatial: cubic-bezier(0.4, 0.14, 0.3, 1.0);
+  --md-sys-motion-easing-default-spatial: cubic-bezier(0.38, 0.12, 0.2, 1.0);
+  --md-sys-motion-easing-slow-spatial: cubic-bezier(0.34, 0.1, 0.1, 1.0);
+
+  --md-sys-motion-duration-short: 200ms;
+  --md-sys-motion-duration-medium: 350ms;
+  --md-sys-motion-duration-long: 500ms;
 
   /* ------------------------------------------------------------------------
      TIER 3: COMPONENT TOKENS (md.comp.*)
@@ -168,11 +176,139 @@
   --md-comp-badge-primary-container: var(--md-sys-color-primary-container);
   --md-comp-badge-primary-label: var(--md-sys-color-on-primary-container);
 
+  /* Botanical Semantic Status Tokens (Sub-Step 8.1.3 - WCAG AA > 4.5:1) */
+  --md-sys-color-botanical-dormancy-container: var(--md-sys-color-tertiary-container); /* #FFDDB8 */
+  --md-sys-color-on-botanical-dormancy-container: var(--md-sys-color-on-tertiary-container); /* #2A1700 */
+  --md-sys-color-botanical-growth-container: var(--md-sys-color-primary-container); /* #D2E8DA */
+  --md-sys-color-on-botanical-growth-container: var(--md-sys-color-on-primary-container); /* #002114 */
+  --md-sys-color-botanical-alert-container: #FEE2E2;
+  --md-sys-color-on-botanical-alert-container: #991B1B;
+  --md-sys-color-botanical-vital-container: #D1FAE5;
+  --md-sys-color-on-botanical-vital-container: #065F46;
+  --md-sys-color-botanical-suspicious-container: #FFEDD5;
+  --md-sys-color-on-botanical-suspicious-container: #9A3412;
+
   /* Dialogs, Sheets, Inputs */
   --md-comp-dialog-container-color: var(--md-sys-color-surface-container);
   --md-comp-sheet-container-color: var(--md-sys-color-surface-container);
   --md-comp-input-container-color: var(--md-sys-color-surface-container-highest);
   --md-comp-input-outline-color: var(--md-sys-color-outline-variant);
+
+  /* ------------------------------------------------------------------------
+     M3 EXPRESSIVE 30-STUFEN TYPOGRAPHY SCALE (Sub-Step 8.2.1)
+     System-Font Stack für Datenschutz, 0ms Instant-Load & gestochen scharfe Render-Performance
+     ------------------------------------------------------------------------ */
+  --md-sys-typescale-font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* DISPLAY (57px, 45px, 36px) - Standard: 400 / Emphasized: 700 */
+  --md-sys-typescale-display-large-size: 57px;
+  --md-sys-typescale-display-large-line-height: 64px;
+  --md-sys-typescale-display-large-weight: 400;
+  --md-sys-typescale-display-large-tracking: -0.02em;
+  --md-sys-typescale-display-large-emphasized-weight: 700;
+  --md-sys-typescale-display-large-emphasized-tracking: -0.025em;
+
+  --md-sys-typescale-display-medium-size: 45px;
+  --md-sys-typescale-display-medium-line-height: 52px;
+  --md-sys-typescale-display-medium-weight: 400;
+  --md-sys-typescale-display-medium-tracking: -0.02em;
+  --md-sys-typescale-display-medium-emphasized-weight: 700;
+  --md-sys-typescale-display-medium-emphasized-tracking: -0.025em;
+
+  --md-sys-typescale-display-small-size: 36px;
+  --md-sys-typescale-display-small-line-height: 44px;
+  --md-sys-typescale-display-small-weight: 400;
+  --md-sys-typescale-display-small-tracking: -0.015em;
+  --md-sys-typescale-display-small-emphasized-weight: 700;
+  --md-sys-typescale-display-small-emphasized-tracking: -0.02em;
+
+  /* HEADLINE (32px, 28px, 24px) - Standard: 500 / Emphasized: 700 */
+  --md-sys-typescale-headline-large-size: 32px;
+  --md-sys-typescale-headline-large-line-height: 40px;
+  --md-sys-typescale-headline-large-weight: 500;
+  --md-sys-typescale-headline-large-tracking: -0.015em;
+  --md-sys-typescale-headline-large-emphasized-weight: 700;
+  --md-sys-typescale-headline-large-emphasized-tracking: -0.02em;
+
+  --md-sys-typescale-headline-medium-size: 28px;
+  --md-sys-typescale-headline-medium-line-height: 36px;
+  --md-sys-typescale-headline-medium-weight: 500;
+  --md-sys-typescale-headline-medium-tracking: -0.01em;
+  --md-sys-typescale-headline-medium-emphasized-weight: 700;
+  --md-sys-typescale-headline-medium-emphasized-tracking: -0.015em;
+
+  --md-sys-typescale-headline-small-size: 24px;
+  --md-sys-typescale-headline-small-line-height: 32px;
+  --md-sys-typescale-headline-small-weight: 500;
+  --md-sys-typescale-headline-small-tracking: 0;
+  --md-sys-typescale-headline-small-emphasized-weight: 700;
+  --md-sys-typescale-headline-small-emphasized-tracking: -0.01em;
+
+  /* TITLE (22px, 16px, 14px) - Standard: 500 / Emphasized: 600 */
+  --md-sys-typescale-title-large-size: 22px;
+  --md-sys-typescale-title-large-line-height: 28px;
+  --md-sys-typescale-title-large-weight: 500;
+  --md-sys-typescale-title-large-tracking: 0;
+  --md-sys-typescale-title-large-emphasized-weight: 600;
+  --md-sys-typescale-title-large-emphasized-tracking: -0.005em;
+
+  --md-sys-typescale-title-medium-size: 16px;
+  --md-sys-typescale-title-medium-line-height: 24px;
+  --md-sys-typescale-title-medium-weight: 500;
+  --md-sys-typescale-title-medium-tracking: 0.01em;
+  --md-sys-typescale-title-medium-emphasized-weight: 600;
+  --md-sys-typescale-title-medium-emphasized-tracking: 0.005em;
+
+  --md-sys-typescale-title-small-size: 14px;
+  --md-sys-typescale-title-small-line-height: 20px;
+  --md-sys-typescale-title-small-weight: 500;
+  --md-sys-typescale-title-small-tracking: 0.01em;
+  --md-sys-typescale-title-small-emphasized-weight: 600;
+  --md-sys-typescale-title-small-emphasized-tracking: 0.005em;
+
+  /* BODY (16px, 14px, 12px) - Standard: 400 / Emphasized: 500 */
+  --md-sys-typescale-body-large-size: 16px;
+  --md-sys-typescale-body-large-line-height: 24px;
+  --md-sys-typescale-body-large-weight: 400;
+  --md-sys-typescale-body-large-tracking: 0.015em;
+  --md-sys-typescale-body-large-emphasized-weight: 500;
+  --md-sys-typescale-body-large-emphasized-tracking: 0.01em;
+
+  --md-sys-typescale-body-medium-size: 14px;
+  --md-sys-typescale-body-medium-line-height: 20px;
+  --md-sys-typescale-body-medium-weight: 400;
+  --md-sys-typescale-body-medium-tracking: 0.015em;
+  --md-sys-typescale-body-medium-emphasized-weight: 500;
+  --md-sys-typescale-body-medium-emphasized-tracking: 0.01em;
+
+  --md-sys-typescale-body-small-size: 12px;
+  --md-sys-typescale-body-small-line-height: 16px;
+  --md-sys-typescale-body-small-weight: 400;
+  --md-sys-typescale-body-small-tracking: 0.02em;
+  --md-sys-typescale-body-small-emphasized-weight: 500;
+  --md-sys-typescale-body-small-emphasized-tracking: 0.015em;
+
+  /* LABEL (14px, 12px, 11px) - Standard: 500 / Emphasized: 700 */
+  --md-sys-typescale-label-large-size: 14px;
+  --md-sys-typescale-label-large-line-height: 20px;
+  --md-sys-typescale-label-large-weight: 500;
+  --md-sys-typescale-label-large-tracking: 0.02em;
+  --md-sys-typescale-label-large-emphasized-weight: 700;
+  --md-sys-typescale-label-large-emphasized-tracking: 0.05em;
+
+  --md-sys-typescale-label-medium-size: 12px;
+  --md-sys-typescale-label-medium-line-height: 16px;
+  --md-sys-typescale-label-medium-weight: 500;
+  --md-sys-typescale-label-medium-tracking: 0.03em;
+  --md-sys-typescale-label-medium-emphasized-weight: 700;
+  --md-sys-typescale-label-medium-emphasized-tracking: 0.05em;
+
+  --md-sys-typescale-label-small-size: 11px;
+  --md-sys-typescale-label-small-line-height: 16px;
+  --md-sys-typescale-label-small-weight: 500;
+  --md-sys-typescale-label-small-tracking: 0.04em;
+  --md-sys-typescale-label-small-emphasized-weight: 700;
+  --md-sys-typescale-label-small-emphasized-tracking: 0.05em;
 }
 
 /* ==========================================================================
@@ -212,14 +348,37 @@
   --color-m3-on-surface-variant: var(--md-sys-color-on-surface-variant);
   --color-m3-outline: var(--md-sys-color-outline);
   --color-m3-outline-variant: var(--md-sys-color-outline-variant);
+
+  --radius-none: var(--md-sys-shape-corner-none);
+  --radius-sm: var(--md-sys-shape-corner-small);
+  --radius-md: var(--md-sys-shape-corner-medium);
+  --radius-lg: var(--md-sys-shape-corner-large);
+  --radius-xl: var(--md-sys-shape-corner-large);
+  --radius-2xl: var(--md-sys-shape-corner-large);
+  --radius-3xl: var(--md-sys-shape-corner-extra-large);
+  --radius-full: var(--md-sys-shape-corner-full);
+
+  --ease-m3-fast: var(--md-sys-motion-easing-fast-spatial);
+  --ease-m3-default: var(--md-sys-motion-easing-default-spatial);
+  --ease-m3-slow: var(--md-sys-motion-easing-slow-spatial);
+  --duration-m3-short: var(--md-sys-motion-duration-short);
+  --duration-m3-medium: var(--md-sys-motion-duration-medium);
+  --duration-m3-long: var(--md-sys-motion-duration-long);
 }
 
 /* ==========================================================================
    GLOBAL M3 SYSTEM TOKEN STYLESHEET OVERHAUL (Sub-Step 8.1.1 - Requirement 2)
    Ersetzt alle dunklen Hintergründe durch das M3 Expressive Light Scheme.
    ========================================================================== */
+html,
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: var(--md-sys-typescale-font-family);
+  font-smooth: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
   background-color: var(--md-sys-color-surface); /* Augenfreundliches Off-White #F5F9F6 */
   color: var(--md-sys-color-on-surface);        /* Wald-Anthrazit #121D17 */
   /* Subtiler Waldnebel-Schimmer im Light Theme */
@@ -402,7 +561,7 @@ button.bg-zinc-850 {
    Ebene 3 (Dialoge & FABs): var(--md-sys-color-surface-container-highest) (#DDE3DE)
    ========================================================================== */
 
-/* EBENE 1: Haupt-Karten & Dashboards mit 200ms ease-out Tonal Lift */
+/* EBENE 1: Haupt-Karten & Dashboards mit M3 Expressive Motion Tonal Lift */
 article.group,
 .m3-plant-card,
 .m3-card-interactive {
@@ -410,7 +569,7 @@ article.group,
   border: 1px solid var(--md-sys-color-outline-variant) !important;     /* 1px #C0C9C3 */
   border-radius: var(--md-sys-shape-corner-extra-large) !important;     /* 28px */
   box-shadow: none !important;
-  transition: background-color 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out, transform 200ms ease-out !important;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial) !important;
 }
 
 /* Hover-Feedback: Tonal Elevation Anhebung von surface-container zu surface-container-high */
@@ -501,6 +660,372 @@ select:focus {
 }
 
 /* ==========================================================================
+   MATERIAL 3 EXPRESSIVE: SHAPE TOKEN SYSTEM & COMPONENT MAPPING (Sub-Step 8.3.1)
+   Corner Radius Hierarchy:
+   - Extra Large (28px): Pflanzenkarten, Haupt-Dashboard-Container, Modals & Bottom-Sheets (Top)
+   - Large (16px): Eingebettete Sub-Kacheln, Diagnose-Boxen & Wetter-Widgets
+   - Medium (12px): Standard-Buttons & Textfelder
+   - Small (8px): Kompakte Tags & Tooltips
+   - Full (9999px): Status-Badges & Filter-Pills
+   ========================================================================== */
+
+/* 1. Pflanzenkarten & Haupt-Dashboard-Container (28px) */
+article.group,
+.m3-plant-card,
+.m3-card-interactive,
+.m3-card,
+.m3-card-high,
+.m3-card-low,
+.m3-main-container,
+.m3-dashboard-container,
+.m3-shape-extra-large {
+  border-radius: var(--md-sys-shape-corner-extra-large) !important;
+}
+
+/* 2. Eingebettete Sub-Kacheln & Wetter-Widgets (16px Standard / Sub-Step 8.3.2 r_inner = r_outer - padding) */
+.m3-subtile,
+.m3-card-subtile,
+.m3-weather-widget,
+.m3-widget,
+.sheet-subtile,
+.modal-subtile,
+.m3-shape-large {
+  border-radius: var(--md-sys-shape-corner-large) !important;
+}
+
+/* ==========================================================================
+   MATERIAL 3 EXPRESSIVE: HARMONISCHE GESCHACHTELTE RADIEN (Sub-Step 8.3.2)
+   Mathematische Formel für geometrische Flucht: r_inner = r_outer - padding
+   
+   1. Haupt-Karten mit 16px Padding (p-4):
+      r_outer = 28px (Extra Large) -> r_inner = 28px - 16px = 12px (Medium / --md-sys-shape-corner-medium)
+   2. Haupt-Karten mit 12px Padding (p-3):
+      r_outer = 28px (Extra Large) -> r_inner = 28px - 12px = 16px (Large / --md-sys-shape-corner-large)
+   3. Sub-Kacheln mit 16px Radius & 8px Padding:
+      r_outer = 16px -> r_inner = 16px - 8px = 8px (Small / --md-sys-shape-corner-small)
+   ========================================================================== */
+
+/* Outer Card Padding 16px (p-4): r_inner = 28px - 16px = 12px (--md-sys-shape-corner-medium) */
+article.group.p-4 .m3-subtile,
+article.group.p-4 .m3-subtile-avatar,
+article.group.p-4 .bg-zinc-900,
+article.group.p-4 .bg-zinc-900\/90,
+article.group.p-4 .bg-zinc-900\/80,
+article.group.p-4 .bg-zinc-900\/60,
+.m3-plant-card.p-4 .m3-subtile,
+.m3-plant-card.p-4 .m3-subtile-avatar,
+.m3-plant-card.p-4 .bg-zinc-900,
+.m3-plant-card.p-4 .bg-zinc-900\/90,
+.m3-plant-card.p-4 .bg-zinc-900\/80,
+.m3-plant-card.p-4 .bg-zinc-900\/60,
+.m3-card.p-4 .m3-subtile,
+.m3-nested-p16,
+.m3-card-p16-inner,
+.p-4.rounded-\[28px\] .m3-subtile,
+.p-4.rounded-\[28px\] .m3-subtile-avatar,
+.p-4.rounded-\[28px\] > div > .m3-subtile {
+  border-radius: var(--md-sys-shape-corner-medium) !important; /* 12px */
+}
+
+/* Outer Card Padding 12px (p-3): r_inner = 28px - 12px = 16px (--md-sys-shape-corner-large) */
+article.group.p-3 .m3-subtile,
+article.group.p-3 .m3-subtile-avatar,
+.m3-plant-card.p-3 .m3-subtile,
+.m3-plant-card.p-3 .m3-subtile-avatar,
+.m3-card.p-3 .m3-subtile,
+.m3-nested-p12,
+.m3-card-p12-inner,
+.p-3.rounded-\[28px\] .m3-subtile,
+.p-3.rounded-\[28px\] .m3-subtile-avatar {
+  border-radius: var(--md-sys-shape-corner-large) !important; /* 16px */
+}
+
+/* Sub-Kacheln mit inneren Elementen (r_subtile = 16px, padding = 8px -> r_inner = 8px) */
+.m3-subtile .m3-subtile-inner,
+.sheet-subtile .m3-subtile-inner,
+.modal-subtile .m3-subtile-inner,
+.m3-subtile-inner-8px {
+  border-radius: var(--md-sys-shape-corner-small) !important; /* 8px */
+}
+
+/* 3. Modals & Bottom-Sheets: Radius var(--md-sys-shape-corner-extra-large) an den oberen Ecken (28px) */
+.m3-modal-container,
+.m3-dialog-popup,
+div[role="dialog"] > div:not(.m3-bottom-sheet) {
+  border-radius: var(--md-sys-shape-corner-extra-large) !important;
+}
+
+.m3-bottom-sheet,
+.m3-bottom-sheet-container,
+.rounded-t-\[28px\],
+div.fixed.bottom-0.rounded-t-\[28px\],
+div[role="dialog"] div.rounded-t-\[28px\] {
+  border-top-left-radius: var(--md-sys-shape-corner-extra-large) !important;
+  border-top-right-radius: var(--md-sys-shape-corner-extra-large) !important;
+  border-bottom-left-radius: var(--md-sys-shape-corner-none) !important;
+  border-bottom-right-radius: var(--md-sys-shape-corner-none) !important;
+}
+
+/* 4. Status-Badges & Filter-Pills (Pillenform 9999px) */
+.m3-status-badge,
+.m3-status-badge-dormancy,
+.m3-status-badge-growth,
+.m3-status-badge-alert,
+.m3-status-badge-vital,
+.m3-status-badge-suspicious,
+.m3-filter-pill,
+.m3-filter-chip,
+.m3-pill,
+.m3-shape-full {
+  border-radius: var(--md-sys-shape-corner-full) !important;
+}
+
+/* ==========================================================================
+   MATERIAL 3 EXPRESSIVE: TOUCH-MORPHING BUTTONS & INTERACTION FEEDBACK (Sub-Step 8.3.3)
+   - Default State: Pillenform var(--md-sys-shape-corner-full) (9999px)
+   - Active/Press State: Eckradius morpht auf 12px var(--md-sys-shape-corner-medium)
+   - Transition: border-radius 200ms cubic-bezier(0.2, 0.0, 0, 1), transform 150ms ease
+   - Press Scale: transform: scale(0.97)
+   - Primary Buttons: Deep Forest Waldgrün (#02432E) mit weißem Text (#FFFFFF)
+   ========================================================================== */
+
+/* 1. M3 Touch-Morphing Buttons & Filter-Pills Base Styles */
+.m3-btn-morph,
+.m3-btn-primary,
+.m3-btn-tonal,
+.m3-fab,
+.m3-button-filled,
+.m3-button-tonal,
+.m3-filter-pill-interactive,
+.m3-filter-chip,
+.m3-pill-interactive,
+button.m3-filter-pill,
+button.rounded-full:not(.non-morph) {
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Active & Pressed State: Smooth 12px Corner-Morphing + Scale(0.97) Feedback */
+.m3-btn-morph:active,
+.m3-btn-morph:focus-visible,
+.m3-btn-primary:active,
+.m3-btn-primary:focus-visible,
+.m3-btn-tonal:active,
+.m3-btn-tonal:focus-visible,
+.m3-fab:active,
+.m3-fab:focus-visible,
+.m3-button-filled:active,
+.m3-button-filled:focus-visible,
+.m3-button-tonal:active,
+.m3-button-tonal:focus-visible,
+.m3-filter-pill-interactive:active,
+.m3-filter-pill-interactive:focus-visible,
+.m3-filter-chip:active,
+.m3-filter-chip:focus-visible,
+.m3-pill-interactive:active,
+.m3-pill-interactive:focus-visible,
+button.m3-filter-pill:active,
+button.m3-filter-pill:focus-visible,
+button.rounded-full:not(.non-morph):active,
+button.rounded-full:not(.non-morph):focus-visible {
+  border-radius: var(--md-sys-shape-corner-medium) !important; /* 12px */
+  transform: scale(0.97) !important;                           /* 97% Druck-Skalierung */
+}
+
+/* 2. Primär-Buttons: Deep Forest Waldgrün (#02432E) mit weißem Text (#FFFFFF) */
+.m3-btn-primary,
+.m3-button-filled {
+  background-color: var(--md-sys-color-primary) !important;
+  color: var(--md-sys-color-on-primary) !important;
+  border-color: transparent;
+}
+
+.m3-btn-primary:hover,
+.m3-button-filled:hover {
+  background-color: #03593e !important;
+}
+
+.m3-btn-primary:active,
+.m3-button-filled:active {
+  background-color: #013725 !important;
+}
+
+/* 3. Tonal & Secondary Buttons */
+.m3-btn-tonal,
+.m3-button-tonal {
+  background-color: var(--md-sys-color-primary-container) !important;
+  color: var(--md-sys-color-on-primary-container) !important;
+}
+
+.m3-btn-tonal:hover,
+.m3-button-tonal:hover {
+  background-color: #c0decb !important;
+}
+
+/* ==========================================================================
+   SUB-STEP 8.5.3: MICRO-INTERACTIONS, TOUCH-RIPPLES & STATE-LAYER FEEDBACK
+   ========================================================================== */
+
+/* 1. M3 RIPPLE & CHECKMARK-POP KEYFRAMES */
+@keyframes m3-ripple {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 0.12;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes m3-checkmark-pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.m3-checkmark-pop,
+.animate-checkmark-pop {
+  animation: m3-checkmark-pop 150ms var(--md-sys-motion-easing-default-spatial) forwards;
+  will-change: transform, opacity;
+}
+
+/* 2. M3 STATE LAYER & HOVER OVERLAY (opacity: 0.08) */
+.m3-state-layer,
+.m3-btn-morph,
+.m3-btn-primary,
+.m3-btn-tonal,
+.m3-plant-card,
+.m3-filter-pill-interactive,
+.m3-touch-ripple,
+button.m3-filter-pill {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m3-state-layer::before,
+.m3-btn-morph::before,
+.m3-plant-card::before,
+.m3-filter-pill-interactive::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--md-sys-color-primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+  z-index: 0;
+  border-radius: inherit;
+}
+
+.m3-state-layer:hover::before,
+.m3-btn-morph:hover::before,
+.m3-plant-card:hover::before,
+.m3-filter-pill-interactive:hover::before {
+  opacity: 0.08;
+}
+
+/* Primary Filled Buttons Hover & Ripple Layer (Light on Dark) */
+.m3-btn-primary::before,
+.m3-button-filled::before {
+  background-color: var(--md-sys-color-on-primary) !important;
+}
+.m3-btn-primary:hover::before,
+.m3-button-filled:hover::before {
+  opacity: 0.12 !important;
+}
+
+/* 3. FOCUS STATE: Waldgrün-Fokusring (outline: 2px solid var(--md-sys-color-primary); outline-offset: 2px;) */
+.m3-state-layer:focus-visible,
+.m3-btn-morph:focus-visible,
+.m3-btn-primary:focus-visible,
+.m3-btn-tonal:focus-visible,
+.m3-plant-card:focus-visible,
+.m3-filter-pill-interactive:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+article[tabindex]:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary) !important;
+  outline-offset: 2px !important;
+}
+
+/* 4. PRESSED / RIPPLE STATE: Radiale Wellen-Animation */
+.m3-state-layer::after,
+.m3-btn-morph::after,
+.m3-plant-card::after,
+.m3-filter-pill-interactive::after,
+.m3-touch-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  background-color: var(--md-sys-color-primary);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.m3-btn-primary::after,
+.m3-button-filled::after {
+  background-color: var(--md-sys-color-on-primary) !important;
+}
+
+.m3-state-layer:active::after,
+.m3-btn-morph:active::after,
+.m3-plant-card:active::after,
+.m3-filter-pill-interactive:active::after,
+.m3-touch-ripple:active::after {
+  animation: m3-ripple 400ms var(--md-sys-motion-easing-fast-spatial) forwards;
+}
+
+/* 5. CARD SELECTION & CHECKBOX MICRO-INTERACTIONS (2px Waldgrün-Border & GPU Acceleration) */
+.m3-plant-card {
+  border: 1px solid var(--md-sys-color-outline-variant);
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial),
+              border-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial),
+              box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial),
+              background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+  will-change: transform, opacity;
+}
+
+.m3-plant-card:hover {
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 4px 20px -2px rgba(2, 67, 46, 0.08);
+}
+
+.m3-plant-card:active,
+.m3-plant-card.is-active,
+.m3-plant-card[aria-selected="true"] {
+  border-color: var(--md-sys-color-primary) !important;
+  box-shadow: 0 0 0 2px var(--md-sys-color-primary), 0 4px 20px -2px rgba(2, 67, 46, 0.12) !important;
+}
+
+/* ==========================================================================
    M3 COMPONENT UTILITY CLASSES
    ========================================================================== */
 .m3-card {
@@ -540,6 +1065,65 @@ select:focus {
   color: var(--md-comp-badge-primary-label);
 }
 
+/* --------------------------------------------------------------------------
+   M3 EXPRESSIVE BOTANICAL STATUS BADGES (Sub-Step 8.1.3)
+   - Form: M3 Pillen-Form (rounded-full / var(--md-sys-shape-corner-full))
+   - Maße: Kompakt (padding: 4px 12px, font-size: 12px, font-weight: 600)
+   - Barrierefreiheit: WCAG AA zertifizierter Kontrast > 4.5:1
+   -------------------------------------------------------------------------- */
+.m3-status-badge {
+  font-family: var(--md-sys-typescale-font-family);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 4px 12px;
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  font-weight: var(--md-sys-typescale-label-medium-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-label-medium-emphasized-tracking);
+  border-radius: var(--md-sys-shape-corner-full) !important;
+  white-space: nowrap;
+  box-shadow: none !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all 150ms ease-out;
+}
+
+/* Winterruhe / Dormanz (#FFDDB8 / #2A1700) */
+.m3-status-badge-dormancy {
+  background-color: var(--md-sys-color-tertiary-container) !important;
+  color: var(--md-sys-color-on-tertiary-container) !important;
+  border: 1px solid rgba(133, 83, 0, 0.22) !important;
+}
+
+/* Wachstumsphase / Optimaler Zustand (#D2E8DA / #002114) */
+.m3-status-badge-growth {
+  background-color: var(--md-sys-color-primary-container) !important;
+  color: var(--md-sys-color-on-primary-container) !important;
+  border: 1px solid rgba(2, 67, 46, 0.18) !important;
+}
+
+/* Gieß-Erinnerung / Substrat-Spülung Kalk-Warnung (#FEE2E2 / #991B1B) */
+.m3-status-badge-alert {
+  background-color: #FEE2E2 !important;
+  color: #991B1B !important;
+  border: 1px solid rgba(153, 27, 27, 0.22) !important;
+}
+
+/* KI-Diagnose Vital / Gesund (#D1FAE5 / #065F46) */
+.m3-status-badge-vital {
+  background-color: #D1FAE5 !important;
+  color: #065F46 !important;
+  border: 1px solid rgba(6, 95, 70, 0.22) !important;
+}
+
+/* KI-Diagnose Verdächtig / Schädlinge (#FFEDD5 / #9A3412) */
+.m3-status-badge-suspicious {
+  background-color: #FFEDD5 !important;
+  color: #9A3412 !important;
+  border: 1px solid rgba(154, 52, 18, 0.22) !important;
+}
+
 /* Light Mode Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -556,17 +1140,879 @@ select:focus {
   background: var(--md-sys-color-outline);
 }
 
-@keyframes slideUp {
+/* ==========================================================================
+   SUB-STEP 8.5.2: SMOOTH BOTTOM-SHEET & MODAL EXPANSION PHYSICS (ENTRY & EXIT)
+   ========================================================================== */
+
+/* 1. KEYFRAME ANIMATIONS: Spatial glide-up & elastic dialog scale (Entry & Exit) */
+@keyframes m3-bottom-sheet-slide-up {
   from {
-    transform: translateY(100%);
+    transform: translateY(100%) scale(0.95);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 }
 
-.animate-slide-up {
-  animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+@keyframes m3-bottom-sheet-slide-down {
+  from {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%) scale(0.95);
+    opacity: 0;
+  }
 }
+
+@keyframes m3-dialog-scale-up {
+  from {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes m3-dialog-scale-down {
+  from {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes m3-backdrop-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes m3-backdrop-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 2. BACKDROP OVERLAY OVERHAUL (Sanftes Wald-Anthrazit mit 8px Blur & 200ms Fade) */
+.m3-modal-backdrop,
+.m3-sheet-backdrop,
+.m3-backdrop {
+  background: rgba(18, 29, 23, 0.4) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  animation: m3-backdrop-fade-in var(--md-sys-motion-duration-short) ease-out forwards;
+}
+
+.m3-backdrop-closing {
+  animation: m3-backdrop-fade-out var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial) forwards !important;
+}
+
+/* 3. ANIMATION CLASSES */
+.m3-bottom-sheet-animated,
+.animate-m3-bottom-sheet,
+.animate-slide-up {
+  animation: m3-bottom-sheet-slide-up var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-default-spatial) forwards;
+}
+
+.m3-bottom-sheet-closing {
+  animation: m3-bottom-sheet-slide-down var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial) forwards !important;
+}
+
+.m3-dialog-animated,
+.animate-m3-dialog {
+  animation: m3-dialog-scale-up var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-default-spatial) forwards;
+}
+
+.m3-dialog-closing {
+  animation: m3-dialog-scale-down var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial) forwards !important;
+}
+
+/* 4. BOTTOM-SHEET SCULPTING & SHAPE */
+.m3-bottom-sheet-container {
+  border-top-left-radius: 28px !important;
+  border-top-right-radius: 28px !important;
+  background-color: var(--md-sys-color-surface-container-high);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: 0 4px 20px -2px rgba(2, 67, 46, 0.06);
+}
+
+/* 5. M3 DRAG HANDLE PILLE (32px x 4px in outline-variant) */
+.m3-drag-handle {
+  width: 32px !important;
+  height: 4px !important;
+  background-color: var(--md-sys-color-outline-variant) !important;
+  border-radius: 9999px !important;
+  margin: 8px auto !important;
+  flex-shrink: 0;
+  cursor: grab;
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+}
+
+.m3-drag-handle:hover,
+.m3-drag-handle:active {
+  background-color: var(--md-sys-color-on-surface-variant) !important;
+}
+
+/* ==========================================================================
+   MATERIAL 3 EXPRESSIVE: CONTAINED SHAPE LOADER (Sub-Step 8.4.1 - Smooth Morph)
+   ========================================================================== */
+@keyframes m3-shape-morph {
+  0% {
+    border-radius: 50%; /* Kreis */
+    transform: rotate(0deg) scale(1);
+  }
+  14% {
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* Organischer Blob */
+  }
+  28% {
+    border-radius: 28px; /* M3 Abgerundetes Container-Quadrat */
+  }
+  42% {
+    border-radius: 50% 20% 50% 20%; /* M3 Scallop / Kissen */
+  }
+  57% {
+    border-radius: 9999px; /* M3 Pille */
+    transform: rotate(180deg) scale(0.92);
+  }
+  71% {
+    border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%; /* Asymmetrischer Stern-Blob */
+  }
+  85% {
+    border-radius: 16px 50% 16px 50%; /* M3 Tropfen / Oktagon-Variante */
+  }
+  100% {
+    border-radius: 50%; /* Zurück zum Kreis */
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+.m3-shape-morphing-element {
+  background-color: var(--md-sys-color-primary);
+  animation: m3-shape-morph 4s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+  transform-origin: center center;
+  box-shadow: 0 4px 16px -2px rgba(2, 67, 46, 0.16);
+  display: block;
+}
+
+.m3-shape-loader-contained {
+  background-color: var(--md-sys-color-surface-container);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  box-shadow: 0 4px 20px -2px rgba(2, 67, 46, 0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   M3 EXPRESSIVE 30-STUFEN TYPOGRAPHY CLASSES (Sub-Step 8.2.1)
+   5 Hauptgruppen x 3 Größen x Standard/Emphasized = 30 Stufen
+   Gestochen scharfe Textdarstellung (antialiased)
+   ========================================================================== */
+
+/* 1. DISPLAY ROLES (Large, Medium, Small) */
+.md-typescale-display-large, .m3-display-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-large-size);
+  line-height: var(--md-sys-typescale-display-large-line-height);
+  font-weight: var(--md-sys-typescale-display-large-weight);
+  letter-spacing: var(--md-sys-typescale-display-large-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-display-large-emphasized, .m3-display-large-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-large-size);
+  line-height: var(--md-sys-typescale-display-large-line-height);
+  font-weight: var(--md-sys-typescale-display-large-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-display-large-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-display-medium, .m3-display-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-medium-size);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  font-weight: var(--md-sys-typescale-display-medium-weight);
+  letter-spacing: var(--md-sys-typescale-display-medium-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-display-medium-emphasized, .m3-display-medium-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-medium-size);
+  line-height: var(--md-sys-typescale-display-medium-line-height);
+  font-weight: var(--md-sys-typescale-display-medium-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-display-medium-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-display-small, .m3-display-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-small-size);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  font-weight: var(--md-sys-typescale-display-small-weight);
+  letter-spacing: var(--md-sys-typescale-display-small-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-display-small-emphasized, .m3-display-small-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-display-small-size);
+  line-height: var(--md-sys-typescale-display-small-line-height);
+  font-weight: var(--md-sys-typescale-display-small-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-display-small-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 2. HEADLINE ROLES (Large, Medium, Small) */
+.md-typescale-headline-large, .m3-headline-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-large-size);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+  font-weight: var(--md-sys-typescale-headline-large-weight);
+  letter-spacing: var(--md-sys-typescale-headline-large-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-headline-large-emphasized, .m3-headline-large-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-large-size);
+  line-height: var(--md-sys-typescale-headline-large-line-height);
+  font-weight: var(--md-sys-typescale-headline-large-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-headline-large-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-headline-medium, .m3-headline-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  font-weight: var(--md-sys-typescale-headline-medium-weight);
+  letter-spacing: var(--md-sys-typescale-headline-medium-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-headline-medium-emphasized, .m3-headline-medium-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-medium-size);
+  line-height: var(--md-sys-typescale-headline-medium-line-height);
+  font-weight: var(--md-sys-typescale-headline-medium-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-headline-medium-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-headline-small, .m3-headline-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  font-weight: var(--md-sys-typescale-headline-small-weight);
+  letter-spacing: var(--md-sys-typescale-headline-small-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-headline-small-emphasized, .m3-headline-small-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-headline-small-size);
+  line-height: var(--md-sys-typescale-headline-small-line-height);
+  font-weight: var(--md-sys-typescale-headline-small-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-headline-small-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 3. TITLE ROLES (Large, Medium, Small) */
+.md-typescale-title-large, .m3-title-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  font-weight: var(--md-sys-typescale-title-large-weight);
+  letter-spacing: var(--md-sys-typescale-title-large-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-title-large-emphasized, .m3-title-large-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-large-size);
+  line-height: var(--md-sys-typescale-title-large-line-height);
+  font-weight: var(--md-sys-typescale-title-large-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-title-large-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-title-medium, .m3-title-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  font-weight: var(--md-sys-typescale-title-medium-weight);
+  letter-spacing: var(--md-sys-typescale-title-medium-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-title-medium-emphasized, .m3-title-medium-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-medium-size);
+  line-height: var(--md-sys-typescale-title-medium-line-height);
+  font-weight: var(--md-sys-typescale-title-medium-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-title-medium-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-title-small, .m3-title-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  font-weight: var(--md-sys-typescale-title-small-weight);
+  letter-spacing: var(--md-sys-typescale-title-small-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-title-small-emphasized, .m3-title-small-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-title-small-size);
+  line-height: var(--md-sys-typescale-title-small-line-height);
+  font-weight: var(--md-sys-typescale-title-small-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-title-small-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 4. BODY ROLES (Large, Medium, Small) */
+.md-typescale-body-large, .m3-body-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: var(--md-sys-typescale-body-large-weight);
+  letter-spacing: var(--md-sys-typescale-body-large-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-body-large-emphasized, .m3-body-large-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-large-size);
+  line-height: var(--md-sys-typescale-body-large-line-height);
+  font-weight: var(--md-sys-typescale-body-large-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-body-large-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-body-medium, .m3-body-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  font-weight: var(--md-sys-typescale-body-medium-weight);
+  letter-spacing: var(--md-sys-typescale-body-medium-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-body-medium-emphasized, .m3-body-medium-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-medium-size);
+  line-height: var(--md-sys-typescale-body-medium-line-height);
+  font-weight: var(--md-sys-typescale-body-medium-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-body-medium-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-body-small, .m3-body-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  font-weight: var(--md-sys-typescale-body-small-weight);
+  letter-spacing: var(--md-sys-typescale-body-small-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-body-small-emphasized, .m3-body-small-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-body-small-size);
+  line-height: var(--md-sys-typescale-body-small-line-height);
+  font-weight: var(--md-sys-typescale-body-small-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-body-small-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 5. LABEL ROLES (Large, Medium, Small) */
+.md-typescale-label-large, .m3-label-large {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  font-weight: var(--md-sys-typescale-label-large-weight);
+  letter-spacing: var(--md-sys-typescale-label-large-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-label-large-emphasized, .m3-label-large-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-large-size);
+  line-height: var(--md-sys-typescale-label-large-line-height);
+  font-weight: var(--md-sys-typescale-label-large-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-label-large-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-label-medium, .m3-label-medium {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  font-weight: var(--md-sys-typescale-label-medium-weight);
+  letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-label-medium-emphasized, .m3-label-medium-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-medium-size);
+  line-height: var(--md-sys-typescale-label-medium-line-height);
+  font-weight: var(--md-sys-typescale-label-medium-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-label-medium-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typescale-label-small, .m3-label-small {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  font-weight: var(--md-sys-typescale-label-small-weight);
+  letter-spacing: var(--md-sys-typescale-label-small-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.md-typescale-label-small-emphasized, .m3-label-small-emphasized {
+  font-family: var(--md-sys-typescale-font-family);
+  font-size: var(--md-sys-typescale-label-small-size);
+  line-height: var(--md-sys-typescale-label-small-line-height);
+  font-weight: var(--md-sys-typescale-label-small-emphasized-weight);
+  letter-spacing: var(--md-sys-typescale-label-small-emphasized-tracking);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==========================================================================
+   SUB-STEP 8.4.3: M3 EXPRESSIVE FORM INPUTS (Sliders, Switches, Text-Inputs)
+   ========================================================================== */
+
+/* 1. M3 STRAIGHT SLIDERS */
+.m3-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  background: var(--md-sys-color-surface-container-highest);
+  border-radius: 9999px;
+  outline: none;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  cursor: pointer;
+  transition: background var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), border-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+}
+
+.m3-slider:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+.m3-slider::-webkit-slider-runnable-track {
+  height: 12px;
+  border-radius: 9999px;
+  background: transparent;
+}
+
+.m3-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 28px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-primary);
+  border: 2px solid var(--md-sys-color-surface-container-lowest);
+  box-shadow: 0 2px 6px rgba(2, 67, 46, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  margin-top: -8px; /* (12 - 28) / 2 = -8px */
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+}
+
+.m3-slider:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+  background: #03593e;
+  box-shadow: 0 4px 12px rgba(2, 67, 46, 0.35);
+}
+
+/* Firefox */
+.m3-slider::-moz-range-track {
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-surface-container-highest);
+  border: none;
+}
+
+.m3-slider::-moz-range-progress {
+  height: 12px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-primary);
+}
+
+.m3-slider::-moz-range-thumb {
+  width: 20px;
+  height: 28px;
+  border-radius: 9999px;
+  background: var(--md-sys-color-primary);
+  border: 2px solid var(--md-sys-color-surface-container-lowest);
+  box-shadow: 0 2px 6px rgba(2, 67, 46, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+}
+
+.m3-slider:active::-moz-range-thumb {
+  transform: scale(1.15);
+  background: #03593e;
+  box-shadow: 0 4px 12px rgba(2, 67, 46, 0.35);
+}
+
+/* 2. M3 EXPRESSIVE TOGGLE SWITCHES */
+.m3-switch {
+  width: 52px;
+  height: 32px;
+  min-width: 52px;
+  min-height: 32px;
+  border-radius: 9999px;
+  padding: 3px;
+  display: inline-flex;
+  align-items: center;
+  border: 2px solid var(--md-sys-color-outline-variant);
+  background-color: var(--md-sys-color-surface-container-highest);
+  cursor: pointer;
+  position: relative;
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), border-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+  user-select: none;
+}
+
+.m3-switch:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.m3-switch[aria-checked="true"],
+.m3-switch.active {
+  background-color: var(--md-sys-color-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.m3-switch-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  background-color: var(--md-sys-color-on-surface-variant);
+  transform: translateX(0);
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), width var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), height var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+}
+
+.m3-switch[aria-checked="true"] .m3-switch-thumb,
+.m3-switch.active .m3-switch-thumb {
+  width: 24px;
+  height: 24px;
+  transform: translateX(18px);
+  background-color: var(--md-sys-color-on-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+}
+
+/* 3. M3 CONTAINED TEXT INPUTS & MODAL FORMS */
+.m3-input,
+.m3-select,
+.m3-textarea {
+  width: 100%;
+  background-color: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+  border-radius: 12px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  padding: 12px 14px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  outline: none;
+  transition: border-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), box-shadow var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial), background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+}
+
+.m3-input::placeholder,
+.m3-textarea::placeholder {
+  color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.7;
+}
+
+.m3-input:focus,
+.m3-select:focus,
+.m3-textarea:focus {
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 0 3px rgba(2, 67, 46, 0.15);
+  background-color: var(--md-sys-color-surface-container-highest);
+}
+
+.m3-input:hover:not(:focus),
+.m3-select:hover:not(:focus),
+.m3-textarea:hover:not(:focus) {
+  border-color: var(--md-sys-color-outline);
+}
+
+.m3-input-error {
+  border-color: var(--md-sys-color-error) !important;
+}
+
+.m3-input-error:focus {
+  box-shadow: 0 0 0 3px rgba(186, 26, 26, 0.15) !important;
+}
+
+.m3-input-success {
+  border-color: var(--md-sys-color-primary) !important;
+}
+
+.m3-input-success:focus {
+  box-shadow: 0 0 0 3px rgba(2, 67, 46, 0.2) !important;
+}
+
+/* ==========================================================================
+   SUB-STEP 8.6.1: ADAPTIVE SCAFFOLDS & CANONICAL DUAL-PANE LAYOUTS
+   Breakpoints: Compact (< 600px), Medium (600px-840px), Expanded (> 840px)
+   ========================================================================== */
+
+/* 1. M3 NAVIGATION RAIL (>= 600px Screens) & FLOATING TOOLBAR (< 600px) */
+.m3-navigation-rail {
+  width: 80px;
+  background-color: var(--md-sys-color-surface-container-high);
+  border-right: 1px solid var(--md-sys-color-outline-variant);
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  z-index: 40;
+}
+
+.m3-floating-toolbar {
+  z-index: 50;
+  border-radius: 9999px;
+  background: rgba(233, 238, 234, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: 0 4px 24px -2px rgba(2, 67, 46, 0.12), 0 2px 8px -1px rgba(2, 67, 46, 0.06);
+}
+
+/* Strict Breakpoint Rules for Navigation & Layout Scaffold */
+@media (max-width: 599px) {
+  .m3-navigation-rail {
+    display: none !important;
+  }
+  .m3-floating-toolbar {
+    display: flex !important;
+  }
+  .m3-app-scaffold {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+  .m3-app-scaffold-main {
+    margin-left: 0 !important;
+    padding-bottom: 96px !important;
+  }
+}
+
+@media (min-width: 600px) {
+  .m3-navigation-rail {
+    display: flex !important;
+  }
+  .m3-floating-toolbar {
+    display: none !important;
+  }
+  .m3-app-scaffold {
+    padding-left: 80px !important;
+  }
+  .m3-app-scaffold-main {
+    margin-left: 0 !important;
+    padding-bottom: 24px !important;
+  }
+}
+
+.m3-nav-rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 64px;
+  padding: 8px 0;
+  border-radius: 16px;
+  color: var(--md-sys-color-on-surface-variant);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.m3-nav-rail-item:hover {
+  color: var(--md-sys-color-on-surface);
+  background-color: var(--md-sys-color-surface-container-highest);
+}
+
+.m3-nav-rail-item.is-active {
+  color: var(--md-sys-color-on-primary-container);
+  font-weight: 600;
+}
+
+.m3-nav-rail-indicator {
+  width: 56px;
+  height: 32px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-fast-spatial);
+}
+
+.m3-nav-rail-item.is-active .m3-nav-rail-indicator {
+  background-color: var(--md-sys-color-primary-container);
+  color: var(--md-sys-color-on-primary-container);
+}
+
+/* 2. CANONICAL DUAL-PANE CONTAINERS (> 840px) */
+.m3-dual-pane-list-container {
+  background-color: var(--md-sys-color-surface-container-low);
+  border-radius: 28px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.m3-dual-pane-detail-container {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: 28px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* 3. M3 BREAKPOINT VISIBILITY HELPERS */
+@media (max-width: 599px) {
+  .m3-hide-compact {
+    display: none !important;
+  }
+}
+
+@media (min-width: 600px) {
+  .m3-hide-medium-up {
+    display: none !important;
+  }
+}
+
+@media (max-width: 839px) {
+  .m3-hide-below-expanded {
+    display: none !important;
+  }
+}
+
+@media (min-width: 840px) {
+  .m3-hide-expanded {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   SUB-STEP 8.6.2: M3 EXPRESSIVE FOCUS RINGS & KEYBOARD NAVIGATION (WCAG 2.1 AA)
+   ========================================================================== */
+
+/* 1. Global Focus-Visible Reset & Keyboard Focus Ring */
+:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary) !important;
+  outline-offset: 3px !important;
+}
+
+/* 2. Interactive Element Specific Focus Enhancements */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="switch"]:focus-visible,
+[role="checkbox"]:focus-visible,
+[tabindex="0"]:focus-visible,
+.m3-btn-primary:focus-visible,
+.m3-btn-morph:focus-visible,
+.m3-plant-card:focus-visible,
+.m3-nav-rail-item:focus-visible,
+.m3-touch-ripple:focus-visible,
+.m3-filter-pill:focus-visible,
+.m3-filter-pill-interactive:focus-visible,
+.m3-switch:focus-visible,
+.m3-state-layer:focus-visible {
+  outline: 3px solid var(--md-sys-color-primary) !important;
+  outline-offset: 3px !important;
+  border-radius: inherit;
+}
+
+/* Specific radius preservation for rounded buttons/pills */
+button.rounded-full:focus-visible,
+a.rounded-full:focus-visible,
+.rounded-full:focus-visible {
+  border-radius: 9999px !important;
+}
+
+button.rounded-2xl:focus-visible,
+.rounded-2xl:focus-visible {
+  border-radius: 1rem !important;
+}
+
+button.rounded-\[28px\]:focus-visible,
+.rounded-\[28px\]:focus-visible {
+  border-radius: 28px !important;
+}
+
+/* 3. M3 High-Contrast Focus Ring Helper Class */
+.m3-focus-ring {
+  outline: 3px solid var(--md-sys-color-primary) !important;
+  outline-offset: 3px !important;
+}
+
+/* ==========================================================================
+   REDUCED MOTION ACCESSIBILITY (A11Y) SUPPORT (Sub-Step 8.5.1 - Requirement 3)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

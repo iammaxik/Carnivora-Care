@@ -1,5 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { RefreshCw, ShieldCheck } from 'lucide-react';
+import { M3ShapeLoader } from './M3ShapeLoader';
 
 interface Props {
   children: ReactNode;
@@ -40,8 +41,8 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 selection:bg-emerald-500 selection:text-black font-sans">
           <div className="bg-zinc-950 border border-zinc-900 rounded-3xl p-6 sm:p-8 max-w-sm w-full mx-auto text-center space-y-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
             {/* Status Icon */}
-            <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 mx-auto shadow-inner relative">
-              <RefreshCw className="w-8 h-8 animate-spin text-emerald-400 [animation-duration:3s]" />
+            <div className="w-16 h-16 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto shadow-inner relative">
+              <M3ShapeLoader size={32} color="#34d399" />
               <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
