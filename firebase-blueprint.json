@@ -1,0 +1,120 @@
+{
+  "entities": {
+    "Plant": {
+      "title": "Plant",
+      "description": "A carnivorous plant tracked by Carnivora Care.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "User-assigned nickname of the plant",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "species": {
+          "type": "string",
+          "description": "Botanical species name",
+          "minLength": 1,
+          "maxLength": 150
+        },
+        "zipCode": {
+          "type": "string",
+          "description": "Postal code for climate and dormancy assessment",
+          "minLength": 1,
+          "maxLength": 20
+        },
+        "isDormant": {
+          "type": "boolean",
+          "description": "Whether the plant is currently in dormancy/winter rest"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of creation"
+        },
+        "lastWateredAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last watering event"
+        },
+        "wateringHistory": {
+          "type": "array",
+          "description": "Historical watering timestamps",
+          "items": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "scans": {
+          "type": "array",
+          "description": "AI diagnostic scans associated with the plant",
+          "items": {
+            "type": "object",
+            "properties": {
+              "timestamp": { "type": "string", "format": "date-time" },
+              "vitalityScore": { "type": "number" },
+              "diagnosisSummary": { "type": "string" },
+              "immediateAction": { "type": "string" }
+            }
+          }
+        }
+      },
+      "required": ["name", "species", "zipCode", "isDormant", "createdAt"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile document containing authentication metadata",
+      "type": "object",
+      "properties": {
+        "isAnonymous": {
+          "type": "boolean",
+          "description": "Whether the user account is an anonymous guest session"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of account creation"
+        },
+        "lastLoginAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last login or session activity"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last profile update or account linking"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address if authenticated"
+        },
+        "preferences": {
+          "type": "object",
+          "description": "User-specific application settings",
+          "properties": {
+            "spuelErinnerungActive": {
+              "type": "boolean",
+              "description": "Whether substrate rinse reminders are active"
+            }
+          }
+        }
+      },
+      "required": ["isAnonymous", "createdAt", "lastLoginAt"]
+    }
+  },
+  "firestore": {
+    "/plants/{plantId}": {
+      "schema": "Plant",
+      "description": "Collection of all carnivorous plant specimens (legacy)"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile documents keyed by Firebase Auth UID"
+    },
+    "/users/{userId}/plants/{plantId}": {
+      "schema": "Plant",
+      "description": "User-specific collection of carnivorous plant specimens for multi-tenancy"
+    }
+  }
+}

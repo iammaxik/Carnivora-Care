@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="112" fill="#000000"/>
+  <rect x="16" y="16" width="480" height="480" rx="96" fill="none" stroke="#10b981" stroke-opacity="0.3" stroke-width="4"/>
+  <g transform="translate(106, 106) scale(0.5859375)">
+    <!-- Venus Flytrap Botanical Trap Artwork -->
+    <path d="M 256 460 C 256 360 250 260 256 180" fill="none" stroke="#10b981" stroke-width="24" stroke-linecap="round"/>
+    <path d="M 256 220 C 180 200 110 240 70 310 C 60 330 80 340 100 330 C 150 290 200 280 256 280" fill="#064e3b" stroke="#10b981" stroke-width="12" stroke-linejoin="round"/>
+    <path d="M 256 240 C 330 220 400 260 440 330 C 450 350 430 360 410 350 C 360 310 310 300 256 300" fill="#064e3b" stroke="#10b981" stroke-width="12" stroke-linejoin="round"/>
+    
+    <!-- Left lobe of trap -->
+    <path d="M 240 180 C 140 160 80 90 120 20 C 160 50 210 110 240 180 Z" fill="#047857" stroke="#34d399" stroke-width="14"/>
+    <!-- Right lobe of trap -->
+    <path d="M 272 180 C 372 160 432 90 392 20 C 352 50 302 110 272 180 Z" fill="#047857" stroke="#34d399" stroke-width="14"/>
+    
+    <!-- Teeth left -->
+    <line x1="130" y1="35" x2="160" y2="10" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    <line x1="160" y1="60" x2="200" y2="35" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    <line x1="190" y1="95" x2="235" y2="70" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    <line x1="220" y1="135" x2="265" y2="110" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    
+    <!-- Teeth right -->
+    <line x1="382" y1="35" x2="352" y2="10" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    <line x1="352" y1="60" x2="312" y2="35" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    <line x1="322" y1="95" x2="277" y2="70" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    <line x1="292" y1="135" x2="247" y2="110" stroke="#a7f3d0" stroke-width="10" stroke-linecap="round"/>
+    
+    <!-- Inner Anthocyanin Red Glow -->
+    <ellipse cx="210" cy="115" rx="35" ry="60" transform="rotate(-25 210 115)" fill="#b91c1c" opacity="0.85"/>
+    <ellipse cx="302" cy="115" rx="35" ry="60" transform="rotate(25 302 115)" fill="#b91c1c" opacity="0.85"/>
+  </g>
+</svg>

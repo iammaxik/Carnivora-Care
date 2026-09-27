@@ -1,0 +1,8 @@
+{
+  "name": "Carnivora Care",
+  "description": "Spezial-App für fleischfressende Pflanzen mit Bestandsübersicht, Standort- und Pflege-Status sowie KI-Diagnose-Vorschau.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

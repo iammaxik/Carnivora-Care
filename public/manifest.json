@@ -1,0 +1,23 @@
+{
+  "name": "Carnivora Care",
+  "short_name": "Carnivora",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "description": "Spezial-App für fleischfressende Pflanzen mit Bestandsübersicht, Standort- und Pflege-Status sowie KI-Diagnose-Vorschau.",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

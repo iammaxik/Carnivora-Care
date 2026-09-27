@@ -1,0 +1,572 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   MATERIAL 3 EXPRESSIVE: 3-TIER TOKEN SYSTEM (Sub-Step 8.1.1)
+   Theme: Deep Forest Waldgrün (#02432E) & Warm Amber (#855300) Light Scheme
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     TIER 1: REFERENCE TOKENS (md.ref.palette.*)
+     Tonal Palettes basierend auf Seed #02432E (Waldgrün),
+     Moosgrün/Secondary, Amber/Warmgelb (#855300) und Neutral Light Tones.
+     ------------------------------------------------------------------------ */
+  /* Primary Tonal Palette: Deep Forest Waldgrün (Seed: #02432E) */
+  --md-ref-palette-primary-0: #000000;
+  --md-ref-palette-primary-10: #002114;
+  --md-ref-palette-primary-20: #013725;
+  --md-ref-palette-primary-25: #02432E; /* Seed Deep Forest */
+  --md-ref-palette-primary-30: #075239;
+  --md-ref-palette-primary-40: #1b6a4c;
+  --md-ref-palette-primary-50: #338462;
+  --md-ref-palette-primary-60: #4c9f7a;
+  --md-ref-palette-primary-70: #67ba93;
+  --md-ref-palette-primary-80: #82d6ad;
+  --md-ref-palette-primary-90: #D2E8DA; /* Primary Container */
+  --md-ref-palette-primary-95: #EAF4EE;
+  --md-ref-palette-primary-100: #FFFFFF;
+
+  /* Secondary Tonal Palette: Moosgrün / Wald-Salbei */
+  --md-ref-palette-secondary-0: #000000;
+  --md-ref-palette-secondary-10: #0b1f15;
+  --md-ref-palette-secondary-20: #1e3529;
+  --md-ref-palette-secondary-30: #334b3e;
+  --md-ref-palette-secondary-40: #4a6355;
+  --md-ref-palette-secondary-50: #627c6d;
+  --md-ref-palette-secondary-60: #7c9686;
+  --md-ref-palette-secondary-70: #96b1a0;
+  --md-ref-palette-secondary-80: #b1cdba;
+  --md-ref-palette-secondary-90: #CDE9D6;
+  --md-ref-palette-secondary-95: #e6f7ec;
+  --md-ref-palette-secondary-100: #FFFFFF;
+
+  /* Tertiary Tonal Palette: Warmes Amber / Herbstmoos (Seed: #855300) */
+  --md-ref-palette-tertiary-0: #000000;
+  --md-ref-palette-tertiary-10: #2A1700; /* On Tertiary Container */
+  --md-ref-palette-tertiary-20: #472a00;
+  --md-ref-palette-tertiary-30: #653e00;
+  --md-ref-palette-tertiary-40: #855300; /* Seed Amber für Dormanz- & Wetter-Warnungen */
+  --md-ref-palette-tertiary-50: #a76b00;
+  --md-ref-palette-tertiary-60: #cb8400;
+  --md-ref-palette-tertiary-70: #efa01a;
+  --md-ref-palette-tertiary-80: #ffba54;
+  --md-ref-palette-tertiary-90: #FFDDB8; /* Tertiary Container */
+  --md-ref-palette-tertiary-95: #ffeedc;
+  --md-ref-palette-tertiary-100: #FFFFFF;
+
+  /* Neutral Light Tonal Palette: Off-White bis Wald-Anthrazit */
+  --md-ref-palette-neutral-0: #000000;
+  --md-ref-palette-neutral-6: #121D17;  /* On Surface (Wald-Anthrazit) */
+  --md-ref-palette-neutral-10: #1c2721;
+  --md-ref-palette-neutral-20: #2e3a33;
+  --md-ref-palette-neutral-30: #3F4943; /* On Surface Variant */
+  --md-ref-palette-neutral-40: #57625b;
+  --md-ref-palette-neutral-50: #707973; /* Outline */
+  --md-ref-palette-neutral-60: #8a938c;
+  --md-ref-palette-neutral-70: #a5aea7;
+  --md-ref-palette-neutral-80: #C0C9C3; /* Outline Variant */
+  --md-ref-palette-neutral-87: #DDE3DE; /* Surface Container Highest */
+  --md-ref-palette-neutral-90: #E3E8E4; /* Surface Container High */
+  --md-ref-palette-neutral-92: #E9EEEA; /* Surface Container */
+  --md-ref-palette-neutral-94: #EFF4F0; /* Surface Container Low */
+  --md-ref-palette-neutral-95: #E2E8E4; /* Surface Dim */
+  --md-ref-palette-neutral-98: #F5F9F6; /* Surface */
+  --md-ref-palette-neutral-99: #F8FCF9; /* Surface Bright */
+  --md-ref-palette-neutral-100: #FFFFFF;/* Surface Container Lowest */
+
+  /* ------------------------------------------------------------------------
+     TIER 2: SYSTEM TOKENS (md.sys.color.* & md.sys.shape.*)
+     M3-Expressive Light Scheme basierend auf der Seed-Color #02432E
+     ------------------------------------------------------------------------ */
+  /* Primary: Waldgrün */
+  --md-sys-color-primary: #02432E;                /* Primäres Waldgrün für CTAs & aktive States */
+  --md-sys-color-on-primary: #FFFFFF;             /* Text/Icon auf Primärfarbe */
+  --md-sys-color-primary-container: #D2E8DA;       /* Sanfter hellgrüner Container für aktive Flächen */
+  --md-sys-color-on-primary-container: #002114;    /* Dunkler Text auf Primär-Container */
+
+  /* Secondary: Wald-Salbei */
+  --md-sys-color-secondary: #4A6355;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #CDE9D6;
+  --md-sys-color-on-secondary-container: #0B1F15;
+
+  /* Tertiary: Warmes Amber für Dormanz-/Wetter-Warnungen */
+  --md-sys-color-tertiary: #855300;               /* Warmes Amber für Dormanz-/Wetter-Warnungen */
+  --md-sys-color-tertiary-container: #FFDDB8;      /* Amber-Container für Badges */
+  --md-sys-color-on-tertiary-container: #2A1700;   /* Text auf Amber-Badges */
+
+  /* Error */
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error-container: #410002;
+
+  /* Surface & Container Tonal Elevation Stack */
+  --md-sys-color-surface: #F5F9F6;                 /* Haupt-App-Hintergrund (augenfreundliches Off-White) */
+  --md-sys-color-surface-dim: #E2E8E4;             /* Leicht abgedunkelter Hintergrund */
+  --md-sys-color-surface-bright: #F8FCF9;          /* Strahlendes Surface */
+
+  --md-sys-color-surface-container-lowest: #FFFFFF; /* Reinweiß für eingebettete Karten in Karten */
+  --md-sys-color-surface-container-low: #EFF4F0;    /* Unaufdringliche Container */
+  --md-sys-color-surface-container: #E9EEEA;        /* Standard-Karten & Modals */
+  --md-sys-color-surface-container-high: #E3E8E4;   /* Erhabene Elemente / App Bars */
+  --md-sys-color-surface-container-highest: #DDE3DE;/* Textfelder & Input-Hintergründe */
+
+  /* Text & Outlines (WCAG AA zertifiziert: > 4.5:1) */
+  --md-sys-color-on-surface: #121D17;              /* Haupt-Textfarbe (Tiefer, augenschonender Wald-Anthrazit) */
+  --md-sys-color-on-surface-variant: #3F4943;      /* Sekundärtext / Labels */
+  --md-sys-color-outline: #707973;                 /* Subtile Trennlinien & Inaktive Borders */
+  --md-sys-color-outline-variant: #C0C9C3;         /* Sehr helle Ränder */
+
+  /* Inverse */
+  --md-sys-color-inverse-surface: #121D17;
+  --md-sys-color-inverse-on-surface: #F5F9F6;
+  --md-sys-color-inverse-primary: #82D6AD;
+
+  /* M3 Shape Tokens (md.sys.shape.*) */
+  --md-sys-shape-corner-none: 0px;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;          /* Radius 28px für Pflanzenkarten & Haupt-Container */
+  --md-sys-shape-corner-full: 9999px;
+
+  /* M3 Tonal Elevation Levels & Soft Ambient Shadows (Sub-Step 8.1.2) */
+  --md-sys-elevation-level-0: 0;                    /* Ebene 0: App-Hintergrund (#F5F9F6) */
+  --md-sys-elevation-level-1: 1;                    /* Ebene 1: Haupt-Karten & Dashboards (#E9EEEA) */
+  --md-sys-elevation-level-2: 2;                    /* Ebene 2: Header, Sticky Toolbar & Modals (#E3E8E4) */
+  --md-sys-elevation-level-3: 3;                    /* Ebene 3: Dialog-Popups & Floating Action Buttons (#DDE3DE) */
+
+  /* Soft Ambient Elevation Shadow (sehr weich, diffus, 6% Deckkraft, waldgrün-getönt #02432E) */
+  --md-sys-elevation-shadow-ambient: 0 4px 20px -2px rgba(2, 67, 46, 0.06);
+  --md-sys-elevation-shadow-dialog: 0 8px 30px -4px rgba(2, 67, 46, 0.10);
+
+  /* ------------------------------------------------------------------------
+     TIER 3: COMPONENT TOKENS (md.comp.*)
+     ------------------------------------------------------------------------ */
+  /* Cards */
+  --md-comp-card-container-color: var(--md-sys-color-surface-container);
+  --md-comp-card-container-high-color: var(--md-sys-color-surface-container-high);
+  --md-comp-card-container-low-color: var(--md-sys-color-surface-container-low);
+  --md-comp-card-subtile-container-color: var(--md-sys-color-surface-container-lowest);
+  --md-comp-card-outline-color: var(--md-sys-color-outline-variant);
+  --md-comp-card-shape: var(--md-sys-shape-corner-extra-large);
+  --md-comp-card-header-color: var(--md-sys-color-on-surface);
+
+  /* Buttons */
+  --md-comp-button-filled-container: var(--md-sys-color-primary);
+  --md-comp-button-filled-label: var(--md-sys-color-on-primary);
+  --md-comp-button-tonal-container: var(--md-sys-color-primary-container);
+  --md-comp-button-tonal-label: var(--md-sys-color-on-primary-container);
+  --md-comp-button-outlined-outline: var(--md-sys-color-outline-variant);
+  --md-comp-button-outlined-label: var(--md-sys-color-primary);
+
+  /* Badges & Chips */
+  --md-comp-badge-tertiary-container: var(--md-sys-color-tertiary-container);
+  --md-comp-badge-tertiary-label: var(--md-sys-color-on-tertiary-container);
+  --md-comp-badge-primary-container: var(--md-sys-color-primary-container);
+  --md-comp-badge-primary-label: var(--md-sys-color-on-primary-container);
+
+  /* Dialogs, Sheets, Inputs */
+  --md-comp-dialog-container-color: var(--md-sys-color-surface-container);
+  --md-comp-sheet-container-color: var(--md-sys-color-surface-container);
+  --md-comp-input-container-color: var(--md-sys-color-surface-container-highest);
+  --md-comp-input-outline-color: var(--md-sys-color-outline-variant);
+}
+
+/* ==========================================================================
+   TAILWIND THEME MAPPINGS
+   ========================================================================== */
+@theme {
+  --color-zinc-950: var(--md-sys-color-surface-container);
+  --color-zinc-900: var(--md-sys-color-surface-container-high);
+  --color-zinc-850: var(--md-sys-color-surface-container-highest);
+  --color-zinc-800: var(--md-sys-color-outline-variant);
+  --color-zinc-700: var(--md-sys-color-outline);
+
+  --color-m3-primary: var(--md-sys-color-primary);
+  --color-m3-on-primary: var(--md-sys-color-on-primary);
+  --color-m3-primary-container: var(--md-sys-color-primary-container);
+  --color-m3-on-primary-container: var(--md-sys-color-on-primary-container);
+
+  --color-m3-secondary: var(--md-sys-color-secondary);
+  --color-m3-on-secondary: var(--md-sys-color-on-secondary);
+  --color-m3-secondary-container: var(--md-sys-color-secondary-container);
+  --color-m3-on-secondary-container: var(--md-sys-color-on-secondary-container);
+
+  --color-m3-tertiary: var(--md-sys-color-tertiary);
+  --color-m3-on-tertiary: var(--md-sys-color-on-tertiary);
+  --color-m3-tertiary-container: var(--md-sys-color-tertiary-container);
+  --color-m3-on-tertiary-container: var(--md-sys-color-on-tertiary-container);
+
+  --color-m3-surface: var(--md-sys-color-surface);
+  --color-m3-surface-dim: var(--md-sys-color-surface-dim);
+  --color-m3-surface-bright: var(--md-sys-color-surface-bright);
+  --color-m3-surface-container-lowest: var(--md-sys-color-surface-container-lowest);
+  --color-m3-surface-container-low: var(--md-sys-color-surface-container-low);
+  --color-m3-surface-container: var(--md-sys-color-surface-container);
+  --color-m3-surface-container-high: var(--md-sys-color-surface-container-high);
+  --color-m3-surface-container-highest: var(--md-sys-color-surface-container-highest);
+  --color-m3-on-surface: var(--md-sys-color-on-surface);
+  --color-m3-on-surface-variant: var(--md-sys-color-on-surface-variant);
+  --color-m3-outline: var(--md-sys-color-outline);
+  --color-m3-outline-variant: var(--md-sys-color-outline-variant);
+}
+
+/* ==========================================================================
+   GLOBAL M3 SYSTEM TOKEN STYLESHEET OVERHAUL (Sub-Step 8.1.1 - Requirement 2)
+   Ersetzt alle dunklen Hintergründe durch das M3 Expressive Light Scheme.
+   ========================================================================== */
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--md-sys-color-surface); /* Augenfreundliches Off-White #F5F9F6 */
+  color: var(--md-sys-color-on-surface);        /* Wald-Anthrazit #121D17 */
+  /* Subtiler Waldnebel-Schimmer im Light Theme */
+  background-image: radial-gradient(ellipse 90% 40% at 50% -10%, rgba(2, 67, 46, 0.04), transparent);
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+/* App-Root Frame & Backgrounds */
+.bg-black,
+div.bg-black {
+  background-color: var(--md-sys-color-surface) !important;
+}
+
+/* 1. M3 Surface Container Overhauls (Tonal Elevation) */
+.bg-zinc-950,
+div.bg-zinc-950,
+article.bg-zinc-950 {
+  background-color: var(--md-sys-color-surface-container) !important;
+}
+
+.bg-zinc-900,
+div.bg-zinc-900,
+button.bg-zinc-900,
+header.bg-zinc-900,
+.bg-zinc-900\/90,
+.bg-zinc-900\/80,
+.bg-zinc-900\/70,
+.bg-zinc-900\/60,
+.bg-zinc-900\/40 {
+  background-color: var(--md-sys-color-surface-container-high) !important;
+}
+
+.bg-zinc-850,
+div.bg-zinc-850,
+button.bg-zinc-850 {
+  background-color: var(--md-sys-color-surface-container-highest) !important;
+}
+
+/* 2. Typografie & Kontrast-Garantie (WCAG AA >= 4.5:1) */
+.text-white,
+.text-zinc-100,
+.text-zinc-200 {
+  color: var(--md-sys-color-on-surface) !important; /* #121D17 - Kontrast > 15:1 */
+}
+
+.text-zinc-300,
+.text-zinc-400,
+.text-zinc-500 {
+  color: var(--md-sys-color-on-surface-variant) !important; /* #3F4943 - Kontrast > 7:1 */
+}
+
+.text-zinc-600 {
+  color: var(--md-sys-color-outline) !important; /* #707973 */
+}
+
+/* 3. M3 Outline Overhauls */
+.border-zinc-900,
+.border-zinc-900\/80,
+.border-zinc-900\/60,
+.border-zinc-900\/50,
+.border-zinc-850,
+.border-zinc-850\/90,
+.border-zinc-850\/80,
+.border-zinc-800,
+.border-zinc-800\/90,
+.border-zinc-800\/80,
+.border-zinc-800\/60,
+.border-zinc-800\/50 {
+  border-color: var(--md-sys-color-outline-variant) !important; /* #C0C9C3 */
+}
+
+.border-zinc-700 {
+  border-color: var(--md-sys-color-outline) !important; /* #707973 */
+}
+
+/* 4. Deep Forest Waldgrün (#02432E) & Primary Containers (#D2E8DA) */
+.bg-emerald-950,
+.bg-emerald-950\/80,
+.bg-emerald-950\/70,
+.bg-emerald-950\/60,
+.bg-emerald-950\/50,
+.bg-emerald-950\/40,
+.bg-emerald-950\/30,
+.bg-emerald-950\/20 {
+  background-color: var(--md-sys-color-primary-container) !important; /* #D2E8DA */
+  color: var(--md-sys-color-on-primary-container) !important;       /* #002114 */
+}
+
+.bg-emerald-500,
+.bg-emerald-600,
+.bg-emerald-700 {
+  background-color: var(--md-sys-color-primary) !important;         /* #02432E */
+  color: var(--md-sys-color-on-primary) !important;                /* #FFFFFF */
+}
+
+.text-emerald-400,
+.text-emerald-300,
+.text-emerald-200 {
+  color: var(--md-sys-color-primary) !important;                    /* #02432E */
+}
+
+.border-emerald-800,
+.border-emerald-800\/80,
+.border-emerald-800\/60,
+.border-emerald-800\/50,
+.border-emerald-800\/40,
+.border-emerald-700,
+.border-emerald-600 {
+  border-color: var(--md-sys-color-outline-variant) !important;
+}
+
+/* 5. Dormanz & Amber Tertiary Overhauls (#855300 & #FFDDB8) */
+.bg-amber-950,
+.bg-amber-950\/80,
+.bg-amber-950\/70,
+.bg-amber-950\/60,
+.bg-amber-950\/50,
+.bg-amber-950\/40,
+.bg-amber-950\/30 {
+  background-color: var(--md-sys-color-tertiary-container) !important; /* #FFDDB8 */
+  color: var(--md-sys-color-on-tertiary-container) !important;        /* #2A1700 */
+}
+
+.text-amber-400,
+.text-amber-300,
+.text-amber-200,
+.text-amber-100 {
+  color: var(--md-sys-color-tertiary) !important;                     /* #855300 */
+}
+
+.border-amber-800,
+.border-amber-800\/80,
+.border-amber-800\/60,
+.border-amber-800\/50,
+.border-amber-700 {
+  border-color: rgba(133, 83, 0, 0.25) !important;
+}
+
+/* 6. Cyan / Wasser-Elemente auf Secondary / Primary Container harmonisiert */
+.bg-cyan-950,
+.bg-cyan-950\/80,
+.bg-cyan-950\/60,
+.bg-cyan-950\/30 {
+  background-color: var(--md-sys-color-secondary-container) !important;
+  color: var(--md-sys-color-on-secondary-container) !important;
+}
+
+.text-cyan-400,
+.text-cyan-300 {
+  color: var(--md-sys-color-secondary) !important;
+}
+
+.border-cyan-800,
+.border-cyan-800\/60,
+.border-cyan-800\/50,
+.border-cyan-700 {
+  border-color: var(--md-sys-color-outline-variant) !important;
+}
+
+/* 7. Hover-Zustände im M3 Elevation Flow */
+.hover\:bg-zinc-850:hover,
+.hover\:bg-zinc-800:hover,
+.hover\:bg-zinc-900:hover {
+  background-color: var(--md-sys-color-surface-container-highest) !important;
+}
+
+.hover\:border-zinc-800:hover,
+.hover\:border-zinc-700:hover,
+.hover\:border-emerald-800\/60:hover,
+.hover\:border-emerald-700:hover {
+  border-color: var(--md-sys-color-primary) !important;
+}
+
+/* 8. M3 TONAL SURFACE ELEVATION & DEPTH LAYERING (Sub-Step 8.1.2)
+   Ebene 0 (Hintergrund): var(--md-sys-color-surface) (#F5F9F6)
+   Ebene 1 (Haupt-Karten): var(--md-sys-color-surface-container) (#E9EEEA) mit Radius 28px
+   Ebene 1 innen (Sub-Kacheln): var(--md-sys-color-surface-container-lowest) (#FFFFFF)
+   Ebene 2 (Header, Sticky Nav & Modals): var(--md-sys-color-surface-container-high) (#E3E8E4) + backdrop-blur-md
+   Ebene 3 (Dialoge & FABs): var(--md-sys-color-surface-container-highest) (#DDE3DE)
+   ========================================================================== */
+
+/* EBENE 1: Haupt-Karten & Dashboards mit 200ms ease-out Tonal Lift */
+article.group,
+.m3-plant-card,
+.m3-card-interactive {
+  background-color: var(--md-sys-color-surface-container) !important;   /* Ebene 1: #E9EEEA */
+  border: 1px solid var(--md-sys-color-outline-variant) !important;     /* 1px #C0C9C3 */
+  border-radius: var(--md-sys-shape-corner-extra-large) !important;     /* 28px */
+  box-shadow: none !important;
+  transition: background-color 200ms ease-out, border-color 200ms ease-out, box-shadow 200ms ease-out, transform 200ms ease-out !important;
+}
+
+/* Hover-Feedback: Tonal Elevation Anhebung von surface-container zu surface-container-high */
+article.group:hover,
+.m3-plant-card:hover,
+.m3-card-interactive:hover {
+  background-color: var(--md-sys-color-surface-container-high) !important; /* Ebene 2: #E3E8E4 */
+  border-color: rgba(2, 67, 46, 0.35) !important;
+  box-shadow: 0 4px 20px -2px rgba(2, 67, 46, 0.06) !important;          /* Soft Ambient Shadow */
+}
+
+/* EBENE 1 INNEN: Eingebettete Sub-Kacheln (Wetter, Diagnosen, Spülung, Icon-Boxen) */
+.m3-subtile,
+article.group .m3-subtile,
+article.group .bg-zinc-900,
+article.group .bg-zinc-900\/90,
+article.group .bg-zinc-900\/80,
+article.group .bg-zinc-900\/60,
+.sheet-subtile,
+.modal-subtile {
+  background-color: var(--md-sys-color-surface-container-lowest) !important; /* Reinweiß #FFFFFF */
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  box-shadow: none !important;
+}
+
+/* EBENE 2: App-Header, Sticky Bottom-Toolbar & Modals / Bottom Sheets */
+.m3-elevation-level-2,
+.m3-modal-container,
+.m3-bottom-sheet {
+  background-color: var(--md-sys-color-surface-container-high) !important; /* #E3E8E4 */
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-color: var(--md-sys-color-outline-variant) !important;
+  box-shadow: 0 4px 20px -2px rgba(2, 67, 46, 0.06) !important;
+}
+
+/* EBENE 3: Dialog-Popups & Floating Action Buttons */
+.m3-elevation-level-3,
+.m3-dialog-popup,
+.m3-fab {
+  background-color: var(--md-sys-color-surface-container-highest) !important; /* #DDE3DE */
+  border: 1px solid var(--md-sys-color-outline-variant) !important;
+  box-shadow: 0 4px 20px -2px rgba(2, 67, 46, 0.06) !important;
+}
+
+/* 9. ABSCHAFFUNG TRADITIONELLER DROP-SHADOWS (Sub-Step 8.1.2 - Requirement 1) */
+.shadow-2xl,
+.shadow-xl,
+.shadow-lg,
+.shadow-md,
+.shadow-sm,
+.shadow-inner,
+.shadow-black\/80,
+.shadow-black\/50,
+.shadow-black\/40 {
+  box-shadow: none !important;
+}
+
+/* 10. SOFT AMBIENT ELEVATION SHADOWS (Sub-Step 8.1.2 - Requirement 3)
+   Ausschließlich sehr weiche, diffuse M3 Ambient Shadows mit minimaler Opazität und leichtem Grünstich */
+.m3-ambient-shadow,
+.shadow-m3-ambient {
+  box-shadow: 0 4px 20px -2px rgba(2, 67, 46, 0.06) !important;
+}
+
+.m3-dialog-shadow {
+  box-shadow: 0 8px 30px -4px rgba(2, 67, 46, 0.10) !important;
+}
+
+/* Inputs & Form Controls */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
+  background-color: var(--md-sys-color-surface-container-highest) !important;
+  color: var(--md-sys-color-on-surface) !important;
+  border-color: var(--md-sys-color-outline-variant) !important;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: var(--md-sys-color-primary) !important;
+  outline: 2px solid var(--md-sys-color-primary-container) !important;
+}
+
+/* ==========================================================================
+   M3 COMPONENT UTILITY CLASSES
+   ========================================================================== */
+.m3-card {
+  background-color: var(--md-comp-card-container-color);
+  border: 1px solid var(--md-comp-card-outline-color);
+  border-radius: var(--md-comp-card-shape);
+}
+.m3-card-high {
+  background-color: var(--md-comp-card-container-high-color);
+  border: 1px solid var(--md-comp-card-outline-color);
+  border-radius: var(--md-comp-card-shape);
+}
+.m3-card-low {
+  background-color: var(--md-comp-card-container-low-color);
+  border: 1px solid var(--md-comp-card-outline-color);
+  border-radius: var(--md-comp-card-shape);
+}
+.m3-card-subtile {
+  background-color: var(--md-comp-card-subtile-container-color);
+  border: 1px solid var(--md-comp-card-outline-color);
+  border-radius: var(--md-sys-shape-corner-large);
+}
+.m3-button-filled {
+  background-color: var(--md-comp-button-filled-container);
+  color: var(--md-comp-button-filled-label);
+}
+.m3-button-tonal {
+  background-color: var(--md-comp-button-tonal-container);
+  color: var(--md-comp-button-tonal-label);
+}
+.m3-badge-tertiary {
+  background-color: var(--md-comp-badge-tertiary-container);
+  color: var(--md-comp-badge-tertiary-label);
+}
+.m3-badge-primary {
+  background-color: var(--md-comp-badge-primary-container);
+  color: var(--md-comp-badge-primary-label);
+}
+
+/* Light Mode Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--md-sys-color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--md-sys-color-outline-variant);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md-sys-color-outline);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

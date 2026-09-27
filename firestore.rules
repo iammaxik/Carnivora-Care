@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Default Deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidPlant(data) {
+      return data.keys().hasAll(['name', 'species', 'zipCode', 'isDormant', 'createdAt']) &&
+             data.keys().hasOnly(['name', 'species', 'zipCode', 'isDormant', 'createdAt', 'lastWateredAt', 'wateringHistory', 'diagnosisHistory', 'scans']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.species is string && data.species.size() > 0 && data.species.size() <= 150 &&
+             data.zipCode is string && data.zipCode.size() > 0 && data.zipCode.size() <= 20 &&
+             data.isDormant is bool &&
+             data.createdAt is timestamp &&
+             (!('lastWateredAt' in data) || data.lastWateredAt is timestamp) &&
+             (!('wateringHistory' in data) || data.wateringHistory is list) &&
+             (!('diagnosisHistory' in data) || data.diagnosisHistory is list) &&
+             (!('scans' in data) || data.scans is list);
+    }
+
+    match /plants/{plantId} {
+      allow read: if true;
+      allow create: if isValidId(plantId) && isValidPlant(request.resource.data);
+      allow update: if isValidId(plantId) && isValidPlant(request.resource.data) &&
+                       request.resource.data.createdAt == resource.data.createdAt;
+      allow delete: if isValidId(plantId);
+    }
+
+    function isValidUserProfile(data) {
+      return (!('isAnonymous' in data) || data.isAnonymous is bool) &&
+             (!('createdAt' in data) || data.createdAt is timestamp) &&
+             (!('lastLoginAt' in data) || data.lastLoginAt is timestamp) &&
+             (!('updatedAt' in data) || data.updatedAt is timestamp) &&
+             (!('email' in data) || (data.email is string || data.email == null)) &&
+             (!('preferences' in data) || (
+               data.preferences is map &&
+               (!('spuelErinnerungActive' in data.preferences) || data.preferences.spuelErinnerungActive is bool)
+             ));
+    }
+
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId && isValidUserProfile(request.resource.data);
+      allow update: if request.auth != null && request.auth.uid == userId && isValidUserProfile(request.resource.data) &&
+                       (!('createdAt' in resource.data) || !('createdAt' in request.resource.data) || request.resource.data.createdAt == resource.data.createdAt);
+
+      match /plants/{plantId} {
+        allow read: if request.auth != null && request.auth.uid == userId;
+        allow create: if request.auth != null && request.auth.uid == userId && isValidId(plantId) && isValidPlant(request.resource.data);
+        allow update: if request.auth != null && request.auth.uid == userId && isValidId(plantId) && isValidPlant(request.resource.data) &&
+                         request.resource.data.createdAt == resource.data.createdAt;
+        allow delete: if request.auth != null && request.auth.uid == userId && isValidId(plantId);
+      }
+    }
+
+    match /test/connection {
+      allow read: if true;
+    }
+  }
+}
